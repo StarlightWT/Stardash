@@ -7,50 +7,27 @@
     <nav class="dash">
       <ul>
         <a href="" class="active"><li>Home</li></a>
-        <a href=""><li>Locks</li></a>
+        <a href=""><li>Games</li></a>
+        <a href=""><li>Gambling</li></a>
+        <a href=""><li>Shop</li></a>
       </ul>
       <div>
-        <img src="D:/Downloads/placeholder.jpg" />
-        <h2>Miss_Star</h2>
+        <img id="avatar" src="D:/Downloads/placeholder.jpg" />
+        <h2 id="username">Error</h2>
       </div>
     </nav>
     <ul class="lock_list">
       <li class="lock_item" id="0">
         Time remaining:<br />
         <span id="days">NaN</span>:<span id="hours">NaN</span>:<span
-          id="minutes"
-          >NaN</span
+        id="minutes"
+        >NaN</span
         >:<span id="seconds">NaN</span>
       </li>
-      <li class="lock_item" id="1">Second super cool</li>
-      <li class="lock_item" id="2">Third super cool</li>
+      <!-- <li class="lock_item" id="1">Second super cool</li>
+      <li class="lock_item" id="2">Third super cool</li> -->
     </ul>
+  
+    <script src="renderer.js"></script>
   </body>
-
-  <script>
-    setInterval(() => {
-      console.log("Updating time...");
-      const endDate = new Date("2023-09-11T19:18:40.602Z").getTime(); //Is UTC
-      const currentDate = Date.now(); //Is also UTC
-      if (currentDate > endDate) return;
-      var timeLeft = endDate - currentDate;
-      // Translate current date to endDate counterpart
-      var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-      var hours = Math.floor(
-        (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-      const daysElement = document.getElementById("days");
-      const hoursElement = document.getElementById("hours");
-      const minutesElement = document.getElementById("minutes");
-      const secondsElement = document.getElementById("seconds");
-
-      daysElement.innerHTML = ("0" + days).slice(-2);
-      hoursElement.innerHTML = ("0" + hours).slice(-2);
-      minutesElement.innerHTML = ("0" + minutes).slice(-2);
-      secondsElement.innerHTML = ("0" + seconds).slice(-2);
-    }, 1000);
-  </script>
 </html>
