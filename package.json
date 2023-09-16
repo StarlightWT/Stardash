@@ -1,0 +1,37 @@
+{
+  "name": "chasterdashboard",
+  "version": "1.0.0",
+  "description": "Chaster dashboard",
+  "main": "./main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StarlightWT/ChasterDashboard.git"
+  },
+  "keywords": [],
+  "author": "Starlight",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StarlightWT/ChasterDashboard/issues"
+  },
+  "homepage": "https://github.com/StarlightWT/ChasterDashboard#readme",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.4.2",
+    "@electron-forge/maker-deb": "^6.4.2",
+    "@electron-forge/maker-rpm": "^6.4.2",
+    "@electron-forge/maker-squirrel": "^6.4.2",
+    "@electron-forge/maker-zip": "^6.4.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
+    "electron": "^26.2.0"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "openid-client": "^5.5.0",
+    "passport": "^0.6.0"
+  }
+}
