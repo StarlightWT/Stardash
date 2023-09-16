@@ -7,6 +7,8 @@ const secrets = require("./secrets.json");
 const clientId = secrets.CLIENT_ID;
 const superSecretSecret = secrets.CLIENT_SECRET;
 
+const tokenUrl = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/token`
+
 let accessToken = null,
   refreshToken = null;
 
@@ -37,7 +39,7 @@ async function sufferWithTokens(callbackURL) {
 
   const options = {
     method: "POST",
-    url: `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/token`,
+    url: tokenUrl,
     headers: {
       "content-type": "application/x-www-form-urlencoded",
     },
@@ -50,7 +52,44 @@ async function sufferWithTokens(callbackURL) {
     refreshToken = response.data.refresh_token;
   } catch (e) {
     console.log(`You stupid bitch wtf did you do: ${e}`);
-    throw error;
+    throw e;
+  }
+}
+
+async function refreshTokens() {
+  const exchangeOptions = {
+    'grant_type': 'refresh_token',
+    'refresh_token': refreshToken,
+    'client_secret': superSecretSecret,
+    'client_id': clientId
+  };
+
+  var formBody = [];
+  for (var property in exchangeOptions) {
+    var encodedKey = encodeURIComponent(property);
+    var encodedValue = encodeURIComponent(exchangeOptions[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+  console.log( `formBody: ${formBody}` )
+
+  const options = {
+    method: 'POST',
+    url: tokenUrl,
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data: formBody
+  };
+
+  try {
+    const response = await axios(options);
+    
+    accessToken = response.data.access_token;
+    refreshToken = response.data.refresh_token;
+  } catch (e) {
+    console.log(`You stupid bitch wtf did you do: ${e}`);
+    throw e;
   }
 }
 
@@ -58,4 +97,5 @@ module.exports = {
   getAccessToken,
   clientId,
   sufferWithTokens,
+  refreshTokens,
 };
