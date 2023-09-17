@@ -18,7 +18,8 @@ function createWindow() {
     minHeight: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true,
+      // nodeIntegration: true, 
+      // Don't uncomment, will break linux. xoxo
     },
   });
 }
@@ -76,7 +77,7 @@ app.whenReady().then(() => {
     return await getProfile(oauth.getAccessToken());
   })
 
-  ipcMain.handle("getLock", async() => {
+  ipcMain.handle("getLock", async () => {
     return await getLock(oauth.getAccessToken());
   })
 
@@ -85,9 +86,9 @@ app.whenReady().then(() => {
   })
 
   //Define shortucts
-  globalShortcut.register("CommandOrControl+W", () => {
-    app.quit();
-  });
+  // globalShortcut.register("CommandOrControl+W", () => {
+  //   app.quit();
+  // });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -95,7 +96,7 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+  if (app.platform !== "darwin") app.quit();
 });
 
 
