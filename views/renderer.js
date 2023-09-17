@@ -15,13 +15,14 @@ async function loadLockInfo() {
   var lock = await updateLock();
   updateLockTime(lock.endDate);
   updateLockHistory(lock._id);
+  updateLockExtensions(lock);
   //Setup intervals to keep info up to date
   setInterval(async () => {
     lock = await updateLock();
   }, 5000);
 
   setInterval(async () => {
-    updateLockTime(lock.endDate);
+    updateLockTime(lock.endDate, lock.isAllowedToViewTime);
   }, 1000);
 
   setInterval(async () => {
@@ -46,12 +47,65 @@ async function updateLock() {
   console.log("Updating lockObject...");
   lockObject = await window.electronAPI.getLock();
   lock = lockObject[0];
+  console.log(lock);
+
+  if (
+    (lock?.keyholder?._id != "642b1b6ce00265df88b41395" ||
+      lock.keyholder == null) &&
+    lock.user._id != "642b1b6ce00265df88b41395"
+  ) {
+    console.warn("Unsupported lock / No lock found!!!");
+    const body = document.getElementById("dash_body");
+
+    body.innerHTML = "";
+
+    var errorMessage = document.createElement("h1");
+    var errorMessage2 = document.createElement("h2");
+    var errorMessage3 = document.createElement("p");
+    body.append(errorMessage);
+    body.append(errorMessage2);
+    body.append(errorMessage3);
+    body.style.textAlign = "center";
+    errorMessage.innerHTML = "Unsupported lock!";
+    errorMessage2.innerHTML = "Your lock's keyholder must be Miss_Star!";
+    errorMessage3.innerHTML =
+      "Please relaunch the app while using a lock from Miss_Star or if you believe this to be wrong please DM at @starlightwt on discord.";
+    return;
+  }
 
   return lock;
 }
 
-async function updateLockTime(endDateTimestamp) {
+async function updateLockExtensions(lock) {
+  var extension_list = [];
+  console.log("Updating extesions...");
+  lock.extensions.forEach((extension) => {
+    var extensionName = extension.displayName;
+    var extensionID = extension._id;
+    extension_list.push(`${extensionID}:${extensionName}`);
+  });
+  console.log(extension_list);
+
+  extension_list.forEach((extension) => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    const ul = document.getElementById("extensionList");
+    li.append(a);
+    ul.append(li);
+
+    const extensionId = extension.slice(0, 24);
+    const lockId = lock._id;
+    a.innerHTML = extension.slice(25);
+    a.href = `https://chaster.app/locks/${lockId}/extensions/${extensionId}`;
+  });
+}
+
+async function updateLockTime(endDateTimestamp, isAllowedToViewTime) {
   console.log("Updating time...");
+  const timer = document.getElementById("timer");
+  if (!isAllowedToViewTime) return (timer.innerHTML = "Time hidden");
+  else
+    timer.innerHTML = `<span id="days">NaN</span>:<span id="hours">NaN</span>:<span id="minutes">NaN</span>:<span id="seconds">NaN</span>`;
   const endDate = new Date(endDateTimestamp).getTime(); //Is UTC
   const currentDate = Date.now(); //Is also UTC
   if (currentDate > endDate) return;
@@ -104,3 +158,9 @@ async function updateLockHistory(lockID) {
     i++;
   });
 }
+
+const logoutButton = document.getElementById("logout");
+logoutButton.addEventListener("click", () => {
+  console.log("Logging out...");
+  window.electronAPI.logout();
+});

@@ -37,6 +37,8 @@ body {
 
 .dash ul button {
   color: white;
+  /* border-color: white;
+  border-style: solid; */
 }
 
 .dash ul button:hover {
@@ -45,12 +47,16 @@ body {
   transition-duration: 0.25s;
 }
 
+.dash #logout {
+  cursor: pointer;
+}
+
 .dash li {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 75px;
-  width: 100px;
+  width: 125px;
   font-weight: 600;
   font-size: larger;
 }
@@ -60,6 +66,7 @@ body {
   justify-content: right;
   max-width: 30%;
   padding-right: 1rem;
+  margin-right: 2rem;
 }
 
 .dash div img {
@@ -114,12 +121,13 @@ body {
 #logList {
   list-style: none;
   padding: 0;
+  width: 70%;
 }
 
 #logList li {
   margin-top: 1rem;
   text-align: center;
-  width: 50%;
+  width: 90%;
   margin-inline: auto;
   border-style: solid;
   border-color: white;
@@ -135,4 +143,28 @@ body {
 #logList li p {
   margin: 0;
   margin-bottom: 0.5rem;
+}
+
+#extensionList {
+  list-style: none;
+}
+
+#extensionList li {
+  margin-top: 0.4rem;
+}
+
+#extensionList li a {
+  color: white;
+  text-decoration: none;
+}
+
+#extensionList li a:hover {
+  color: purple;
+  cursor: pointer;
+  transition-duration: 0.25s;
+}
+
+#dash_main {
+  display: flex;
+  justify-content: space-between;
 }

@@ -4,31 +4,40 @@
     <title>StarDash</title>
   </head>
   <body>
-    <nav class="dash">
-      <ul>
-        <button id="nav_home" class="active"><li>Home</li></button>
-        <button id="nav_games"><li>Games</li></button>
-        <button><li>Gambling</li></button>
-        <button><li>Shop</li></button>
-      </ul>
-      <div>
-        <img id="avatar" src="" />
-        <div class="names">
-          <h2 id="username">Loading...</h2>
-          <h3 id="discord">Loading...</h3>
+    <div id="dash_body">
+      <nav class="dash">
+        <ul>
+          <button id="nav_home" class="active"><li>Home</li></button>
+          <button id="nav_games"><li>Games</li></button>
+          <button><li>Gambling</li></button>
+          <button><li>Shop</li></button>
+        </ul>
+        <div>
+          <img id="avatar" src="" />
+          <div class="names">
+            <button id="logout">
+              <h2 id="username">Loading...</h2>
+            </button>
+            <h3 id="discord">Loading...</h3>
+          </div>
         </div>
-      </div>
-    </nav>
-    <ul class="lock_list">
-      <li class="lock_item" id="0">
-        Time remaining:<br />
-        <span id="days">NaN</span>:<span id="hours">NaN</span>:<span
-          id="minutes"
-          >NaN</span
-        >:<span id="seconds">NaN</span>
-      </li>
-    </ul>
-    <ul id="logList"></ul>
+      </nav>
+      <ul class="lock_list">
+        <li class="lock_item" id="0">
+          Time remaining:<br />
+          <span id="timer">
+            <span id="days">NaN</span>:<span id="hours">NaN</span>:<span
+              id="minutes"
+              >NaN</span
+            >:<span id="seconds">NaN</span></span
+          >
+        </li>
+      </ul>
+      <main id="dash_main">
+        <ul id="extensionList"></ul>
+        <ul id="logList"></ul>
+      </main>
+    </div>
 
     <script src="renderer.js"></script>
   </body>

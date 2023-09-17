@@ -6,4 +6,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getProfile: () => ipcRenderer.invoke("getProfile"),
   getLock: () => ipcRenderer.invoke("getLock"),
   getLockHistory: (lockID) => ipcRenderer.invoke("getLockHistory", lockID),
+  logout: () => ipcRenderer.send("logout"),
 });
