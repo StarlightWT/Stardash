@@ -14,7 +14,7 @@ let win;
 
 function createWindow() {
   return new BrowserWindow({
-    minWidth: 800,
+    minWidth: 900,
     minHeight: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -24,7 +24,12 @@ function createWindow() {
 }
 
 function showDashboard() {
-  win.loadFile("dashboard.html").then(() => {
+  win.loadFile("./views/dashboard.html").then(() => {
+    win.show();
+  });
+}
+function showGames() {
+  win.loadFile("./views/games.html").then(() => {
     win.show();
   });
 }
@@ -36,9 +41,18 @@ const filter = {
 };
 
 app.whenReady().then(() => {
-  ipcMain.on("redirect", () => {
-    console.log("Redirecting to dashboard...");
-    showDashboard();
+  ipcMain.on("redirect", (event, page) => {
+    console.log(`Redirecting to ${page}`);
+    console.log(page);
+    switch(page) {
+      case "home":
+        showDashboard()
+        return;
+      case "games":
+        showGames()
+        return;
+
+    }
   });
   win = createWindow();
 
@@ -53,13 +67,21 @@ app.whenReady().then(() => {
     
   var stateKey = Date.now(); //Change later
 
-  var authLink = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/auth?client_id=${secrets.CLIENT_ID}&response_type=code&scope=profile&state=${stateKey}`;
+  var authLink = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/auth?client_id=${secrets.CLIENT_ID}&response_type=code&scope=profile locks&state=${stateKey}`;
   win.loadURL(authLink);
 
-  win.removeMenu();
+  // win.removeMenu();
 
   ipcMain.handle("getProfile", async () => {
     return await getProfile(oauth.getAccessToken());
+  })
+
+  ipcMain.handle("getLock", async() => {
+    return await getLock(oauth.getAccessToken());
+  })
+
+  ipcMain.handle("getLockHistory", async(event, lockID) => {
+    return await getLockHistory(oauth.getAccessToken(), lockID);
   })
 
   //Define shortucts
@@ -80,6 +102,28 @@ app.on("window-all-closed", () => {
 async function getProfile(token){
   const response = await fetch('https://api.chaster.app/auth/profile', {
     method: "GET",
+    headers: {
+      'Authorization' : `Bearer ${token}`
+    }
+  });
+  const myJson = await response.json();
+  return myJson;
+}
+
+async function getLock(token){
+  const response = await fetch('https://api.chaster.app/locks', {
+    method: "GET",
+    headers: {
+      'Authorization' : `Bearer ${token}`
+    }
+  });
+  const myJson = await response.json();
+  return myJson;
+}
+
+async function getLockHistory(token, lockID){
+  const response = await fetch(`https://api.chaster.app/locks/${lockID}/history`, {
+    method: "POST",
     headers: {
       'Authorization' : `Bearer ${token}`
     }

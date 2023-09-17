@@ -1,7 +1,9 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  redirect: () => ipcRenderer.send("redirect"),
+  redirect: (page) => ipcRenderer.send("redirect", page),
   login: () => ipcRenderer.send("login"),
   getProfile: () => ipcRenderer.invoke("getProfile"),
+  getLock: () => ipcRenderer.invoke("getLock"),
+  getLockHistory: (lockID) => ipcRenderer.invoke("getLockHistory", lockID),
 });

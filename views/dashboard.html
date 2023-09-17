@@ -1,33 +1,35 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css" />
-    <title>ChasterDash</title>
+    <title>StarDash</title>
   </head>
   <body>
     <nav class="dash">
       <ul>
-        <a href="" class="active"><li>Home</li></a>
-        <a href=""><li>Games</li></a>
-        <a href=""><li>Gambling</li></a>
-        <a href=""><li>Shop</li></a>
+        <button id="nav_home" class="active"><li>Home</li></button>
+        <button id="nav_games"><li>Games</li></button>
+        <button><li>Gambling</li></button>
+        <button><li>Shop</li></button>
       </ul>
       <div>
         <img id="avatar" src="D:/Downloads/placeholder.jpg" />
-        <h2 id="username">Error</h2>
+        <div class="names">
+          <h2 id="username">Error</h2>
+          <h3 id="discord">No discord</h3>
+        </div>
       </div>
     </nav>
     <ul class="lock_list">
       <li class="lock_item" id="0">
         Time remaining:<br />
         <span id="days">NaN</span>:<span id="hours">NaN</span>:<span
-        id="minutes"
-        >NaN</span
+          id="minutes"
+          >NaN</span
         >:<span id="seconds">NaN</span>
       </li>
-      <!-- <li class="lock_item" id="1">Second super cool</li>
-      <li class="lock_item" id="2">Third super cool</li> -->
     </ul>
-  
+    <ul id="logList"></ul>
+
     <script src="renderer.js"></script>
   </body>
 </html>
