@@ -1,0 +1,16 @@
+table {
+    width: 100%;
+}
+
+tr {
+    width: 100%;
+}
+
+td {
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    width: 30%;
+    height: 25vh;
+    text-align: center;
+}

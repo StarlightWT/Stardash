@@ -1,0 +1,73 @@
+
+
+.lock_list {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.lock_item {
+  width: 100%;
+  padding-block: 1.5rem;
+  margin-inline: 10px;
+  text-align: center;
+  border-style: solid;
+  border-color: white;
+  border-radius: 1rem;
+}
+
+.lock_item {
+  font-size: 24px;
+}
+
+#logList {
+  list-style: none;
+  padding: 0;
+  width: 70%;
+}
+
+#logList li {
+  margin-top: 1rem;
+  text-align: center;
+  width: 90%;
+  margin-inline: auto;
+  border-style: solid;
+  border-color: white;
+  border-radius: 1rem;
+}
+
+#logList li h1 {
+  font-size: 24;
+  margin: 0;
+  margin-top: 0.5rem;
+}
+
+#logList li p {
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+#extensionList {
+  list-style: none;
+}
+
+#extensionList li {
+  margin-top: 0.4rem;
+}
+
+#extensionList li a {
+  color: white;
+  text-decoration: none;
+}
+
+#extensionList li a:hover {
+  color: purple;
+  cursor: pointer;
+  transition-duration: 0.25s;
+}
+
+#dash_main {
+  display: flex;
+  justify-content: space-between;
+}
