@@ -22,7 +22,7 @@ async function loadLockInfo() {
   }, 5000);
 
   setInterval(async () => {
-    updateLockTime(lock.endDate, lock.isAllowedToViewTime);
+    updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
   }, 1000);
 
   setInterval(async () => {
@@ -100,31 +100,37 @@ async function updateLockExtensions(lock) {
   });
 }
 
-async function updateLockTime(endDateTimestamp, isAllowedToViewTime) {
+async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt ) {
   console.log("Updating time...");
   const timer = document.getElementById("timer");
   if (!isAllowedToViewTime) return (timer.innerHTML = "Time hidden");
   else
     timer.innerHTML = `<span id="days">NaN</span>:<span id="hours">NaN</span>:<span id="minutes">NaN</span>:<span id="seconds">NaN</span>`;
+
   const endDate = new Date(endDateTimestamp).getTime(); //Is UTC
   const currentDate = Date.now(); //Is also UTC
   if (currentDate > endDate) return;
   var timeLeft = endDate - currentDate;
-  // Translate current date to endDate counterpart
+  if(frozenAt == null) timeLeft = endDate - currentDate; 
+  else {
+    const frozenDate = new Date(frozenAt).getTime();
+    timeLeft = endDate - frozenDate;
+    }
   var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
   var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
+  
   const daysElement = document.getElementById("days");
   const hoursElement = document.getElementById("hours");
   const minutesElement = document.getElementById("minutes");
   const secondsElement = document.getElementById("seconds");
-
+  
   daysElement.innerHTML = ("0" + days).slice(-2);
   hoursElement.innerHTML = ("0" + hours).slice(-2);
   minutesElement.innerHTML = ("0" + minutes).slice(-2);
   secondsElement.innerHTML = ("0" + seconds).slice(-2);
+  if(frozenAt != null) timer.innerHTML += "</br>(frozen)";
 }
 
 async function updateLockHistory(lockID) {
