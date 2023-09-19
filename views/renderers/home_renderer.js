@@ -16,7 +16,7 @@ async function loadLockInfo() {
 
   setInterval(async () => {
     updateLockHistory(lock._id);
-  }, 5000);
+  }, 10000);
 }
 
 loadLockInfo();

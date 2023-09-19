@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("node:path");
 const oauth = require("./oauth.js");
 const secrets = require("./secrets.json");
-const e = require("express");
 
 let win;
 
@@ -137,3 +136,6 @@ async function getLockHistory(token, lockID) {
   const myJson = await response.json();
   return myJson;
 }
+
+
+require('./updater.js');

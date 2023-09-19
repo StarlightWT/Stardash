@@ -1,5 +1,5 @@
 {
-  "name": "chasterdashboard",
+  "name": "stardash",
   "version": "1.0.0",
   "description": "Chaster dashboard",
   "main": "./main.js",
@@ -7,19 +7,37 @@
     "start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.stardash.StarDash",
+    "productName": "StarDash",
+    "linux": {
+      "target": "snap"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "publish": {
+    "provider": "github",
+    "releaseType": "relaese"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StarlightWT/ChasterDashboard.git"
+    "url": "git+https://github.com/StarlightWT/Stardash.git"
   },
   "keywords": [],
   "author": "Starlight",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/StarlightWT/ChasterDashboard/issues"
+    "url": "https://github.com/StarlightWT/Stardash/issues"
   },
-  "homepage": "https://github.com/StarlightWT/ChasterDashboard#readme",
+  "homepage": "https://github.com/StarlightWT/Stardash#readme",
   "devDependencies": {
     "@electron-forge/cli": "^6.4.2",
     "@electron-forge/maker-deb": "^6.4.2",
@@ -27,15 +45,11 @@
     "@electron-forge/maker-squirrel": "^6.4.2",
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
-    "electron": "^26.2.1"
+    "electron": "^26.2.1",
+    "electron-builder": "^24.6.4"
   },
   "dependencies": {
     "axios": "^1.5.0",
-    "dotenv": "^16.3.1",
-    "electron-squirrel-startup": "^1.0.0",
-    "express": "^4.18.2",
-    "openid-client": "^5.5.0",
-    "passport": "^0.6.0",
-    "passport-oauth2": "^1.7.0"
+    "electron-updater": "^6.1.4"
   }
 }
