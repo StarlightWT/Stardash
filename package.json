@@ -11,7 +11,7 @@
     "appId": "com.stardash.StarDash",
     "productName": "StarDash",
     "linux": {
-      "target": "snap"
+      "target": "deb"
     },
     "win": {
       "target": "nsis"
@@ -29,7 +29,7 @@
     "url": "git+https://github.com/StarlightWT/Stardash.git"
   },
   "keywords": [],
-  "author": "Starlight",
+  "author": "Starlight <starlightwt@protonmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/StarlightWT/Stardash/issues"
