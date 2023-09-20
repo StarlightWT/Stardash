@@ -1,4 +1,9 @@
 //This file exists because we are profesionals, if you see this, you're also a profesional :)
+/*
+  Welcome to blackmagic land, I have no idea how this works for the most part so,
+  I won't even pretend that I do. This was coded by Denom765, I don't understand it...
+  It just works
+*/
 const axios = require("axios");
 const url = require("url");
 

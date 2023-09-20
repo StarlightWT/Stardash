@@ -5,6 +5,7 @@ async function loadLockInfo() {
   updateLockTime(lock.endDate);
   updateLockHistory(lock._id);
   updateLockExtensions(lock);
+
   //Setup intervals to keep info up to date
   setInterval(async () => {
     lock = await updateLock();
@@ -23,11 +24,12 @@ loadLockInfo();
 
 async function updateLock() {
   console.log("Updating lockObject...");
-  lockObject = await window.electronAPI.getLock();
-  lock = lockObject[0];
+  lockObject = await window.electronAPI.getLock(); //Get lock list json from API
+  lock = lockObject[0]; //Select first lock
   console.log(lock);
 
   if (
+    //If keyholder is not Miss_Star and Miss_Star is not the user, throw error
     (lock?.keyholder?._id != "642b1b6ce00265df88b41395" ||
       lock.keyholder == null) &&
     lock.user._id != "642b1b6ce00265df88b41395"
@@ -57,6 +59,7 @@ async function updateLock() {
 async function updateLockExtensions(lock) {
   var extension_list = [];
   console.log("Updating extesions...");
+  //Encode extension list that chaster provides
   lock.extensions.forEach((extension) => {
     var extensionName = extension.displayName;
     var extensionID = extension._id;
@@ -64,6 +67,7 @@ async function updateLockExtensions(lock) {
   });
   console.log(extension_list);
 
+  //Add every extension to the extension list in the UI
   extension_list.forEach((extension) => {
     const li = document.createElement("li");
     const a = document.createElement("a");
@@ -81,44 +85,57 @@ async function updateLockExtensions(lock) {
 async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt ) {
   console.log("Updating time...");
   const timer = document.getElementById("timer");
+  //check if the timer is currently hidden
   if (!isAllowedToViewTime) return (timer.innerHTML = "Time hidden");
   else
     timer.innerHTML = `<span id="days">NaN</span>:<span id="hours">NaN</span>:<span id="minutes">NaN</span>:<span id="seconds">NaN</span>`;
-
+  
+    //calculate time remaining
   const endDate = new Date(endDateTimestamp).getTime(); //Is UTC
   const currentDate = Date.now(); //Is also UTC
   if (currentDate > endDate) return;
   var timeLeft = endDate - currentDate;
+  //if lock is frozen calculate time from the time of being frozen.
   if(frozenAt == null) timeLeft = endDate - currentDate; 
   else {
     const frozenDate = new Date(frozenAt).getTime();
     timeLeft = endDate - frozenDate;
     }
+
+  //Extract time
   var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
   var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
   
+  //Get location for each time period
   const daysElement = document.getElementById("days");
   const hoursElement = document.getElementById("hours");
   const minutesElement = document.getElementById("minutes");
   const secondsElement = document.getElementById("seconds");
   
+  //Update each time period
   daysElement.innerHTML = ("0" + days).slice(-2);
   hoursElement.innerHTML = ("0" + hours).slice(-2);
   minutesElement.innerHTML = ("0" + minutes).slice(-2);
   secondsElement.innerHTML = ("0" + seconds).slice(-2);
+
+  //if lock is frozen, add info text to the end of the timer
   if(frozenAt != null) timer.innerHTML += "</br>(frozen)";
 }
 
 async function updateLockHistory(lockID) {
-  //Getting lock history
-  console.log("Updating lock history...");
-  const lockHistory = await window.electronAPI.getLockHistory(lockID);
-  const lastLogs = lockHistory.results.slice(0, 10);
-  const logList = await document.getElementById("logList");
   var i = 0;
+  console.log("Updating lock history...");
+  //Request lock history from api
+  const lockHistory = await window.electronAPI.getLockHistory(lockID);
+  //Get only latest 10 logs
+  const lastLogs = lockHistory.results.slice(0, 10);
+  //Get the log list and clear it
+  const logList = await document.getElementById("logList");
   logList.innerHTML = "";
+
+  //Add each log to the list
   lastLogs.forEach(async (log) => {
     const entry = document.createElement("li");
     const entryTitle = document.createElement("h1");
@@ -128,9 +145,11 @@ async function updateLockHistory(lockID) {
     await entry.append(entryDescription);
 
     var title = lastLogs[i].title;
+    //Translate %USER% tag to username
     if (lastLogs[i].title.includes("%USER%") && lastLogs[i].user)
       title = lastLogs[i].user.username + lastLogs[i].title.slice(6);
-    else if (lastLogs[i].title.includes("%USER%")) {
+    //Translate %USER% tag to extension if not made by user
+      else if (lastLogs[i].title.includes("%USER%")) {
       var extensionTitle =
         lastLogs[i].extension.charAt(0).toUpperCase() +
         lastLogs[i].extension.slice(1);
@@ -143,6 +162,7 @@ async function updateLockHistory(lockID) {
   });
 }
 
+//Get logout button, request logout 
 const logoutButton = document.getElementById("logout");
 logoutButton.addEventListener("click", () => {
   console.log("Logging out...");

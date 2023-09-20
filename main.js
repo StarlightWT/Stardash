@@ -76,7 +76,6 @@ ipcMain.on("logout", () => {
 //Handle redirects
 ipcMain.on("redirect", (event, page) => {
   console.log(`Redirecting to ${page}`);
-  console.log(page);
   switch (page) {
     case "home":
       redirects.showDashboard(win);
@@ -89,6 +88,16 @@ ipcMain.on("redirect", (event, page) => {
       return;
   }
 });
+
+ipcMain.on("casino", (e, id) => {
+  console.log(`Casino game selected: ${id}`);
+  switch(id) {
+    case 0:
+      //BlackJack
+      redirects.blackJack(win);
+      break;
+  }
+})
 
 //Handle requests from renderers
 ipcMain.handle("getProfile", async () => {

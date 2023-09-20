@@ -14,9 +14,18 @@ function showCasino(win){
     })
 }
 
+//Casino redirects
+function blackJack(win){
+  win.loadFile("./views/casino/blackjack.html").then(() => {
+    win.show();
+  })
+}
+
+
 
 module.exports = {
     showDashboard,
     showGames,
-    showCasino
+    showCasino,
+    blackJack
 }

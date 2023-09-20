@@ -1,3 +1,4 @@
+//Update profile info
 async function loadProfileInfo() {
     const profile = await window.electronAPI.getProfile();
     const usernameBox = document.getElementById("username");
@@ -13,10 +14,12 @@ async function loadProfileInfo() {
 loadProfileInfo();
 
 
+//Get buttons
 const homeBtn = document.getElementById("nav_home");
 const gamesBtn = document.getElementById("nav_games");
 const casinoBtn = document.getElementById("nav_casino");
 
+//Send redirect requests
 homeBtn.addEventListener("click", () => {
   window.electronAPI.redirect("home");
 });

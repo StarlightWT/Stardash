@@ -7,4 +7,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getLock: () => ipcRenderer.invoke("getLock"),
   getLockHistory: (lockID) => ipcRenderer.invoke("getLockHistory", lockID),
   logout: () => ipcRenderer.send("logout"),
+  casinoSelect: (id) => ipcRenderer.send("casino", id),
 });
