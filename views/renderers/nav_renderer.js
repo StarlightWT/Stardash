@@ -15,10 +15,14 @@ loadProfileInfo();
 
 const homeBtn = document.getElementById("nav_home");
 const gamesBtn = document.getElementById("nav_games");
+const casinoBtn = document.getElementById("nav_casino");
 
 homeBtn.addEventListener("click", () => {
   window.electronAPI.redirect("home");
 });
 gamesBtn.addEventListener("click", () => {
   window.electronAPI.redirect("games");
+});
+casinoBtn.addEventListener("click", () => {
+  window.electronAPI.redirect("casino");
 });

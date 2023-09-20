@@ -3,7 +3,7 @@ const axios = require("axios");
 const url = require("url");
 
 const redirectUri = "http://localhost:5000/callback";
-const secrets = require("./secrets.json");
+const secrets = require("../../secrets.json");
 const clientId = secrets.CLIENT_ID;
 const superSecretSecret = secrets.CLIENT_SECRET;
 
