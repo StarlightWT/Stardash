@@ -4,10 +4,7 @@
   "description": "Chaster dashboard",
   "main": "./main.js",
   "scripts": {
-    "start": "electron-forge start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
+    "start": "npx electronmon .",
     "dist": "electron-builder"
   },
   "build": {
@@ -39,12 +36,6 @@
   },
   "homepage": "https://github.com/StarlightWT/Stardash#readme",
   "devDependencies": {
-    "@electron-forge/cli": "^6.4.2",
-    "@electron-forge/maker-deb": "^6.4.2",
-    "@electron-forge/maker-rpm": "^6.4.2",
-    "@electron-forge/maker-squirrel": "^6.4.2",
-    "@electron-forge/maker-zip": "^6.4.2",
-    "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     "electron": "^26.2.1",
     "electron-builder": "^24.6.4"
   },
