@@ -47,9 +47,7 @@ app.whenReady().then(() => {
     }
   );
   //send user to oauth page
-  var stateKey = Math.floor(Math.random()*100000000);
-  var authLink = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/auth?client_id=${secrets.CLIENT_ID}&response_type=code&scope=profile locks&state=${stateKey}`;
-  win.loadURL(authLink);
+  win.loadURL(oauth.authLink);
   
   //Create initial window(?)
   app.on("activate", () => {
@@ -67,7 +65,7 @@ var logoutLink = `https://chaster.app/logout`;
 ipcMain.on("logout", () => {
   win.loadURL(logoutLink).then(() => {
     setTimeout(() => {
-      win.loadURL(authLink);
+      win.loadURL(oauth.authLink);
       app.relaunch();
     }, 5000);
   });
@@ -101,6 +99,9 @@ ipcMain.on("casino", (e, id) => {
 
 //Handle requests from renderers
 ipcMain.handle("getProfile", async () => {
+  await console.log(
+    await api.getExtension(secrets.DEV_TKN)
+  );
   return await api.getProfile(oauth.getAccessToken());
 });
 
