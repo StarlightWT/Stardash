@@ -38,21 +38,62 @@ async function getProfile(token) {
 
 async function getExtension(token){
   const response = await fetch(
-    `https://api.chaster.app/api/extensions/sessions/search`,
+    'https://api.chaster.app/api/extensions/sessions/search',
     {
-      method: "POST",
+    method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': "application/json",
       },
-      body: {
+      body: JSON.stringify({
         "status": "locked",
         "extensionSlug": "stardash-connect",
-        "limit": 15,
-      }
+        "limit": 15
+      })
     }
   );
   const myJson = await response.json();
   return myJson;
+}
+
+async function addTime(token, sessionID, time){
+  const response = await fetch(
+    `https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
+    {
+    method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': "application/json",
+      },
+      body: JSON.stringify({
+        "action": {
+          "name": "add_time",
+          "params": time
+        }
+      })
+    }
+  );
+  return response;
+}
+
+async function remTime(token, sessionID, time){
+  const response = await fetch(
+    `https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
+    {
+    method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': "application/json",
+      },
+      body: JSON.stringify({
+        "action": {
+          "name": "remove_time",
+          "params": time
+        }
+      })
+    }
+  );
+  return response;
 }
 
 module.exports = {
@@ -60,4 +101,6 @@ module.exports = {
     getLock,
     getLockHistory,
     getExtension,
+    addTime,
+    remTime
 }

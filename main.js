@@ -6,6 +6,8 @@ const api = require("./src/handlers/api_calls.js");
 const redirects = require("./src/handlers/redirects.js");
 
 let win;
+var extension;
+var stardashConnectID;
 
 //Run auto-updater
 require('./src/handlers/updater.js');
@@ -99,9 +101,6 @@ ipcMain.on("casino", (e, id) => {
 
 //Handle requests from renderers
 ipcMain.handle("getProfile", async () => {
-  await console.log(
-    await api.getExtension(secrets.DEV_TKN)
-  );
   return await api.getProfile(oauth.getAccessToken());
 });
 
@@ -112,3 +111,22 @@ ipcMain.handle("getLock", async () => {
 ipcMain.handle("getLockHistory", async (event, lockID) => {
   return await api.getLockHistory(oauth.getAccessToken(), lockID);
 });
+
+ipcMain.handle("connectStardash", async(event, userID) => {
+  await api.getExtension(secrets.DEV_TKN).then((extensionList) => {
+    extensionList.results.forEach((session) => {
+      if(session.lock.user._id == userID) {
+        extension = session;
+        stardashConnectID = session.sessionId;
+      }
+    })
+  })
+  return extension;
+})
+
+ipcMain.on("addTime", async (event, time) => {
+  await api.addTime(secrets.DEV_TKN, stardashConnectID, time);
+})
+ipcMain.on("remTime", async (event, time) => {
+  await api.remTime(secrets.DEV_TKN, stardashConnectID, time);
+})

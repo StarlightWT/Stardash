@@ -5,6 +5,7 @@ async function loadLockInfo() {
   updateLockTime(lock.endDate);
   updateLockHistory(lock._id);
   updateLockExtensions(lock);
+  updateSession(lock);
 
   //Setup intervals to keep info up to date
   setInterval(async () => {
@@ -21,6 +22,22 @@ async function loadLockInfo() {
 }
 
 loadLockInfo();
+
+
+function addTime(time){
+  window.electronAPI.addTime(time);
+}
+function remTime(time){
+  window.electronAPI.remTime(time);
+}
+
+async function updateSession(lock){
+  console.log("Updating session...");
+  const id = lock.user._id;
+  console.log(
+    await window.electronAPI.getExtension(id) 
+  );
+}
 
 async function updateLock() {
   console.log("Updating lockObject...");
