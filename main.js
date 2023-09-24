@@ -132,7 +132,7 @@ ipcMain.on("remTime", async (event, time) => {
   console.log(`Removing time...(${time})`);
   await api.remTime(secrets.DEV_TKN, stardashConnectID, time);
 })
-ipcMain.on("log", async (event, title, description, role, colour) => {
-  console.log(`Logging... ${icon}`);
+ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
+  console.log(`Logging... ${logIcon}`);
   await api.log(secrets.DEV_TKN, stardashConnectID, title, description, role, colour);
 })

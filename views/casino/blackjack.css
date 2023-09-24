@@ -1,0 +1,75 @@
+html {
+    background-color: #161616;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+button {
+    height: 40px;
+    width: 120px;
+}
+
+#max_bet {
+    position: absolute;
+    left: 5%;
+    top: 10%;
+}
+
+
+.totals {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.totals * {
+    margin: 0;
+    padding: 0;
+}
+
+.totals div {
+    margin-inline: 1rem;
+    padding: 2rem;
+    background-color: #303030;
+    border-radius: 1rem;
+}
+
+
+#play {
+    display: none;
+}
+
+#setup input {
+    width: 200px;
+    height: 30px;
+    font-size: 16px;
+}
+
+#start_button{
+    width: 200px;
+    height: 60px;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+#setup button:hover {
+    cursor: pointer;
+}
+
+
+#return {
+    clip-path: circle();
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 60px;
+    height: 60px;
+    font-size: 50;
+}
