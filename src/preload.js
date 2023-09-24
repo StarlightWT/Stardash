@@ -10,5 +10,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
   addTime: (time) => ipcRenderer.send("addTime", time),
   remTime: (time) => ipcRenderer.send("remTime", time),
   casinoSelect: (id) => ipcRenderer.send("casino", id),
+  log: (title, description, role, colour) => ipcRenderer.send(title, description, role, colour),
   logout: () => ipcRenderer.send("logout"),
 });

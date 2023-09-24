@@ -130,9 +130,13 @@ async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt ) 
   const hoursElement = document.getElementById("hours");
   const minutesElement = document.getElementById("minutes");
   const secondsElement = document.getElementById("seconds");
-  
+  let spacer = "0";
+  //Make sure days fit
+  if(days >= 100) spacer = "00";
+  if(days >= 1000) spacer = "000";
+  if(days >= 10000) spacer = "0000";
   //Update each time period
-  daysElement.innerHTML = ("0" + days).slice(-2);
+  daysElement.innerHTML = (spacer + days).slice(-spacer.length-1);
   hoursElement.innerHTML = ("0" + hours).slice(-2);
   minutesElement.innerHTML = ("0" + minutes).slice(-2);
   secondsElement.innerHTML = ("0" + seconds).slice(-2);
@@ -170,6 +174,9 @@ async function updateLockHistory(lockID) {
       var extensionTitle =
         lastLogs[i].extension.charAt(0).toUpperCase() +
         lastLogs[i].extension.slice(1);
+      var temp = extensionTitle.split("-");
+      extensionTitle = temp.join(" ");
+      if(extensionTitle.startsWith("Stardash")) extensionTitle = extensionTitle.slice(0, 8);
       title = extensionTitle + lastLogs[i].title.slice(6);
     }
 

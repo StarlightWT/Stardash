@@ -96,11 +96,32 @@ async function remTime(token, sessionID, time){
   return response;
 }
 
+async function log(token, sessionID, title, description, role, colour){
+  const response = await fetch(
+    `https://api.chaster.app/api/extensions/sessions/${sessionID}/logs/custom`,
+    {
+    method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': "application/json",
+      },
+      body: JSON.stringify({
+        "role": role,
+        "color": `#${colour}`,
+        "title": title,
+        "description": description
+      })
+    }
+  );
+  return response;
+}
+
 module.exports = {
     getProfile,
     getLock,
     getLockHistory,
     getExtension,
     addTime,
-    remTime
+    remTime,
+    log
 }
