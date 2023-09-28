@@ -231,5 +231,5 @@ refBtn.addEventListener("click", ()=>{
 })
 
 retBtn.addEventListener("click", ()=>{
-    window.electronAPI.redirect("casino");
+    window.electronAPI.redirect("games");
 })

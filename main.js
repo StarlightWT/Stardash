@@ -83,17 +83,14 @@ ipcMain.on("redirect", (event, page) => {
     case "games":
       redirects.showGames(win);
       return;
-    case "casino":
-      redirects.showCasino(win);
-      return;
     case "loading":
       redirects.showLoading(win);
       return;
   }
 });
 
-ipcMain.on("casino", (e, id) => {
-  console.log(`Casino game selected: ${id}`);
+ipcMain.on("game", (e, id) => {
+  console.log(`Game selected: ${id}`);
   switch(id) {
     case 0:
       //BlackJack

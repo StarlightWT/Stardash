@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getExtension: (userID) => ipcRenderer.invoke("connectStardash", userID),
   addTime: (time) => ipcRenderer.send("addTime", time),
   remTime: (time) => ipcRenderer.send("remTime", time),
-  casinoSelect: (id) => ipcRenderer.send("casino", id),
+  gameSelect: (id) => ipcRenderer.send("game", id),
   loaded: () => ipcRenderer.invoke("loadStatus", 1),
   log: (title, description, role, colour, logIcon) => ipcRenderer.invoke("log", title, description, role, colour, logIcon),
   logout: () => ipcRenderer.send("logout"),

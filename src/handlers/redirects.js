@@ -8,11 +8,6 @@ function showGames(win) {
       win.show();
     });
 }
-function showCasino(win){
-    win.loadFile("./views/casino.html").then(() =>{
-      win.show();
-    })
-}
 
 //Casino redirects
 function blackJack(win){
@@ -31,7 +26,6 @@ function showLoading(win){
 module.exports = {
     showDashboard,
     showGames,
-    showCasino,
     blackJack,
     showLoading
 }

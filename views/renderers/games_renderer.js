@@ -1,6 +1,6 @@
 function select(id){
-    console.log(`Selecting casino ${id}`);
-    window.electronAPI.casinoSelect(id);
+    console.log(`Selecting game ${id}`);
+    window.electronAPI.gameSelect(id);
     //request redirect to specific game
 };
 
