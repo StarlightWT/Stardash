@@ -44,7 +44,7 @@ async function updateLock() {
     //If keyholder is not Miss_Star and Miss_Star is not the user, throw error
     (lock?.keyholder?._id != "642b1b6ce00265df88b41395" ||
       lock.keyholder == null) &&
-    lock.user._id != "642b1b6ce00265df88b41395"
+    lock?.user?._id != "642b1b6ce00265df88b41395"
   ) {
     console.warn("Unsupported lock / No lock found!!!");
     const body = document.getElementById("dash_body");
@@ -58,10 +58,10 @@ async function updateLock() {
     body.append(errorMessage2);
     body.append(errorMessage3);
     body.style.textAlign = "center";
-    errorMessage.innerHTML = "Unsupported lock!";
-    errorMessage2.innerHTML = "Your lock's keyholder must be Miss_Star!";
+    errorMessage.innerHTML = "Error getting lock/confirming subscription";
+    errorMessage2.innerHTML = "Your subscription or lock wasn't found!";
     errorMessage3.innerHTML =
-      "Please relaunch the app while using a lock from Miss_Star or if you believe this to be wrong please DM at @starlightwt on discord.";
+      "Please relaunch the app, if issue persits please message Starlight(@starlightwt) on discord!";
     return;
   }
 
