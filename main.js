@@ -8,7 +8,7 @@ const redirects = require("./src/handlers/redirects.js");
 let win;
 var extension;
 var stardashConnectID;
-
+var loadStatus = 0;
 
 //Run auto-updater
 require('./src/handlers/updater.js');
@@ -46,7 +46,7 @@ app.whenReady().then(() => {
       const url = details.url;
 
       await oauth.sufferWithTokens(url, startInfoUpdate);
-      redirects.showDashboard(win);
+      redirects.showLoading(win);
     }
   );
   //send user to oauth page
@@ -69,7 +69,6 @@ ipcMain.on("logout", () => {
   win.loadURL(logoutLink).then(() => {
     setTimeout(() => {
       win.loadURL(oauth.authLink);
-      app.relaunch();
     }, 5000);
   });
 });
@@ -86,6 +85,9 @@ ipcMain.on("redirect", (event, page) => {
       return;
     case "casino":
       redirects.showCasino(win);
+      return;
+    case "loading":
+      redirects.showLoading(win);
       return;
   }
 });
@@ -125,6 +127,11 @@ ipcMain.handle("connectStardash", async(event, userID) => {
   return extension;
 })
 
+ipcMain.handle("loadStatus", (event, status) => {
+  console.log(`Responding... ${loadStatus}`);
+  return loadStatus;
+})
+
 ipcMain.on("addTime", async (event, time) => {
   console.log(`Adding time... (${time})`);
   await request.addTime(secrets.DEV_TKN, stardashConnectID, time);
@@ -141,11 +148,11 @@ ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
 
 
 //Load info and update it every 5 seconds
-function startInfoUpdate(accessToken){
+async function startInfoUpdate(accessToken){
 
-  request.updateInfo(accessToken);
-  
-  setInterval(() => {
-    request.updateInfo(accessToken);
+   loadStatus = await request.updateInfo(accessToken);
+
+  setInterval(async () => {
+    loadStatus = await request.updateInfo(accessToken);
   }, 5*1000); //5seconds
 }

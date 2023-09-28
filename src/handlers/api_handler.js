@@ -11,6 +11,7 @@ async function updateInfo(accessToken) {
     lock = await call.getLock(accessToken);
     lockHistory = await call.getLockHistory(accessToken, lock[0]._id)
     starConnect = await call.getExtension(secrets.DEV_TKN);
+    return 1;
 }
 
 function getProfile(){

@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   addTime: (time) => ipcRenderer.send("addTime", time),
   remTime: (time) => ipcRenderer.send("remTime", time),
   casinoSelect: (id) => ipcRenderer.send("casino", id),
-  log: (title, description, role, colour, logIcon) => ipcRenderer.send("log", title, description, role, colour, logIcon),
+  loaded: () => ipcRenderer.invoke("loadStatus", 1),
+  log: (title, description, role, colour, logIcon) => ipcRenderer.invoke("log", title, description, role, colour, logIcon),
   logout: () => ipcRenderer.send("logout"),
 });

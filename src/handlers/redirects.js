@@ -21,11 +21,17 @@ function blackJack(win){
   })
 }
 
+function showLoading(win){
+  win.loadFile("./views/loading.html").then(() => {
+    win.show
+  })
+}
 
 
 module.exports = {
     showDashboard,
     showGames,
     showCasino,
-    blackJack
+    blackJack,
+    showLoading
 }
