@@ -1,14 +1,13 @@
 //Update profile info
 async function loadProfileInfo() {
-    const profile = await window.electronAPI.getProfile();
-    const usernameBox = document.getElementById("username");
-    const avatar = document.getElementById("avatar");
-    const discord = document.getElementById("discord");
-    usernameBox.innerHTML = profile.username;
-    avatar.setAttribute("src", profile.avatarUrl);
-    discord.innerHTML = "@" + profile.discordUsername;
-  
-  }
+	const profile = await window.electronAPI.getProfile();
+	const usernameBox = document.getElementById("username");
+	const avatar = document.getElementById("avatar");
+	const discord = document.getElementById("discord");
+	usernameBox.innerHTML = profile.username;
+	avatar.setAttribute("src", profile.avatarUrl);
+	discord.innerHTML = "@" + profile.discordUsername;
+}
 
 loadProfileInfo();
 
@@ -19,11 +18,11 @@ const casinoBtn = document.getElementById("nav_casino");
 
 //Send redirect requests
 homeBtn.addEventListener("click", () => {
-  window.electronAPI.redirect("home");
+	window.electronAPI.redirect("home");
 });
 gamesBtn.addEventListener("click", () => {
-  window.electronAPI.redirect("games");
+	window.electronAPI.redirect("games");
 });
 casinoBtn.addEventListener("click", () => {
-  window.electronAPI.redirect("casino");
+	window.electronAPI.redirect("casino");
 });

@@ -1,36 +1,40 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="blackjack.css">
-        <title>StarDash - BlackJack</title>
-    </head>
-    <body>
-        <main>
-            <div id="play">
-                <h1 id="winner"></h1>
-                <div class="totals">
-                    <div>
-                        <h1>Dealer total<br><span id="dealer_total"></span></h1>
-                    </div>
-                    <div>
-                        <h1>Player total<br><span id="player_total"></span></h1>
-                    </div>
-                </div>
-                <div class="player">
-                    <button id="hit_button">Hit</button>
-                    <button id="stand_button">Stand</button>
-                    <br>
-                    <button id="refresh_button">refresh</button>
-                </div>
-            </div>
-            <div id="setup">
-                <button id="return"><</button>
-                <h3 id="max_bet">Max bet:</h3>
-                <h1>BlackJack</h1>
-                <input type="text" name="" placeholder="weeks:days:hours:minutes" id="betInput">   
-                <br> 
-                <button id="start_button">Place bet</button>
-            </div>
-        </main>
-    </body>
-    <script src="./blackjack.js"></script>
+	<head>
+		<link rel="stylesheet" href="blackjack.css" />
+		<title>StarDash - BlackJack</title>
+	</head>
+	<body>
+		<main>
+			<div id="play">
+				<h1 id="winner"></h1>
+				<div class="totals">
+					<div>
+						<h1>Dealer total<br /><span id="dealer_total"></span></h1>
+					</div>
+					<div>
+						<h1>Player total<br /><span id="player_total"></span></h1>
+					</div>
+				</div>
+				<div class="player">
+					<button id="hit_button">Hit</button>
+					<button id="stand_button">Stand</button>
+					<br />
+					<button id="refresh_button">refresh</button>
+				</div>
+			</div>
+			<div id="setup">
+				<button id="return"><</button>
+				<h3 id="max_bet">Max bet:</h3>
+				<h1>BlackJack</h1>
+				<input
+					type="text"
+					name=""
+					placeholder="weeks:days:hours:minutes"
+					id="betInput" />
+				<br />
+				<button id="start_button">Place bet</button>
+			</div>
+		</main>
+	</body>
+	<script src="./blackjack.js"></script>
 </html>

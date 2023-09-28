@@ -1,49 +1,49 @@
 <html>
-  <head>
-    <link rel="stylesheet" href="games_style.css">
-    <link rel="stylesheet" href="../styles/nav_style.css">
-    <title>StarDash - games</title>
-  </head>
-  <body>
-    <div id="dash_body">
-      <nav class="dash">
-        <ul>
-          <button id="nav_home" class="active"><li>Home</li></button>
-          <button id="nav_games"><li>Games</li></button>
-          <button id="nav_locks"><li>Locks</li></button>
-        </ul>
-        <div>
-          <img id="avatar" src="" />
-          <div class="names">
-            <button id="logout">
-              <h2 id="username">Loading...</h2>
-            </button>
-            <h3 id="discord">Loading...</h3>
-          </div>
-        </div>
-      </nav>
-      <main>
-        <table>
-            <tr>
-              <td><button onclick="select(0)">BlackJack</button></td>
-              <td>2</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td>8</td>
-              <td>9</td>
-            </tr>
-          </table>
-      </main>
-    </div>
+	<head>
+		<link rel="stylesheet" href="games_style.css" />
+		<link rel="stylesheet" href="../styles/nav_style.css" />
+		<title>StarDash - games</title>
+	</head>
+	<body>
+		<div id="dash_body">
+			<nav class="dash">
+				<ul>
+					<button id="nav_home" class="active"><li>Home</li></button>
+					<button id="nav_games"><li>Games</li></button>
+					<button id="nav_locks"><li>Locks</li></button>
+				</ul>
+				<div>
+					<img id="avatar" src="" />
+					<div class="names">
+						<button id="logout">
+							<h2 id="username">Loading...</h2>
+						</button>
+						<h3 id="discord">Loading...</h3>
+					</div>
+				</div>
+			</nav>
+			<main>
+				<table>
+					<tr>
+						<td><button onclick="select(0)">BlackJack</button></td>
+						<td>2</td>
+						<td>3</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>5</td>
+						<td>6</td>
+					</tr>
+					<tr>
+						<td>7</td>
+						<td>8</td>
+						<td>9</td>
+					</tr>
+				</table>
+			</main>
+		</div>
 
-    <script src="games_renderer.js"></script>
-    <script src="../renderers/nav_renderer.js"></script>
-  </body>
+		<script src="games_renderer.js"></script>
+		<script src="../renderers/nav_renderer.js"></script>
+	</body>
 </html>

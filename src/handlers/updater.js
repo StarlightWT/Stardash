@@ -1,4 +1,4 @@
-const {autoUpdater, AppUpdater} = require("electron-updater");
+const { autoUpdater, AppUpdater } = require("electron-updater");
 
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;

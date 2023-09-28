@@ -11,145 +11,149 @@ var stardashConnectID;
 var loadStatus = 0;
 
 //Run auto-updater
-require('./src/handlers/updater.js');
+require("./src/handlers/updater.js");
 
 //Create window for everything to be inside of
 function createWindow() {
-  return new BrowserWindow({
-    minWidth: 1000,
-    minHeight: 800,
-    webPreferences: {
-      preload: path.join(__dirname, "/src/preload.js"),
-    },
-  });
+	return new BrowserWindow({
+		minWidth: 1000,
+		minHeight: 800,
+		webPreferences: {
+			preload: path.join(__dirname, "/src/preload.js"),
+		},
+	});
 }
 
 const redirectUri = "http://localhost:5000/callback";
 
 const filter = {
-  urls: [redirectUri + "*"],
+	urls: [redirectUri + "*"],
 };
 
 app.whenReady().then(() => {
-  //Refresh token every 1,5minutes
-  setInterval(() => {
-    console.log("Updating token!!");
-    oauth.refreshTokens();
-  }, 1000 * 150);
+	//Refresh token every 1,5minutes
+	setInterval(() => {
+		console.log("Updating token!!");
+		oauth.refreshTokens();
+	}, 1000 * 150);
 
-  win = createWindow();
+	win = createWindow();
 
-  //Authorize user
-  session.defaultSession.webRequest.onBeforeRequest(
-    filter,
-    async function (details, callback) {
-      const url = details.url;
+	//Authorize user
+	session.defaultSession.webRequest.onBeforeRequest(
+		filter,
+		async function (details, callback) {
+			const url = details.url;
 
-      await oauth.sufferWithTokens(url, startInfoUpdate);
-      redirects.showLoading(win);
-    }
-  );
-  //send user to oauth page
-  win.loadURL(oauth.authLink);
-  
-  //Create initial window(?)
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
+			await oauth.sufferWithTokens(url, startInfoUpdate);
+			redirects.showLoading(win);
+		}
+	);
+	//send user to oauth page
+	win.loadURL(oauth.authLink);
 
-  //Close app if not on MacOS and all windows are closed
-  app.on("window-all-closed", () => {
-    if (app.platform !== "darwin") app.quit();
-  });
+	//Create initial window(?)
+	app.on("activate", () => {
+		if (BrowserWindow.getAllWindows().length === 0) createWindow();
+	});
+
+	//Close app if not on MacOS and all windows are closed
+	app.on("window-all-closed", () => {
+		if (app.platform !== "darwin") app.quit();
+	});
 });
 
 //Handle logging out
 var logoutLink = `https://chaster.app/logout`;
 ipcMain.on("logout", () => {
-  win.loadURL(logoutLink).then(() => {
-    setTimeout(() => {
-      win.loadURL(oauth.authLink);
-    }, 5000);
-  });
+	win.loadURL(logoutLink).then(() => {
+		setTimeout(() => {
+			win.loadURL(oauth.authLink);
+		}, 5000);
+	});
 });
 
 //Handle redirects
 ipcMain.on("redirect", (event, page) => {
-  console.log(`Redirecting to ${page}`);
-  switch (page) {
-    case "home":
-      redirects.showDashboard(win);
-      return;
-    case "games":
-      redirects.showGames(win);
-      return;
-    case "loading":
-      redirects.showLoading(win);
-      return;
-  }
+	console.log(`Redirecting to ${page}`);
+	switch (page) {
+		case "home":
+			redirects.showDashboard(win);
+			return;
+		case "games":
+			redirects.showGames(win);
+			return;
+		case "loading":
+			redirects.showLoading(win);
+			return;
+	}
 });
 
 ipcMain.on("game", (e, id) => {
-  console.log(`Game selected: ${id}`);
-  switch(id) {
-    case 0:
-      //BlackJack
-      redirects.blackJack(win);
-      break;
-  }
-})
+	console.log(`Game selected: ${id}`);
+	switch (id) {
+		case 0:
+			//BlackJack
+			redirects.blackJack(win);
+			break;
+	}
+});
 
 //Handle requests from renderers
 ipcMain.handle("getProfile", async () => {
-  return await request.getProfile();
+	return await request.getProfile();
 });
 
 ipcMain.handle("getLock", async () => {
-  return await request.getLock();
+	return await request.getLock();
 });
 
 ipcMain.handle("getLockHistory", async () => {
-  return await request.getLockHistory();
+	return await request.getLockHistory();
 });
 
-ipcMain.handle("connectStardash", async(event, userID) => {
-  await request.getStarConnect().then((extensionList) => {
-    extensionList.results.forEach((session) => {
-      if(session.lock.user._id == userID) {
-        extension = session;
-        stardashConnectID = session.sessionId;
-      }
-    })
-  })
-  return extension;
-})
+ipcMain.handle("connectStardash", async (event, userID) => {
+	await request.getStarConnect().then((extensionList) => {
+		extensionList.results.forEach((session) => {
+			if (session.lock.user._id == userID) {
+				extension = session;
+				stardashConnectID = session.sessionId;
+			}
+		});
+	});
+	return extension;
+});
 
 ipcMain.handle("loadStatus", (event, status) => {
-  console.log(`Responding... ${loadStatus}`);
-  return loadStatus;
-})
+	console.log(`Responding... ${loadStatus}`);
+	return loadStatus;
+});
 
 ipcMain.on("addTime", async (event, time) => {
-  console.log(`Adding time... (${time})`);
-  await request.addTime(secrets.DEV_TKN, stardashConnectID, time);
-})
+	console.log(`Adding time... (${time})`);
+	await request.addTime(secrets.DEV_TKN, stardashConnectID, time);
+});
 ipcMain.on("remTime", async (event, time) => {
-  console.log(`Removing time...(${time})`);
-  await request.remTime(secrets.DEV_TKN, stardashConnectID, time);
-})
+	console.log(`Removing time...(${time})`);
+	await request.remTime(secrets.DEV_TKN, stardashConnectID, time);
+});
 ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
-  console.log(`Logging... ${logIcon}`);
-  await request.log(secrets.DEV_TKN, stardashConnectID, title, description, role, colour);
-})
-
-
+	console.log(`Logging... ${logIcon}`);
+	await request.log(
+		secrets.DEV_TKN,
+		stardashConnectID,
+		title,
+		description,
+		role,
+		colour
+	);
+});
 
 //Load info and update it every 5 seconds
-async function startInfoUpdate(accessToken){
+async function startInfoUpdate(accessToken) {
+	loadStatus = await request.updateInfo(accessToken);
 
-   loadStatus = await request.updateInfo(accessToken);
-
-  setInterval(async () => {
-    loadStatus = await request.updateInfo(accessToken);
-  }, 5*1000); //5seconds
+	setInterval(async () => {
+		loadStatus = await request.updateInfo(accessToken);
+	}, 5 * 1000); //5seconds
 }
