@@ -37,23 +37,23 @@ async function getProfile(token) {
   }
 
 async function getExtension(token){
-  const response = await fetch(
-    'https://api.chaster.app/api/extensions/sessions/search',
-    {
-    method: "POST",
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': "application/json",
-      },
-      body: JSON.stringify({
-        "status": "locked",
-        "extensionSlug": "stardash-connect",
-        "limit": 15
-      })
-    }
-  );
-  const myJson = await response.json();
-  return myJson;
+    const response = await fetch(
+      'https://api.chaster.app/api/extensions/sessions/search',
+      {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': "application/json",
+        },
+        body: JSON.stringify({
+          "status": "locked",
+          "extensionSlug": "stardash-connect",
+          "limit": 15
+        })
+      }
+      );
+      const myJson = await response.json();
+      return myJson;
 }
 
 async function addTime(token, sessionID, time){

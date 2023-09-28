@@ -98,13 +98,6 @@ function endGame(){
     gameEnd = true;
     updateDealerTotal();
     console.log(bet);
-    if(dealerTotal > 21){
-        winnerTitle.innerHTML = "player"; 
-        console.log("Removing time...");
-        window.electronAPI.remTime(bet*2);
-        window.electronAPI.log("BlackJack removed time", "Removed time for winning at BJ", "extension", wonClr, "far fa-club");
-        return;
-    }
     if(playerTotal > 21){
         winnerTitle.innerHTML = "dealer"; 
         console.log("Adding time...");
@@ -112,6 +105,13 @@ function endGame(){
         window.electronAPI.log("BlackJack added time", "Added time for losing at BJ", "extension", lostClr, "far fa-club");
         return;
     } 
+    if(dealerTotal > 21){
+        winnerTitle.innerHTML = "player"; 
+        console.log("Removing time...");
+        window.electronAPI.remTime(bet*2);
+        window.electronAPI.log("BlackJack removed time", "Removed time for winning at BJ", "extension", wonClr, "far fa-club");
+        return;
+    }
     if(playerTotal == 21) {
         console.log("Removing time...");
         winnerTitle.innerHTML = "player";

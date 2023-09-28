@@ -21,7 +21,7 @@ function getAccessToken() {
   return accessToken;
 }
 
-async function sufferWithTokens(callbackURL) {
+async function sufferWithTokens(callbackURL, callbackFunction) {
   const urlParts = url.parse(callbackURL, true);
   const query = urlParts.query;
 
@@ -54,6 +54,8 @@ async function sufferWithTokens(callbackURL) {
     const response = await axios(options);
     accessToken = response.data.access_token;
     refreshToken = response.data.refresh_token;
+    console.log("[Oauth] Access token updated!!!");
+    callbackFunction(accessToken);
   } catch (e) {
     console.log(`You stupid bitch wtf did you do: ${e}`);
     throw e;

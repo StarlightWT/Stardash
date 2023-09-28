@@ -2,12 +2,13 @@ const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("node:path");
 const oauth = require("./src/handlers/oauth.js");
 const secrets = require("./secrets.json");
-const api = require("./src/handlers/api_calls.js");
+const request = require("./src/handlers/api_handler.js");
 const redirects = require("./src/handlers/redirects.js");
 
 let win;
 var extension;
 var stardashConnectID;
+
 
 //Run auto-updater
 require('./src/handlers/updater.js');
@@ -44,7 +45,7 @@ app.whenReady().then(() => {
     async function (details, callback) {
       const url = details.url;
 
-      await oauth.sufferWithTokens(url);
+      await oauth.sufferWithTokens(url, startInfoUpdate);
       redirects.showDashboard(win);
     }
   );
@@ -101,19 +102,19 @@ ipcMain.on("casino", (e, id) => {
 
 //Handle requests from renderers
 ipcMain.handle("getProfile", async () => {
-  return await api.getProfile(oauth.getAccessToken());
+  return await request.getProfile();
 });
 
 ipcMain.handle("getLock", async () => {
-  return await api.getLock(oauth.getAccessToken());
+  return await request.getLock();
 });
 
-ipcMain.handle("getLockHistory", async (event, lockID) => {
-  return await api.getLockHistory(oauth.getAccessToken(), lockID);
+ipcMain.handle("getLockHistory", async () => {
+  return await request.getLockHistory();
 });
 
 ipcMain.handle("connectStardash", async(event, userID) => {
-  await api.getExtension(secrets.DEV_TKN).then((extensionList) => {
+  await request.getStarConnect().then((extensionList) => {
     extensionList.results.forEach((session) => {
       if(session.lock.user._id == userID) {
         extension = session;
@@ -126,13 +127,25 @@ ipcMain.handle("connectStardash", async(event, userID) => {
 
 ipcMain.on("addTime", async (event, time) => {
   console.log(`Adding time... (${time})`);
-  await api.addTime(secrets.DEV_TKN, stardashConnectID, time);
+  await request.addTime(secrets.DEV_TKN, stardashConnectID, time);
 })
 ipcMain.on("remTime", async (event, time) => {
   console.log(`Removing time...(${time})`);
-  await api.remTime(secrets.DEV_TKN, stardashConnectID, time);
+  await request.remTime(secrets.DEV_TKN, stardashConnectID, time);
 })
 ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
   console.log(`Logging... ${logIcon}`);
-  await api.log(secrets.DEV_TKN, stardashConnectID, title, description, role, colour);
+  await request.log(secrets.DEV_TKN, stardashConnectID, title, description, role, colour);
 })
+
+
+
+//Load info and update it every 5 seconds
+function startInfoUpdate(accessToken){
+
+  request.updateInfo(accessToken);
+  
+  setInterval(() => {
+    request.updateInfo(accessToken);
+  }, 5*1000); //5seconds
+}

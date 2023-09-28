@@ -8,11 +8,9 @@ async function loadProfileInfo() {
     avatar.setAttribute("src", profile.avatarUrl);
     discord.innerHTML = "@" + profile.discordUsername;
   
-    console.log(profile);
   }
 
 loadProfileInfo();
-
 
 //Get buttons
 const homeBtn = document.getElementById("nav_home");

@@ -2,23 +2,18 @@
 async function loadLockInfo() {
   //Update all information upon page load
   var lock = await updateLock();
-  updateLockTime(lock.endDate);
-  updateLockHistory(lock._id);
+  console.log(lock);
+  updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
+  updateLockHistory();
   updateLockExtensions(lock);
   updateSession(lock);
 
   //Setup intervals to keep info up to date
   setInterval(async () => {
     lock = await updateLock();
-  }, 5000);
-
-  setInterval(async () => {
     updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
+    updateLockHistory();
   }, 1000);
-
-  setInterval(async () => {
-    updateLockHistory(lock._id);
-  }, 10000);
 }
 
 loadLockInfo();
@@ -99,7 +94,7 @@ async function updateLockExtensions(lock) {
   });
 }
 
-async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt ) {
+async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt) {
   console.log("Updating time...");
   const timer = document.getElementById("timer");
   //check if the timer is currently hidden
@@ -145,11 +140,11 @@ async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt ) 
   if(frozenAt != null) timer.innerHTML += "</br>(frozen)";
 }
 
-async function updateLockHistory(lockID) {
+async function updateLockHistory() {
   var i = 0;
   console.log("Updating lock history...");
   //Request lock history from api
-  const lockHistory = await window.electronAPI.getLockHistory(lockID);
+  const lockHistory = await window.electronAPI.getLockHistory();
   //Get only latest 10 logs
   const lastLogs = lockHistory.results.slice(0, 10);
   //Get the log list and clear it
