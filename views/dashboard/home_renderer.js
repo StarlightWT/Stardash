@@ -35,12 +35,17 @@ async function updateLock() {
 	lockObject = await window.electronAPI.getLock(); //Get lock list json from API
 	lock = lockObject[0]; //Select first lock
 	console.log(lock);
+	DBProfileObject = await window.electronAPI.getDBProfile(lock.user._id);
+	DBProfile = DBProfileObject[0]._doc;
+	console.log(DBProfile);
 
 	if (
 		//If keyholder is not Miss_Star and Miss_Star is not the user, throw error
-		(lock?.keyholder?._id != "642b1b6ce00265df88b41395" ||
-			lock.keyholder == null) &&
-		lock?.user?._id != "642b1b6ce00265df88b41395"
+		// (lock?.keyholder?._id != "642b1b6ce00265df88b41395" ||
+		// 	lock.keyholder == null) &&
+		// lock?.user?._id != "642b1b6ce00265df88b41395"
+		DBProfile.role != "developer" &&
+		!DBProfile.subscribed
 	) {
 		console.warn("Unsupported lock / No lock found!!!");
 		const body = document.getElementById("dash_body");

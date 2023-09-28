@@ -4,6 +4,7 @@ const oauth = require("./src/handlers/oauth.js");
 const secrets = require("./secrets.json");
 const request = require("./src/handlers/api_handler.js");
 const redirects = require("./src/handlers/redirects.js");
+const database = require("./src/handlers/db_handler.js");
 
 let win;
 var extension;
@@ -101,7 +102,13 @@ ipcMain.on("game", (e, id) => {
 
 //Handle requests from renderers
 ipcMain.handle("getProfile", async () => {
+	const profile = request.getProfile();
+	database.createNewUser(profile.username, profile._id, "developer");
 	return await request.getProfile();
+});
+
+ipcMain.handle("getDBProfile", async (event, id) => {
+	return await database.findUser(id);
 });
 
 ipcMain.handle("getLock", async () => {
