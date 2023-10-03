@@ -50,6 +50,8 @@ app.whenReady().then(() => {
 			redirects.showLoading(win);
 		}
 	);
+
+	win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 
