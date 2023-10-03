@@ -3,6 +3,7 @@ const path = require("node:path");
 const oauth = require("./src/handlers/oauth.js");
 const secrets = require("./secrets.json");
 const request = require("./src/handlers/api_handler.js");
+const call = require("./src/handlers/api_calls.js");
 const redirects = require("./src/handlers/redirects.js");
 const database = require("./src/handlers/db_handler.js");
 
@@ -140,15 +141,15 @@ ipcMain.handle("loadStatus", (event, status) => {
 
 ipcMain.on("addTime", async (event, time) => {
 	console.log(`Adding time... (${time})`);
-	await request.addTime(secrets.DEV_TKN, stardashConnectID, time);
+	await call.addTime(secrets.DEV_TKN, stardashConnectID, time);
 });
 ipcMain.on("remTime", async (event, time) => {
 	console.log(`Removing time...(${time})`);
-	await request.remTime(secrets.DEV_TKN, stardashConnectID, time);
+	await call.remTime(secrets.DEV_TKN, stardashConnectID, time);
 });
 ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
 	console.log(`Logging... ${logIcon}`);
-	await request.log(
+	await call.log(
 		secrets.DEV_TKN,
 		stardashConnectID,
 		title,

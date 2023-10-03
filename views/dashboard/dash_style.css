@@ -1,22 +1,24 @@
-.lock_list {
-	padding: 0;
-	list-style: none;
-	display: flex;
-	justify-content: space-evenly;
+html {
+	font-family: Arial, Helvetica, sans-serif;
+	--background-colour: #161616;
+	--secondary-bg-colour: #363636;
+	--accent-colour: #8f2efd;
 }
 
-.lock_item {
-	width: 100%;
-	padding-block: 1.5rem;
-	margin-inline: 10px;
+.timer {
+	width: 90%;
+	margin-inline: auto;
+	margin-block: 20px;
+	padding-block: 15px;
+	background-color: var(--secondary-bg-colour);
 	text-align: center;
-	border-style: solid;
-	border-color: white;
-	border-radius: 1rem;
+	font-size: 30px;
 }
 
-.lock_item {
-	font-size: 24px;
+#dash_main {
+	background-color: var(--background-colour);
+	width: 90%;
+	margin-inline: auto;
 }
 
 #logList {
@@ -48,10 +50,13 @@
 
 #extensionList {
 	list-style: none;
+	position: sticky;
+	padding: 0;
 }
 
 #extensionList li {
-	margin-top: 0.4rem;
+	background-color: var(--secondary-bg-colour);
+	padding: 15px;
 }
 
 #extensionList li a {

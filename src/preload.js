@@ -12,7 +12,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	gameSelect: (id) => ipcRenderer.send("game", id),
 	loaded: () => ipcRenderer.invoke("loadStatus", 1),
 	log: (title, description, role, colour, logIcon) =>
-		ipcRenderer.invoke("log", title, description, role, colour, logIcon),
+		ipcRenderer.send("log", title, description, role, colour, logIcon),
 	getDBProfile: (id) => ipcRenderer.invoke("getDBProfile", id),
 	logout: () => ipcRenderer.send("logout"),
 });
