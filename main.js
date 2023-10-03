@@ -51,7 +51,7 @@ app.whenReady().then(() => {
 		}
 	);
 
-	win.removeMenu();
+	// win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 

@@ -14,7 +14,6 @@ loadProfileInfo();
 //Get buttons
 const homeBtn = document.getElementById("nav_home");
 const gamesBtn = document.getElementById("nav_games");
-const casinoBtn = document.getElementById("nav_casino");
 
 //Send redirect requests
 homeBtn.addEventListener("click", () => {
@@ -22,7 +21,4 @@ homeBtn.addEventListener("click", () => {
 });
 gamesBtn.addEventListener("click", () => {
 	window.electronAPI.redirect("games");
-});
-casinoBtn.addEventListener("click", () => {
-	window.electronAPI.redirect("casino");
 });
