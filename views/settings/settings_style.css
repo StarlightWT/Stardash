@@ -1,0 +1,43 @@
+html {
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	--background-colour: #161616;
+	--secondary-bg-colour: #363636;
+	--accent-colour: #8f2efd;
+}
+
+body {
+	background-color: var(--background-colour);
+}
+
+li {
+	background-color: var(--secondary-bg-colour);
+	display: flex;
+	width: 90%;
+	margin-top: 0.5rem;
+	padding-inline: 1rem;
+	border-radius: 0.5rem;
+	margin-inline: auto;
+	justify-content: space-between;
+}
+
+li h1 {
+	font-size: 25px;
+}
+
+li input {
+	width: 50%;
+	height: 30px;
+	margin-block: auto;
+}
+
+.secret {
+	filter: blur(3px);
+	transition-duration: 0.2s;
+}
+
+.secret:hover {
+	cursor: pointer;
+	filter: none;
+	transition-duration: 0.2s;
+}

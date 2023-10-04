@@ -179,10 +179,3 @@ async function updateLockHistory() {
 		i++;
 	});
 }
-
-//Get logout button, request logout
-const logoutButton = document.getElementById("logout");
-logoutButton.addEventListener("click", () => {
-	console.log("Logging out...");
-	window.electronAPI.logout();
-});

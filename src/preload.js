@@ -15,4 +15,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 		ipcRenderer.send("log", title, description, role, colour, logIcon),
 	getDBProfile: (id) => ipcRenderer.invoke("getDBProfile", id),
 	logout: () => ipcRenderer.send("logout"),
+	setClipboard: (text) => ipcRenderer.send("clip", text),
 });

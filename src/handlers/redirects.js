@@ -22,9 +22,16 @@ function showLoading(win) {
 	});
 }
 
+function showSettings(win) {
+	win.loadFile("./views/settings/settings.html").then(() => {
+		win.show;
+	});
+}
+
 module.exports = {
 	showDashboard,
 	showGames,
 	blackJack,
 	showLoading,
+	showSettings,
 };

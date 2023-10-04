@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, session } = require("electron");
+const { app, BrowserWindow, ipcMain, session, clipboard } = require("electron");
 const path = require("node:path");
 const oauth = require("./src/handlers/oauth.js");
 const secrets = require("./secrets.json");
@@ -44,7 +44,7 @@ app.whenReady().then(() => {
 	//Authorize user
 	session.defaultSession.webRequest.onBeforeRequest(
 		filter,
-		async function (details, callback) {
+		async function (details) {
 			const url = details.url;
 
 			await oauth.sufferWithTokens(url, startInfoUpdate);
@@ -72,7 +72,8 @@ var logoutLink = `https://chaster.app/logout`;
 ipcMain.on("logout", () => {
 	win.loadURL(logoutLink).then(() => {
 		setTimeout(() => {
-			win.loadURL(oauth.authLink);
+			app.relaunch();
+			app.exit(0);
 		}, 5000);
 	});
 });
@@ -89,6 +90,9 @@ ipcMain.on("redirect", (event, page) => {
 			return;
 		case "loading":
 			redirects.showLoading(win);
+			return;
+		case "settings":
+			redirects.showSettings(win);
 			return;
 	}
 });
@@ -157,6 +161,10 @@ ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
 		role,
 		colour
 	);
+});
+
+ipcMain.on("clip", async (event, text) => {
+	clipboard.writeText(text);
 });
 
 //Load info and update it every 5 seconds

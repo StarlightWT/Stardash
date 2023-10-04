@@ -14,6 +14,7 @@ loadProfileInfo();
 //Get buttons
 const homeBtn = document.getElementById("nav_home");
 const gamesBtn = document.getElementById("nav_games");
+const settingstButton = document.getElementById("nav_settings");
 
 //Send redirect requests
 homeBtn.addEventListener("click", () => {
@@ -21,4 +22,9 @@ homeBtn.addEventListener("click", () => {
 });
 gamesBtn.addEventListener("click", () => {
 	window.electronAPI.redirect("games");
+});
+//Get logout button, request logout
+settingstButton.addEventListener("click", () => {
+	console.log("Requesting settings page...");
+	window.electronAPI.redirect("settings");
 });
