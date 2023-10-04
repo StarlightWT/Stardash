@@ -6,6 +6,7 @@ const request = require("./src/handlers/api_handler.js");
 const call = require("./src/handlers/api_calls.js");
 const redirects = require("./src/handlers/redirects.js");
 const database = require("./src/handlers/db_handler.js");
+const updater = require("./src/handlers/updater.js");
 
 let win;
 var extension;
@@ -13,7 +14,6 @@ var stardashConnectID;
 var loadStatus = 0;
 
 //Run auto-updater
-require("./src/handlers/updater.js");
 
 //Create window for everything to be inside of
 function createWindow() {
@@ -33,6 +33,7 @@ const filter = {
 };
 
 app.whenReady().then(() => {
+	updater.check();
 	//Refresh token every 1,5minutes
 	setInterval(() => {
 		console.log("Updating token!!");
@@ -141,6 +142,10 @@ ipcMain.handle("connectStardash", async (event, userID) => {
 ipcMain.handle("loadStatus", (event, status) => {
 	console.log(`Responding... ${loadStatus}`);
 	return loadStatus;
+});
+
+ipcMain.handle("version", async () => {
+	return await updater.version;
 });
 
 ipcMain.on("addTime", async (event, time) => {
