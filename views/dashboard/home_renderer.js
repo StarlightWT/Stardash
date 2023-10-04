@@ -49,14 +49,17 @@ async function updateLock() {
 		var errorMessage = document.createElement("h1");
 		var errorMessage2 = document.createElement("h2");
 		var errorMessage3 = document.createElement("p");
+		var subscription = document.createElement("p");
 		body.append(errorMessage);
 		body.append(errorMessage2);
 		body.append(errorMessage3);
+		body.append(subscription);
 		body.style.textAlign = "center";
 		errorMessage.innerHTML = "Error getting lock/confirming subscription";
 		errorMessage2.innerHTML = "Your subscription or lock wasn't found!";
 		errorMessage3.innerHTML =
 			"Please relaunch the app, if issue persits please message Starlight(@starlightwt) on discord!";
+		subscription.innerHTML = `If you do not have a subscription <a href="https://ko-fi.com/mistressevelyn/tiers">click here</a> to get it!`;
 		return;
 	}
 

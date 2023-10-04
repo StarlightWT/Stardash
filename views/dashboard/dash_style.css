@@ -5,6 +5,9 @@ html {
 	--accent-colour: #8f2efd;
 }
 
+.errorAtag {
+}
+
 .timer {
 	width: 90%;
 	margin-inline: auto;
