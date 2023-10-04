@@ -1,4 +1,26 @@
+html {
+	font-family: Arial, Helvetica, sans-serif;
+	--background-colour: #161616;
+	--secondary-bg-colour: #363636;
+	--accent-colour: #8f2efd;
+}
+
 body {
 	color: white;
-	background-color: #101010;
+	background: var(--background-colour);
+}
+
+body div {
+	width: min-content;
+	margin-inline: auto;
+	text-align: center;
+	margin-top: 20%;
+}
+
+img {
+	border-radius: 5%;
+}
+
+h1 {
+	margin-top: 0.5rem;
 }

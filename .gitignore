@@ -4,3 +4,4 @@ dist
 secrets.json
 forge.config.js
 gitignore
+*.ico
