@@ -2,6 +2,7 @@ const tokenCopy = document.getElementById("tokenInput");
 const versionCopy = document.getElementById("versionInput");
 const backBtn = document.getElementById("backBtn");
 const logoutBtn = document.getElementById("logout");
+const body = document.getElementById("body");
 
 async function loadsettings() {
 	//Get token
@@ -15,7 +16,12 @@ async function loadsettings() {
 
 	//Get verison
 	const version = await window.electronAPI.getVersion();
+	// const loaded = await window.electronAPI.updActive();
 	versionCopy.value = version;
+
+	const text = document.createElement("textarea");
+	text.innerHTML = await window.electronAPI.updActive();
+	body.append(text);
 }
 
 loadsettings();

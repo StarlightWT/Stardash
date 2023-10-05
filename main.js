@@ -32,8 +32,8 @@ const filter = {
 	urls: [redirectUri + "*"],
 };
 
-app.whenReady().then(() => {
-	updater.check();
+app.whenReady().then(async () => {
+	console.log(await updater.check());
 	//Refresh token every 1,5minutes
 	setInterval(() => {
 		console.log("Updating token!!");
@@ -145,7 +145,11 @@ ipcMain.handle("loadStatus", (event, status) => {
 });
 
 ipcMain.handle("version", async () => {
-	return await updater.version;
+	return await updater.version();
+});
+
+ipcMain.handle("active", async () => {
+	return await updater.active();
 });
 
 ipcMain.on("addTime", async (event, time) => {
