@@ -22,7 +22,28 @@
 				<h1>Logout</h1>
 				<input id="logout" type="button" value="logout" />
 			</li>
+			<li id="dev_mode_trigger" style="display: none">
+				<h1>Dev mode</h1>
+				<input id="devModeTrigger" type="button" value="activate" />
+			</li>
 		</ul>
+		<div id="dev_tools" class="dev_tools" style="display: none">
+			<ul>
+				<li>
+					<h1>Update status:</h1>
+					<textarea
+						name=""
+						class="text"
+						id="UpdateStatus"
+						cols="30"
+						rows="10"
+						readonly></textarea>
+				</li>
+				<li>
+					<button id="checkUpdate" onclick="checkUpdate()">Check update</button>
+				</li>
+			</ul>
+		</div>
 	</body>
 	<script src="script.js"></script>
 </html>

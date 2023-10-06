@@ -10,6 +10,10 @@ body {
 	background-color: var(--background-colour);
 }
 
+ul {
+	padding: 0;
+}
+
 li {
 	background-color: var(--secondary-bg-colour);
 	display: flex;
@@ -40,4 +44,16 @@ li input {
 	cursor: pointer;
 	filter: none;
 	transition-duration: 0.2s;
+}
+
+.dev_tools ul {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+.dev_tools textarea {
+	width: 50%;
+	height: 30px;
+	margin-block: auto;
 }

@@ -2,6 +2,7 @@ const { autoUpdater, AppUpdater } = require("electron-updater");
 const config = require("../../secrets.json");
 
 console.log("Running update check!");
+var status = "Not updating...";
 
 autoUpdater.setFeedURL({
 	provider: "github",
@@ -15,10 +16,10 @@ autoUpdater.setFeedURL({
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
 autoUpdater.allowPrerelease = true;
-autoUpdater.forceDevUpdateConfig = true;
 autoUpdater.disableWebInstaller = true;
 
 async function check() {
+	console.log("[Updater] Checking for update!");
 	return await autoUpdater.checkForUpdatesAndNotify();
 }
 
@@ -31,16 +32,21 @@ async function active() {
 }
 
 autoUpdater.on("download-progress", (progress) => {
-	console.log(progress.percent);
+	status = progress.percent;
 });
+
+async function getStatus() {
+	return status;
+}
 
 autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
 	console.log(`[Updater] Update downloaded!!!`);
-	autoUpdater.quitAndInstall();
+	status = "Downloaded!";
 });
 
 module.exports = {
 	version,
 	check,
 	active,
+	getStatus,
 };

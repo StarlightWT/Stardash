@@ -17,5 +17,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	logout: () => ipcRenderer.send("logout"),
 	setClipboard: (text) => ipcRenderer.send("clip", text),
 	getVersion: () => ipcRenderer.invoke("version"),
-	updActive: () => ipcRenderer.invoke("active"),
+	getStatus: () => ipcRenderer.invoke("getStatus"),
+	checkUpdate: () => ipcRenderer.send("updateCheck"),
 });

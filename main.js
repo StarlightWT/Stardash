@@ -148,8 +148,8 @@ ipcMain.handle("version", async () => {
 	return await updater.version();
 });
 
-ipcMain.handle("active", async () => {
-	return await updater.active();
+ipcMain.handle("getStatus", async () => {
+	return await updater.getStatus();
 });
 
 ipcMain.on("addTime", async (event, time) => {
@@ -174,6 +174,10 @@ ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
 
 ipcMain.on("clip", async (event, text) => {
 	clipboard.writeText(text);
+});
+
+ipcMain.on("updateCheck", () => {
+	updater.check();
 });
 
 //Load info and update it every 5 seconds
