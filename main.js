@@ -41,6 +41,7 @@ app.whenReady().then(async () => {
 	}, 1000 * 150);
 
 	win = createWindow();
+	win.setIcon("./icon.ico");
 
 	//Authorize user
 	session.defaultSession.webRequest.onBeforeRequest(
