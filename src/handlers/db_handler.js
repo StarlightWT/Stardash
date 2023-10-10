@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
 	id: String,
 	discordId: String,
 	subscribed: Boolean,
+	tier: String,
 	role: String,
 });
 
@@ -17,6 +18,7 @@ async function createNewUser(username, id, role) {
 		id: id,
 		discordId: null,
 		subscribed: false,
+		tier: "none",
 		role: role,
 	});
 

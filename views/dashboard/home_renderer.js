@@ -40,7 +40,7 @@ async function updateLock() {
 	DBProfile = DBProfileObject[0]._doc;
 	console.log(DBProfile);
 
-	if (DBProfile.role != "developer" && !DBProfile.subscribed) {
+	if (DBProfile.tier != "Developer" && !DBProfile.subscribed) {
 		console.warn("Unsupported lock / No lock found!!!");
 		const body = document.getElementById("dash_body");
 

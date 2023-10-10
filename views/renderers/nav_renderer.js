@@ -7,6 +7,19 @@ async function loadProfileInfo() {
 	usernameBox.innerHTML = profile.username;
 	avatar.setAttribute("src", profile.avatarUrl);
 	discord.innerHTML = "@" + profile.discordUsername;
+
+	const DBprofile = await window.electronAPI.getDBProfile(profile._id);
+	switch (DBprofile[0]._doc.role) {
+		case "lockee":
+			//Lock dash
+			break;
+		case "keyholder":
+			//KH dash
+			break;
+		case "switch":
+			//Both dashes
+			break;
+	}
 }
 
 loadProfileInfo();
