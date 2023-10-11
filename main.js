@@ -33,7 +33,7 @@ const filter = {
 };
 
 app.whenReady().then(async () => {
-	console.log(await updater.check());
+	await updater.check();
 	//Refresh token every 1,5minutes
 	setInterval(() => {
 		console.log("Updating token!!");
@@ -85,16 +85,6 @@ ipcMain.on("redirect", (event, page) => {
 	redirects.redirect(win, page);
 });
 
-ipcMain.on("game", (e, id) => {
-	console.log(`Game selected: ${id}`);
-	switch (id) {
-		case 0:
-			//BlackJack
-			redirects.blackJack(win);
-			break;
-	}
-});
-
 //Handle requests from renderers
 ipcMain.handle("getProfile", async () => {
 	const profile = request.getProfile();
@@ -127,7 +117,7 @@ ipcMain.handle("connectStardash", async (event, userID) => {
 });
 
 ipcMain.handle("loadStatus", (event, status) => {
-	console.log(`Responding... ${loadStatus}`);
+	console.log(`[Main] Load status ${loadStatus}...`);
 	return loadStatus;
 });
 
