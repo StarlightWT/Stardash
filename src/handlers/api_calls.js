@@ -73,6 +73,7 @@ async function addTime(token, sessionID, time) {
 			}),
 		}
 	);
+
 	return response;
 }
 
@@ -93,6 +94,46 @@ async function remTime(token, sessionID, time) {
 			}),
 		}
 	);
+	return response;
+}
+
+async function freeze(token, sessionID) {
+	const response = await fetch(
+		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				action: {
+					name: "freeze",
+				},
+			}),
+		}
+	);
+	console.log(response);
+	return response;
+}
+
+async function unfreeze(token, sessionID) {
+	const response = await fetch(
+		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				action: {
+					name: "unfreeze",
+				},
+			}),
+		}
+	);
+	console.log(response);
 	return response;
 }
 
