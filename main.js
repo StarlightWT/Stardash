@@ -104,6 +104,10 @@ ipcMain.handle("getLockHistory", async () => {
 	return await request.getLockHistory();
 });
 
+ipcMain.handle("setUserRole", async (e, id, role) => {
+	database.setUserRole(id, role);
+});
+
 ipcMain.handle("connectStardash", async (event, userID) => {
 	await request.getStarConnect().then((extensionList) => {
 		extensionList.results.forEach((session) => {

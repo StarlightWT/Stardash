@@ -35,6 +35,12 @@ li input {
 	margin-block: auto;
 }
 
+li select {
+	width: 50%;
+	height: 30px;
+	margin-block: auto;
+}
+
 .secret {
 	filter: blur(3px);
 	transition-duration: 0.2s;

@@ -7,6 +7,7 @@ const devTrigger = document.getElementById("dev_mode_trigger");
 const devTriggerBtn = document.getElementById("devModeTrigger");
 const devTools = document.getElementById("dev_tools");
 const checkUpdateBtn = document.getElementById("checkUpdate");
+const roleSelect = document.getElementById("role");
 var devMode = false;
 
 async function loadsettings() {
@@ -34,6 +35,8 @@ async function loadsettings() {
 	} else {
 		devTools.style = "display: none";
 	}
+
+	roleSelect.value = dbProfile.role;
 }
 
 loadsettings();
@@ -42,9 +45,9 @@ function checkUpdate() {
 	window.electronAPI.checkUpdate();
 }
 
-// checkUpdateBtn.addEventListener("click", () => {
-// 	window.electronAPI.checkUpdate()
-// })
+function select(selection) {
+	window.electronAPI.setUserRole(tokenCopy.value, selection);
+}
 
 tokenCopy.addEventListener("click", () => {
 	window.electronAPI.setClipboard(tokenCopy.value);

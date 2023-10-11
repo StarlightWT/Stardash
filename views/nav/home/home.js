@@ -17,6 +17,9 @@ async function loadLockInfo() {
 
 loadLockInfo();
 
+const lockeeUI = document.getElementById("lockee");
+const keyholderUI = document.getElementById("keyholder");
+
 function addTime(time) {
 	window.electronAPI.addTime(time);
 }
@@ -40,7 +43,7 @@ async function updateLock() {
 	DBProfile = DBProfileObject[0]._doc;
 	console.log(DBProfile);
 
-	if (DBProfile.role != "developer" && !DBProfile.subscribed) {
+	if (DBProfile.tier != "Developer" && !DBProfile.subscribed) {
 		console.warn("Unsupported lock / No lock found!!!");
 		const body = document.getElementById("dash_body");
 
@@ -61,6 +64,21 @@ async function updateLock() {
 			"Please relaunch the app, if issue persits please message Starlight(@starlightwt) on discord!";
 		subscription.innerHTML = `If you do not have a subscription <a href="https://ko-fi.com/mistressevelyn/tiers">click here</a> to get it!`;
 		return;
+	}
+
+	switch (DBProfile.role) {
+		case "switch":
+			lockeeUI.style = "display: block;";
+			keyholderUI.style = "display: block;";
+			break;
+		case "lockee":
+			lockeeUI.style = "display: block;";
+			keyholderUI.style = "display: none;";
+			break;
+		case "keyholder":
+			lockeeUI.style = "display: none;";
+			keyholderUI.style = "display: block;";
+			break;
 	}
 
 	return lock;

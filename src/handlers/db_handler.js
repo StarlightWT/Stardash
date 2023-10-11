@@ -49,7 +49,15 @@ async function getUser(_id) {
 	return dbProfile;
 }
 
+async function setUserRole(_id, role) {
+	await mongoose.connect(secret.DATABASE_URI);
+
+	await userModel.findOneAndUpdate({ id: _id }, { role: role });
+	dbProfile = findUser(_id);
+}
+
 module.exports = {
 	createNewUser,
 	getUser,
+	setUserRole,
 };

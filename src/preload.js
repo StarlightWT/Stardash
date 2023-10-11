@@ -18,4 +18,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	getVersion: () => ipcRenderer.invoke("version"),
 	getStatus: () => ipcRenderer.invoke("getStatus"),
 	checkUpdate: () => ipcRenderer.send("updateCheck"),
+	setUserRole: (id, role) => ipcRenderer.invoke("setUserRole", id, role),
 });
