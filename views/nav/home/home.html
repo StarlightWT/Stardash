@@ -3,14 +3,21 @@
 		<link rel="stylesheet" href="home.css" />
 		<link rel="stylesheet" href="../nav.css" />
 		<title>StarDash</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 	</head>
 	<body>
 		<div id="dash_body">
 			<nav class="dash">
 				<ul>
 					<button id="nav_home" class="active"><li>Home</li></button>
-					<button id="nav_games"><li>Games</li></button>
-					<button id="nav_locks"><li>Locks</li></button>
+					<button id="nav_games" onclick="redirect('games')">
+						<li>Games</li>
+					</button>
+					<button id="nav_locks" onclick="redirect('locks')">
+						<li>Locks</li>
+					</button>
 				</ul>
 				<div>
 					<img id="avatar" src="" />
@@ -20,6 +27,10 @@
 						</button>
 						<h3 id="discord">Loading...</h3>
 					</div>
+					<i
+						onclick="redirect('settings')"
+						class="fa-solid fa-gear fa-xl"
+						style="color: #ffffff"></i>
 				</div>
 			</nav>
 			<div class="timer">

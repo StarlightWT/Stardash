@@ -93,7 +93,7 @@ ipcMain.handle("getProfile", async () => {
 });
 
 ipcMain.handle("getDBProfile", async (event, id) => {
-	return await database.findUser(id);
+	return await database.getUser(id);
 });
 
 ipcMain.handle("getLock", async () => {

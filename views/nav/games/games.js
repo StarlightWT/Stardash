@@ -3,5 +3,3 @@ function select(id) {
 	window.electronAPI.redirect(id);
 	//request redirect to specific game
 }
-
-console.log("Hi!");

@@ -11,6 +11,30 @@ body {
 	margin: 0;
 }
 
+i {
+	margin-block: auto;
+	margin-right: -4rem;
+}
+
+@keyframes rotation {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.fa-gear:hover {
+	cursor: pointer;
+	color: #8f2efd;
+	display: block;
+	animation: rotation 2s;
+	transition-duration: 2s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
 .login_body {
 	padding-top: 25%;
 	display: flex;

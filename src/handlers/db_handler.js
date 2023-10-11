@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const secret = require("../../secrets.json");
 
+var dbProfile, dbProfileId;
+
 const userSchema = new mongoose.Schema({
 	username: String,
 	id: String,
@@ -24,21 +26,30 @@ async function createNewUser(username, id, role) {
 	const search = await findUser(id);
 	if (search.length > 0) {
 		user.updateOne(search._id);
-		console.log("found!");
 	} else {
 		user.save();
-		console.log("not found!");
 	}
 }
 
 async function findUser(_id) {
+	dbProfileId = _id;
 	await mongoose.connect(secret.DATABASE_URI);
 
 	const search = await userModel.find({ id: _id });
 	return await search;
 }
 
+setInterval(() => {
+	if (!dbProfileId) return;
+	dbProfile = findUser(dbProfileId);
+}, 5000);
+
+async function getUser(_id) {
+	if (dbProfileId != _id) return findUser(_id);
+	return dbProfile;
+}
+
 module.exports = {
 	createNewUser,
-	findUser,
+	getUser,
 };
