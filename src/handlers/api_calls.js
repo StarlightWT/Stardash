@@ -73,6 +73,7 @@ async function addTime(token, sessionID, time) {
 			}),
 		}
 	);
+
 	return response;
 }
 
@@ -89,6 +90,87 @@ async function remTime(token, sessionID, time) {
 				action: {
 					name: "remove_time",
 					params: time,
+				},
+			}),
+		}
+	);
+	return response;
+}
+
+async function freeze(token, sessionID) {
+	const response = await fetch(
+		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				action: {
+					name: "freeze",
+				},
+			}),
+		}
+	);
+	return response;
+}
+
+async function unfreeze(token, sessionID) {
+	const response = await fetch(
+		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				action: {
+					name: "unfreeze",
+				},
+			}),
+		}
+	);
+	return response;
+}
+
+async function toggleFreeze(token, sessionID) {
+	const response = await fetch(
+		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				action: {
+					name: "toggle_freeze",
+				},
+			}),
+		}
+	);
+	return response;
+}
+
+async function pillory(token, sessionID, duration, reason) {
+	//duration in seconds!!!
+	const response = await fetch(
+		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				action: {
+					name: "pillory",
+					params: {
+						duration: duration,
+						reason: reason,
+					},
 				},
 			}),
 		}
@@ -123,5 +205,9 @@ module.exports = {
 	getExtension,
 	addTime,
 	remTime,
+	freeze,
+	unfreeze,
+	toggleFreeze,
+	pillory,
 	log,
 };

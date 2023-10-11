@@ -50,7 +50,7 @@ app.whenReady().then(async () => {
 			const url = details.url;
 
 			await oauth.sufferWithTokens(url, startInfoUpdate);
-			redirects.showLoading(win);
+			redirects.redirect(win, "loading");
 		}
 	);
 
@@ -82,21 +82,7 @@ ipcMain.on("logout", () => {
 
 //Handle redirects
 ipcMain.on("redirect", (event, page) => {
-	console.log(`Redirecting to ${page}`);
-	switch (page) {
-		case "home":
-			redirects.showDashboard(win);
-			return;
-		case "games":
-			redirects.showGames(win);
-			return;
-		case "loading":
-			redirects.showLoading(win);
-			return;
-		case "settings":
-			redirects.showSettings(win);
-			return;
-	}
+	redirects.redirect(win, page);
 });
 
 ipcMain.on("game", (e, id) => {
