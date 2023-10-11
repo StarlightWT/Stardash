@@ -104,6 +104,10 @@ ipcMain.handle("getLockHistory", async () => {
 	return await request.getLockHistory();
 });
 
+ipcMain.handle("getKHLocks", async () => {
+	return await request.getKHLocks();
+});
+
 ipcMain.handle("setUserRole", async (e, id, role) => {
 	database.setUserRole(id, role);
 });

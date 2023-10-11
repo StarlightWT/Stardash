@@ -2,6 +2,7 @@ async function loadLockInfo() {
 	//Update all information upon page load
 	var lock = await updateLock();
 	console.log(lock);
+	updateDisplay();
 	updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
 	updateLockHistory();
 	updateLockExtensions(lock);
@@ -12,6 +13,7 @@ async function loadLockInfo() {
 		lock = await updateLock();
 		updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
 		updateLockHistory();
+		updateDisplay();
 	}, 1000);
 }
 
@@ -66,22 +68,48 @@ async function updateLock() {
 		return;
 	}
 
-	switch (DBProfile.role) {
-		case "switch":
-			lockeeUI.style = "display: block;";
-			keyholderUI.style = "display: block;";
-			break;
-		case "lockee":
-			lockeeUI.style = "display: block;";
-			keyholderUI.style = "display: none;";
-			break;
-		case "keyholder":
-			lockeeUI.style = "display: none;";
-			keyholderUI.style = "display: block;";
-			break;
-	}
-
 	return lock;
+}
+
+async function loadAllKHLocks() {
+	var KHLocks = await window.electronAPI.getKHLocks();
+
+	const currentDate = Date.now(); //Is also UTC
+
+	console.log(KHLocks);
+	const KHLockList = document.getElementById("KHLocks");
+	KHLockList.innerHTML = "";
+	KHLocks.forEach((lock) => {
+		var endDate = new Date(lock.endDate).getTime(); //Is UTC
+		var timeLeft = endDate - currentDate;
+		//	if lock is frozen calculate time from the time of being frozen.
+		if (lock.frozenAt == null) timeLeft = endDate - currentDate;
+		else {
+			const frozenDate = new Date(lock.frozenAt).getTime();
+			timeLeft = endDate - frozenDate;
+		}
+		// if (currentDate > endDate) return;
+		const timer = document.createElement("p");
+
+		var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+		if (days < 10) days = "0" + `${days}`;
+		var hours = Math.floor(
+			(timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+		);
+		if (hours < 10) hours = "0" + `${hours}`;
+		var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+		if (minutes < 10) minutes = "0" + `${minutes}`;
+		var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+		if (seconds < 10) seconds = "0" + `${seconds}`;
+
+		var name = document.createElement("h3");
+		var card = document.createElement("li");
+		name.innerHTML = lock.user.username;
+		timer.innerHTML = `${days}:${hours}:${minutes}:${seconds}`;
+		card.append(name);
+		card.append(timer);
+		KHLockList.append(card);
+	});
 }
 
 async function updateLockExtensions(lock) {
@@ -196,4 +224,25 @@ async function updateLockHistory() {
 		entryDescription.innerHTML = log.description;
 		i++;
 	});
+}
+
+async function updateDisplay() {
+	var DBProfile = await window.electronAPI.getDBProfile(lock.user._id);
+	var DBProfile = DBProfile[0]._doc;
+	switch (DBProfile.role) {
+		case "switch":
+			loadAllKHLocks();
+			lockeeUI.style = "display: block;";
+			keyholderUI.style = "display: block;";
+			break;
+		case "lockee":
+			lockeeUI.style = "display: block;";
+			keyholderUI.style = "display: none;";
+			break;
+		case "keyholder":
+			loadAllKHLocks();
+			lockeeUI.style = "display: none;";
+			keyholderUI.style = "display: block;";
+			break;
+	}
 }

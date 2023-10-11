@@ -100,7 +100,7 @@ async function refreshTokens() {
 }
 
 var stateKey = Math.floor(Math.random() * 10000000000);
-var authLink = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/auth?client_id=${secrets.CLIENT_ID}&response_type=code&scope=profile locks&state=${stateKey}`;
+var authLink = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/auth?client_id=${secrets.CLIENT_ID}&response_type=code&scope=profile locks keyholder&state=${stateKey}`;
 
 module.exports = {
 	getAccessToken,

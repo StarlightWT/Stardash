@@ -198,9 +198,31 @@ async function log(token, sessionID, title, description, role, colour) {
 	return response;
 }
 
+async function getKHLocks(token) {
+	const response = await fetch(
+		"https://api.chaster.app/keyholder/locks/search",
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				criteria: {},
+				status: "locked",
+				page: 0,
+				limit: 50,
+			}),
+		}
+	);
+	const myJson = await response.json();
+	return myJson;
+}
+
 module.exports = {
 	getProfile,
 	getLock,
+	getKHLocks,
 	getLockHistory,
 	getExtension,
 	addTime,
