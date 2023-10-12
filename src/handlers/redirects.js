@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-
+const request = require("./api_handler");
 function getPaths(dirPath, arrayOfFiles) {
 	files = fs.readdirSync(dirPath);
 	arrayOfFiles = arrayOfFiles || [];
@@ -15,7 +15,13 @@ function getPaths(dirPath, arrayOfFiles) {
 }
 const paths = getPaths("./views");
 
-function redirect(win, location) {
+async function redirect(win, location) {
+	if (location == "slots") {
+		const profile = await request.get("profile");
+		const dbProfileObject = await request.get("dbprofile", profile._id);
+		const dbProfile = await dbProfileObject[0]._id;
+		if (dbProfile.role != "developer") return;
+	}
 	console.log(`[Redirects] Trying to redirect to ${location}...`);
 	paths.forEach((path) => {
 		if (path.endsWith(location) || path.endsWith(location + ".html"))

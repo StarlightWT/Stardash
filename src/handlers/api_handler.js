@@ -1,23 +1,19 @@
 const call = require("./api_calls");
-const secrets = require("../../secrets.json");
 const database = require("./db_handler");
 let profileVar,
 	dbprofileVar,
 	lockVar,
 	lockHistoryVar,
 	starConnectVar,
-	khLocksVar,
-	version,
-	dbToken;
+	khLocksVar;
 
-// //Session info
-// async function updateSessionInfo(accessToken, sessionToken) {
-// 	call.setToken(accessToken); //Set access token to api_calls, no longer need to send it with every call;
-// 	call.setSession(sessionToken);
-// }
+var loaded = false,
+	updating = false;
 
 async function updatePeriodicInfo() {
 	console.log("Updating info");
+	if (updating) return;
+	updating = true;
 	profileVar = await call.get("profile"); //Call api and ask for the logged in profile's info
 	dbprofileVar = await database.getUser(profileVar._id);
 	//Lockee
@@ -30,6 +26,8 @@ async function updatePeriodicInfo() {
 
 	//Keyholder
 	khLocksVar = await call.get("khlocks"); //Load all KH's locks
+
+	return 1;
 }
 
 //PeriodicInfo
@@ -37,10 +35,7 @@ async function updateInfo(accessToken, sessionToken) {
 	if (accessToken) call.setToken(accessToken);
 	if (sessionToken) call.setSession(sessionToken);
 
-	await updatePeriodicInfo();
-
-	if (dbprofileVar && profileVar) return 1;
-	return 0;
+	return await updatePeriodicInfo();
 }
 
 async function get(what) {

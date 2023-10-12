@@ -147,15 +147,3 @@ async function startInfoUpdate(accessToken) {
 		loadStatus = await request.updateInfo(accessToken);
 	}, 5 * 1000); //5seconds
 }
-
-// async function getExtension() {
-// 	await request.get("extension").then((extensionList) => {
-// 		extensionList.results.forEach((session) => {
-// 			if (session.lock.user._id == request.get("profile")._id) {
-// 				extension = session;
-// 				stardashConnectID = session.sessionId;
-// 			}
-// 		});
-// 	});
-// 	return extension;
-// }

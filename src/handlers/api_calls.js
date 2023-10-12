@@ -11,7 +11,12 @@ function setSession(sessionInput) {
 	if (sessionInput == null || sessionInput == undefined) return;
 	session = sessionInput;
 }
-
+/**
+ *
+ * @param {string} what profile, lock, khlocks, history, extension
+ * @param {string} option History - lockId
+ * @returns
+ */
 async function get(what, option) {
 	var link = "https://api.chaster.app";
 	var body, method;
@@ -78,6 +83,12 @@ async function get(what, option) {
 	return returnJson;
 }
 
+/**
+ *
+ * @param {string} what addtime, remtime, freeze, unfreeze, togglefreeze, pillory, log
+ * @param {*} option Can be an object, for log {role, colour, title, description}, for pillory {duration, reason}
+ * @returns
+ */
 async function action(what, option) {
 	var link = `https://api.chaster.app/api/extensions/sessions/${session}/action`;
 	var body;
@@ -97,6 +108,23 @@ async function action(what, option) {
 		case "togglefreeze":
 			body = { action: { name: "toggle_freeze" } };
 			break;
+		case "pillory":
+			body = {
+				action: {
+					name: "pillory",
+					params: { duration: option.duration, reason: option.reason },
+				},
+			};
+			break;
+		case "log":
+			link = `https://api.chaster.app/api/extensions/sessions/${sessionID}/logs/custom`;
+			body = {
+				role: option.role,
+				color: `#${option.colour}`,
+				title: option.title,
+				description: option.description,
+			};
+			break;
 	}
 
 	const response = await fetch(link, {
@@ -110,55 +138,9 @@ async function action(what, option) {
 	return response;
 }
 
-async function pillory(token, sessionID, duration, reason) {
-	//duration in seconds!!!
-	const response = await fetch(
-		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				action: {
-					name: "pillory",
-					params: {
-						duration: duration,
-						reason: reason,
-					},
-				},
-			}),
-		}
-	);
-	return response;
-}
-
-async function log(token, sessionID, title, description, role, colour) {
-	const response = await fetch(
-		`https://api.chaster.app/api/extensions/sessions/${sessionID}/logs/custom`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				role: role,
-				color: `#${colour}`,
-				title: title,
-				description: description,
-			}),
-		}
-	);
-	return response;
-}
-
 module.exports = {
 	setToken,
 	setSession,
 	get,
 	action,
-	pillory, //action
-	log, //log(?)
 };
