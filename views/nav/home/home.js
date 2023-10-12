@@ -36,7 +36,7 @@ async function loadLockInfo(profile, DBProfile) {
 		lock = await updateLock();
 		updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
 		updateLockHistory();
-	}, 1500);
+	}, 1000);
 }
 
 async function loadKHInfo() {

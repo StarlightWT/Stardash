@@ -79,124 +79,34 @@ async function get(what, option) {
 }
 
 async function action(what, option) {
-	var link = `https://api.chaster.app/api/extensions/sessions/${sessionID}/action`;
+	var link = `https://api.chaster.app/api/extensions/sessions/${session}/action`;
 	var body;
 	switch (what) {
-		case "addTime":
-			body = { name: "add_time", params: option };
+		case "addtime":
+			body = { action: { name: "add_time", params: option } };
+			break;
+		case "remtime":
+			body = { action: { name: "remove_time", params: option } };
+			break;
+		case "freeze":
+			body = { action: { name: "freeze" } };
+			break;
+		case "unfreeze":
+			body = { action: { name: "unfreeze" } };
+			break;
+		case "togglefreeze":
+			body = { action: { name: "toggle_freeze" } };
 			break;
 	}
 
-	const response = await fetch(
-		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(body),
-		}
-	);
-
-	return response;
-}
-
-async function addTime(token, sessionID, time) {
-	const response = await fetch(
-		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				action: {
-					name: "add_time",
-					params: time,
-				},
-			}),
-		}
-	);
-
-	return response;
-}
-
-async function remTime(token, sessionID, time) {
-	const response = await fetch(
-		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				action: {
-					name: "remove_time",
-					params: time,
-				},
-			}),
-		}
-	);
-	return response;
-}
-
-async function freeze(token, sessionID) {
-	const response = await fetch(
-		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				action: {
-					name: "freeze",
-				},
-			}),
-		}
-	);
-	return response;
-}
-
-async function unfreeze(token, sessionID) {
-	const response = await fetch(
-		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				action: {
-					name: "unfreeze",
-				},
-			}),
-		}
-	);
-	return response;
-}
-
-async function toggleFreeze(token, sessionID) {
-	const response = await fetch(
-		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				action: {
-					name: "toggle_freeze",
-				},
-			}),
-		}
-	);
+	const response = await fetch(link, {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(body),
+	});
 	return response;
 }
 
@@ -249,11 +159,6 @@ module.exports = {
 	setSession,
 	get,
 	action,
-	addTime, //action
-	remTime, //action
-	freeze, //action
-	unfreeze, //action
-	toggleFreeze, //action
 	pillory, //action
 	log, //log(?)
 };

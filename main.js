@@ -90,20 +90,13 @@ ipcMain.handle("get", async (event, what, option) => {
 	return await request.get(what, option);
 });
 
-ipcMain.handle("setUserRole", async (e, id, role) => {
-	database.setUserRole(id, role);
+ipcMain.handle("action", async (event, what, option) => {
+	console.log(what + "||" + option);
+	return await request.action(what, option);
 });
 
-ipcMain.handle("connectStardash", async (event, userID) => {
-	await request.getStarConnect().then((extensionList) => {
-		extensionList.results.forEach((session) => {
-			if (session.lock.user._id == userID) {
-				extension = session;
-				stardashConnectID = session.sessionId;
-			}
-		});
-	});
-	return extension;
+ipcMain.handle("setUserRole", async (e, id, role) => {
+	database.setUserRole(id, role);
 });
 
 ipcMain.handle("loadStatus", (event, status) => {
@@ -119,14 +112,6 @@ ipcMain.handle("getStatus", async () => {
 	return await updater.getStatus();
 });
 
-ipcMain.on("addTime", async (event, time) => {
-	console.log(`Adding time... (${time})`);
-	await request.action("addtime", time);
-});
-ipcMain.on("remTime", async (event, time) => {
-	console.log(`Removing time...(${time})`);
-	await call.remTime(secrets.DEV_TKN, stardashConnectID, time);
-});
 ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
 	// console.log(`Logging... ${logIcon}`);
 	// await call.log(
@@ -150,8 +135,27 @@ ipcMain.on("updateCheck", () => {
 //Load info and update it every 5 seconds
 async function startInfoUpdate(accessToken) {
 	loadStatus = await request.updateInfo(accessToken);
-	request.updateSessionInfo(accessToken, stardashConnectID);
+	await request.get("extension").then((sessionList) => {
+		sessionList.results.forEach(async (session) => {
+			const profile = await request.get("profile");
+			if (session.lock.user._id == profile._id) {
+				request.updateInfo(accessToken, session.sessionId);
+			}
+		});
+	});
 	setInterval(async () => {
-		loadStatus = await request.updateInfo(accessToken, stardashConnectID);
+		loadStatus = await request.updateInfo(accessToken);
 	}, 5 * 1000); //5seconds
 }
+
+// async function getExtension() {
+// 	await request.get("extension").then((extensionList) => {
+// 		extensionList.results.forEach((session) => {
+// 			if (session.lock.user._id == request.get("profile")._id) {
+// 				extension = session;
+// 				stardashConnectID = session.sessionId;
+// 			}
+// 		});
+// 	});
+// 	return extension;
+// }

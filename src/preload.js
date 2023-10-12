@@ -15,4 +15,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	checkUpdate: () => ipcRenderer.send("updateCheck"),
 	setUserRole: (id, role) => ipcRenderer.invoke("setUserRole", id, role),
 	get: (what) => ipcRenderer.invoke("get", what),
+	action: (what, option) => ipcRenderer.invoke("action", what, option),
 });

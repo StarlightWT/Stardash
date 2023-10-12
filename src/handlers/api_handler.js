@@ -10,15 +10,14 @@ let profileVar,
 	version,
 	dbToken;
 
-//Session info
-async function updateSessionInfo(accessToken, sessionToken) {
-	call.setToken(accessToken); //Set access token to api_calls, no longer need to send it with every call;
-	call.setSession(sessionToken);
-}
+// //Session info
+// async function updateSessionInfo(accessToken, sessionToken) {
+// 	call.setToken(accessToken); //Set access token to api_calls, no longer need to send it with every call;
+// 	call.setSession(sessionToken);
+// }
 
-//PeriodicInfo
-async function updateInfo(accessToken, sessionToken) {
-	if (accessToken && sessionToken) updateSessionInfo(accessToken, sessionToken);
+async function updatePeriodicInfo() {
+	console.log("Updating info");
 	profileVar = await call.get("profile"); //Call api and ask for the logged in profile's info
 	dbprofileVar = await database.getUser(profileVar._id);
 	//Lockee
@@ -31,6 +30,15 @@ async function updateInfo(accessToken, sessionToken) {
 
 	//Keyholder
 	khLocksVar = await call.get("khlocks"); //Load all KH's locks
+}
+
+//PeriodicInfo
+async function updateInfo(accessToken, sessionToken) {
+	if (accessToken) call.setToken(accessToken);
+	if (sessionToken) call.setSession(sessionToken);
+
+	await updatePeriodicInfo();
+
 	if (dbprofileVar && profileVar) return 1;
 	return 0;
 }
@@ -47,11 +55,17 @@ async function get(what) {
 			return khLocksVar.locks;
 		case "history":
 			return lockHistoryVar;
+		case "extension":
+			return starConnectVar;
 	}
+}
+
+async function action(what, option) {
+	call.action(what, option);
 }
 
 module.exports = {
 	get,
+	action,
 	updateInfo,
-	updateSessionInfo,
 };

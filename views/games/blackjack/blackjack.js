@@ -85,7 +85,7 @@ function endGame() {
 	if (playerTotal > 21) {
 		winnerTitle.innerHTML = "dealer";
 		console.log("Adding time...");
-		window.electronAPI.addTime(bet);
+		window.electronAPI.action("addtime", bet);
 		window.electronAPI.log(
 			"BlackJack added time",
 			"Added time for losing at BJ",
@@ -98,7 +98,7 @@ function endGame() {
 	if (dealerTotal > 21) {
 		winnerTitle.innerHTML = "player";
 		console.log("Removing time...");
-		window.electronAPI.remTime(bet * 2);
+		window.electronAPI.action("remtime", bet * 2);
 		window.electronAPI.log(
 			"BlackJack removed time",
 			"Removed time for winning at BJ",
@@ -112,7 +112,7 @@ function endGame() {
 		console.log("Removing time...");
 		winnerTitle.innerHTML = "player";
 		playerTotalTitle.innerHTML = "21! BlackJack!";
-		window.electronAPI.remTime(bet * 1.5);
+		window.electronAPI.action("remtime", bet * 1.5);
 		window.electronAPI.log(
 			"BlackJack removed time",
 			"Removed time for winning at BJ",
@@ -125,7 +125,7 @@ function endGame() {
 	if (playerTotal < dealerTotal) {
 		console.log("Adding time...");
 		winnerTitle.innerHTML = "dealer";
-		window.electronAPI.addTime(bet);
+		window.electronAPI.action("addtime", bet);
 		window.electronAPI.log(
 			"BlackJack added time",
 			"Added time for losing at BJ",
