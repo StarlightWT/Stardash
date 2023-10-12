@@ -12,15 +12,15 @@ var devMode = false;
 
 async function loadsettings() {
 	//Get token
-	const chasterProfile = await window.electronAPI.getProfile();
-	var dbProfile = await window.electronAPI.getDBProfile(chasterProfile._id);
-	if (dbProfile) dbProfile = dbProfile[0]._doc;
-	console.log(chasterProfile);
-	console.log(dbProfile);
+	const profile = await window.electronAPI.get("profile");
+	const dbprofileObject = await window.electronAPI.get("dbprofile");
+	const dbprofile = dbprofileObject[0]._doc;
+	console.log(profile);
+	console.log(dbprofile);
 
-	tokenCopy.value = dbProfile.id; //Set token into field
+	tokenCopy.value = dbprofile.id; //Set token into field
 	//Check for dev mode
-	if (dbProfile.role == "developer") devTrigger.style = "display: flex";
+	if (dbprofile.role == "developer") devTrigger.style = "display: flex";
 
 	//Get verison
 	const version = await window.electronAPI.getVersion();
@@ -36,7 +36,7 @@ async function loadsettings() {
 		devTools.style = "display: none";
 	}
 
-	roleSelect.value = dbProfile.role;
+	roleSelect.value = dbprofile.role;
 }
 
 loadsettings();

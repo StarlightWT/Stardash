@@ -3,7 +3,6 @@ const setupDiv = document.getElementById("setup");
 const playerTotalTitle = document.getElementById("player_total");
 const dealerTotalTitle = document.getElementById("dealer_total");
 const winnerTitle = document.getElementById("winner");
-const maxBetTitle = document.getElementById("max_bet");
 const betInput = document.getElementById("betInput");
 const hitBtn = document.getElementById("hit_button");
 const staBtn = document.getElementById("start_button");
@@ -31,23 +30,6 @@ var deck = [
 deck.forEach((card) => {
 	card.amount *= 8;
 });
-
-let maxBet;
-async function getMaxBet() {
-	const lock = await window.electronAPI.getLock();
-	const endDate = new Date(lock[0].endDate).getTime(); //Is UTC
-	const currentDate = Date.now();
-	maxBet = (endDate - currentDate) / 3;
-
-	var maxBetTime = `${Math.floor(maxBet / (1000 * 60 * 60 * 24))}:${Math.floor(
-		(maxBet % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-	)}:${Math.floor((maxBet % (1000 * 60 * 60)) / (1000 * 60))}:${Math.floor(
-		(maxBet % (1000 * 60)) / 1000
-	)}`;
-
-	maxBetTitle.innerHTML = `Max bet: ${maxBetTime}`;
-}
-
 function debugDeckCount(deck) {
 	deck.forEach((card) => {
 		console.log(`Key: ${card.key}, amount: ${card.amount}`);
@@ -172,9 +154,6 @@ function endGame() {
 		return;
 	}
 }
-
-getMaxBet();
-
 //Game start:
 var dealerTotal = 0,
 	secretDealerTotal = dealerTotal,
@@ -190,8 +169,7 @@ function startGame() {
 		(playerTotal = 0),
 		(playerStand = false),
 		(gameActive = false),
-		(gameEnd = false),
-		(bet = 0);
+		(gameEnd = false);
 
 	secretDealerTotal += getRandomCard();
 	dealerTotal = secretDealerTotal;
@@ -224,35 +202,12 @@ staBtn.addEventListener("click", async () => {
 	console.log(`Trying to start game!\nActive: ${gameActive}\nEnd ${!gameEnd}`);
 	if (gameActive && !gameEnd) return;
 	var value = betInput.value;
-	if (value > maxBet) return;
-	if (value.length < 2 && !value.includes(":")) return;
-	startGame();
+	// if (value.length < 2 && !value.includes(":")) return;
 
 	var inputArr = value.split(":");
+	bet = inputArr[0] * 60 * 60 + inputArr[1] * 60;
 
-	switch (inputArr.length) {
-		case 1:
-			console.log("min");
-			bet = inputArr[0] * 60;
-			break;
-		case 2:
-			console.log("hour:min");
-			bet = inputArr[0] * 60 * 60 + inputArr[1] * 60;
-			break;
-		case 3:
-			console.log("day:hour:min");
-			bet =
-				inputArr[0] * 24 * 60 * 60 + inputArr[1] * 60 * 60 + inputArr[2] * 60;
-			break;
-		case 4:
-			console.log("week:day:hour:min");
-			bet =
-				inputArr[0] * 7 * 24 * 60 * 60 +
-				inputArr[1] * 24 * 60 * 60 +
-				inputArr[2] * 60 * 60 +
-				inputArr[3] * 60;
-			break;
-	}
+	startGame();
 
 	console.log(`Game started! Bet: ${bet}`);
 	gameActive = true;

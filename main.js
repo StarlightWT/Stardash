@@ -3,7 +3,6 @@ const path = require("node:path");
 const oauth = require("./src/handlers/oauth.js");
 const secrets = require("./secrets.json");
 const request = require("./src/handlers/api_handler.js");
-const call = require("./src/handlers/api_calls.js");
 const redirects = require("./src/handlers/redirects.js");
 const database = require("./src/handlers/db_handler.js");
 const updater = require("./src/handlers/updater.js");
@@ -38,7 +37,7 @@ app.whenReady().then(async () => {
 	setInterval(() => {
 		console.log("Updating token!!");
 		oauth.refreshTokens();
-	}, 1000 * 150);
+	}, 1000 * 60);
 
 	win = createWindow();
 	win.setIcon("./icon.ico");
@@ -86,26 +85,9 @@ ipcMain.on("redirect", (event, page) => {
 });
 
 //Handle requests from renderers
-ipcMain.handle("getProfile", async () => {
-	const profile = request.getProfile();
-	database.createNewUser(profile.username, profile._id, "developer");
-	return await request.getProfile();
-});
 
-ipcMain.handle("getDBProfile", async (event, id) => {
-	return await database.getUser(id);
-});
-
-ipcMain.handle("getLock", async () => {
-	return await request.getLock();
-});
-
-ipcMain.handle("getLockHistory", async () => {
-	return await request.getLockHistory();
-});
-
-ipcMain.handle("getKHLocks", async () => {
-	return await request.getKHLocks();
+ipcMain.handle("get", async (event, what, option) => {
+	return await request.get(what, option);
 });
 
 ipcMain.handle("setUserRole", async (e, id, role) => {
@@ -139,22 +121,22 @@ ipcMain.handle("getStatus", async () => {
 
 ipcMain.on("addTime", async (event, time) => {
 	console.log(`Adding time... (${time})`);
-	await call.addTime(secrets.DEV_TKN, stardashConnectID, time);
+	await request.action("addtime", time);
 });
 ipcMain.on("remTime", async (event, time) => {
 	console.log(`Removing time...(${time})`);
 	await call.remTime(secrets.DEV_TKN, stardashConnectID, time);
 });
 ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
-	console.log(`Logging... ${logIcon}`);
-	await call.log(
-		secrets.DEV_TKN,
-		stardashConnectID,
-		title,
-		description,
-		role,
-		colour
-	);
+	// console.log(`Logging... ${logIcon}`);
+	// await call.log(
+	// 	secrets.DEV_TKN,
+	// 	stardashConnectID,
+	// 	title,
+	// 	description,
+	// 	role,
+	// 	colour
+	// );
 });
 
 ipcMain.on("clip", async (event, text) => {
@@ -168,8 +150,8 @@ ipcMain.on("updateCheck", () => {
 //Load info and update it every 5 seconds
 async function startInfoUpdate(accessToken) {
 	loadStatus = await request.updateInfo(accessToken);
-
+	request.updateSessionInfo(accessToken, stardashConnectID);
 	setInterval(async () => {
-		loadStatus = await request.updateInfo(accessToken);
+		loadStatus = await request.updateInfo(accessToken, stardashConnectID);
 	}, 5 * 1000); //5seconds
 }

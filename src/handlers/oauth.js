@@ -93,6 +93,7 @@ async function refreshTokens() {
 
 		accessToken = response.data.access_token;
 		refreshToken = response.data.refresh_token;
+		console.log("[Oauth] Access token updated!!!");
 	} catch (e) {
 		console.log(`You stupid bitch wtf did you do: ${e}`);
 		throw e;

@@ -1,43 +1,57 @@
 const call = require("./api_calls");
 const secrets = require("../../secrets.json");
-let profile, lock, lockHistory, starConnect, khLocks;
+const database = require("./db_handler");
+let profileVar,
+	dbprofileVar,
+	lockVar,
+	lockHistoryVar,
+	starConnectVar,
+	khLocksVar,
+	version,
+	dbToken;
 
-async function updateInfo(accessToken) {
-	console.log(`[API Handler] Updating info...`);
-	profile = await call.getProfile(accessToken);
-	lock = await call.getLock(accessToken);
-	if (!lock[0]?.user) return 1;
-	lockHistory = await call.getLockHistory(accessToken, lock[0]._id);
-	starConnect = await call.getExtension(secrets.DEV_TKN);
-	khLocks = await call.getKHLocks(accessToken);
-	return 1;
+//Session info
+async function updateSessionInfo(accessToken, sessionToken) {
+	call.setToken(accessToken); //Set access token to api_calls, no longer need to send it with every call;
+	call.setSession(sessionToken);
 }
 
-function getProfile() {
-	return profile;
+//PeriodicInfo
+async function updateInfo(accessToken, sessionToken) {
+	if (accessToken && sessionToken) updateSessionInfo(accessToken, sessionToken);
+	profileVar = await call.get("profile"); //Call api and ask for the logged in profile's info
+	dbprofileVar = await database.getUser(profileVar._id);
+	//Lockee
+	lockVar = await call.get("lock"); //Get lock of the account from the api
+	if (lockVar[0]?._id != undefined || lockVar[0]?._id != null) {
+		//If there is no lock, don't try to load it's info, if there is load it.
+		lockHistoryVar = await call.get("history", lockVar[0]._id);
+		starConnectVar = await call.get("extension");
+	}
+
+	//Keyholder
+	khLocksVar = await call.get("khlocks"); //Load all KH's locks
+	if (dbprofileVar && profileVar) return 1;
+	return 0;
 }
 
-function getLock() {
-	return lock;
-}
-
-function getLockHistory() {
-	return lockHistory;
-}
-
-async function getStarConnect() {
-	return starConnect;
-}
-
-async function getKHLocks() {
-	return khLocks.locks;
+async function get(what) {
+	switch (what) {
+		case "lock":
+			return lockVar;
+		case "profile":
+			return profileVar;
+		case "dbprofile":
+			return dbprofileVar;
+		case "khlocks":
+			return khLocksVar.locks;
+		case "history":
+			return lockHistoryVar;
+	}
 }
 
 module.exports = {
+	get,
 	updateInfo,
-	getProfile,
-	getLock,
-	getLockHistory,
-	getStarConnect,
-	getKHLocks,
+	updateSessionInfo,
 };

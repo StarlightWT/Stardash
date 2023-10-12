@@ -1,6 +1,6 @@
 //Update profile info
 async function loadProfileInfo() {
-	const profile = await window.electronAPI.getProfile();
+	const profile = await window.electronAPI.get("profile");
 	const usernameBox = document.getElementById("username");
 	const avatar = document.getElementById("avatar");
 	const discord = document.getElementById("discord");

@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
 const userModel = mongoose.model("User", userSchema, "users");
 
 async function createNewUser(username, id, role) {
+	if (!username || !id || !role) return;
 	var user = new userModel({
 		username: username,
 		id: id,

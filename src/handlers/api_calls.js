@@ -1,59 +1,105 @@
-console.log("Loaded api calling!");
+console.error(`[API Calls] LOADED! THIS MODULE SHOULDN'T BE LOADED!`);
 
-async function getProfile(token) {
-	const response = await fetch("https://api.chaster.app/auth/profile", {
-		method: "GET",
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-	const myJson = await response.json();
-	return myJson;
+const secrets = require("../../secrets.json");
+
+var token, session;
+function setToken(tokenInput) {
+	if (tokenInput == null || tokenInput == undefined) return;
+	token = tokenInput;
+}
+function setSession(sessionInput) {
+	if (sessionInput == null || sessionInput == undefined) return;
+	session = sessionInput;
 }
 
-async function getLock(token) {
-	const response = await fetch("https://api.chaster.app/locks", {
-		method: "GET",
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-	const myJson = await response.json();
-	return myJson;
+async function get(what, option) {
+	var link = "https://api.chaster.app";
+	var body, method;
+	let response;
+	switch (what) {
+		case "profile":
+			link += "/auth/profile";
+			method = "GET";
+			break;
+		case "lock":
+			link += "/locks";
+			method = "GET";
+			break;
+		case "khlocks":
+			link += "/keyholder/locks/search";
+			body = {
+				criteria: {},
+				status: "locked",
+				page: 0,
+				limit: 50,
+			};
+			method = "POST";
+			break;
+		case "history":
+			link += `/locks/${option}/history`;
+			method = "POST";
+			break;
+		case "extension":
+			token = secrets.DEV_TKN;
+			link += "/api/extensions/sessions/search";
+			body = {
+				status: "locked",
+				extensionSlug: "stardash-connect",
+				limit: 15,
+			};
+			method = "POST";
+			break;
+		default:
+			return;
+	}
+
+	switch (method) {
+		case "GET":
+			response = await fetch(link, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			break;
+		case "POST":
+			response = await fetch(link, {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body),
+			});
+			break;
+	}
+
+	const returnJson = await response.json();
+	return returnJson;
 }
 
-async function getLockHistory(token, lockID) {
+async function action(what, option) {
+	var link = `https://api.chaster.app/api/extensions/sessions/${sessionID}/action`;
+	var body;
+	switch (what) {
+		case "addTime":
+			body = { name: "add_time", params: option };
+			break;
+	}
+
 	const response = await fetch(
-		`https://api.chaster.app/locks/${lockID}/history`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		}
-	);
-	const myJson = await response.json();
-	return myJson;
-}
-
-async function getExtension(token) {
-	const response = await fetch(
-		"https://api.chaster.app/api/extensions/sessions/search",
+		`https://api.chaster.app/api/extensions/sessions/${sessionID}/action`,
 		{
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				status: "locked",
-				extensionSlug: "stardash-connect",
-				limit: 15,
-			}),
+			body: JSON.stringify(body),
 		}
 	);
-	const myJson = await response.json();
-	return myJson;
+
+	return response;
 }
 
 async function addTime(token, sessionID, time) {
@@ -198,38 +244,16 @@ async function log(token, sessionID, title, description, role, colour) {
 	return response;
 }
 
-async function getKHLocks(token) {
-	const response = await fetch(
-		"https://api.chaster.app/keyholder/locks/search",
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				criteria: {},
-				status: "locked",
-				page: 0,
-				limit: 50,
-			}),
-		}
-	);
-	const myJson = await response.json();
-	return myJson;
-}
-
 module.exports = {
-	getProfile,
-	getLock,
-	getKHLocks,
-	getLockHistory,
-	getExtension,
-	addTime,
-	remTime,
-	freeze,
-	unfreeze,
-	toggleFreeze,
-	pillory,
-	log,
+	setToken,
+	setSession,
+	get,
+	action,
+	addTime, //action
+	remTime, //action
+	freeze, //action
+	unfreeze, //action
+	toggleFreeze, //action
+	pillory, //action
+	log, //log(?)
 };

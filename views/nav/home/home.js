@@ -1,82 +1,88 @@
-async function loadLockInfo() {
+const lockeeUI = document.getElementById("lockee");
+const keyholderUI = document.getElementById("keyholder");
+async function start() {
+	//Load all informatin
+	const profile = await window.electronAPI.get("profile");
+	const DBProfileSearch = await window.electronAPI.get("dbprofile");
+	const DBProfile = await DBProfileSearch[0]._doc;
+
+	//Load, update and pass info depending on role
+	switch (DBProfile.role) {
+		case "switch":
+			loadKHInfo(profile, DBProfile);
+			loadLockInfo(profile, DBProfile);
+			break;
+		case "keyholder":
+			lockeeUI.style = "display: none;";
+			loadKHInfo(profile, DBProfile);
+			break;
+		case "lockee":
+			keyholderUI.style = "display: none;";
+			loadLockInfo(profile, DBProfile);
+			break;
+	}
+}
+start();
+
+async function loadLockInfo(profile, DBProfile) {
 	//Update all information upon page load
 	var lock = await updateLock();
-	console.log(lock);
-	updateDisplay();
 	updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
 	updateLockHistory();
 	updateLockExtensions(lock);
-	updateSession(lock);
 
 	//Setup intervals to keep info up to date
 	setInterval(async () => {
 		lock = await updateLock();
 		updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
 		updateLockHistory();
-		updateDisplay();
-	}, 1000);
+	}, 1500);
 }
 
-loadLockInfo();
-
-const lockeeUI = document.getElementById("lockee");
-const keyholderUI = document.getElementById("keyholder");
-
-function addTime(time) {
-	window.electronAPI.addTime(time);
-}
-function remTime(time) {
-	window.electronAPI.remTime(time);
-}
-
-async function updateSession(lock) {
-	console.log("Updating session...");
-	const id = lock.user._id;
-	console.log(await window.electronAPI.getExtension(id));
+async function loadKHInfo() {
+	//Update all information upon page load
+	loadAllKHLocks();
+	//Setup intervals to keep info up to date
+	setInterval(async () => {
+		loadAllKHLocks();
+	}, 1500);
 }
 
 async function updateLock() {
-	console.log("Updating lockObject...");
-	lockObject = await window.electronAPI.getLock(); //Get lock list json from API
+	lockObject = await window.electronAPI.get("lock"); //Get lock list json from API
 	lock = lockObject[0]; //Select first lock
-	console.log(lock);
-	DBProfileObject = await window.electronAPI.getDBProfile(lock.user._id);
-	console.log(DBProfileObject);
-	DBProfile = DBProfileObject[0]._doc;
-	console.log(DBProfile);
 
-	if (DBProfile.tier != "Developer" && !DBProfile.subscribed) {
-		console.warn("Unsupported lock / No lock found!!!");
-		const body = document.getElementById("dash_body");
+	// if (DBProfile.tier != "Developer" && !DBProfile.subscribed) {
+	// 	console.warn("Unsupported lock / No lock found!!!");
+	// 	const body = document.getElementById("dash_body");
 
-		body.innerHTML = "";
+	// 	body.innerHTML = "";
 
-		var errorMessage = document.createElement("h1");
-		var errorMessage2 = document.createElement("h2");
-		var errorMessage3 = document.createElement("p");
-		var subscription = document.createElement("p");
-		body.append(errorMessage);
-		body.append(errorMessage2);
-		body.append(errorMessage3);
-		body.append(subscription);
-		body.style.textAlign = "center";
-		errorMessage.innerHTML = "Error getting lock/confirming subscription";
-		errorMessage2.innerHTML = "Your subscription or lock wasn't found!";
-		errorMessage3.innerHTML =
-			"Please relaunch the app, if issue persits please message Starlight(@starlightwt) on discord!";
-		subscription.innerHTML = `If you do not have a subscription <a href="https://ko-fi.com/mistressevelyn/tiers">click here</a> to get it!`;
-		return;
-	}
+	// 	var errorMessage = document.createElement("h1");
+	// 	var errorMessage2 = document.createElement("h2");
+	// 	var errorMessage3 = document.createElement("p");
+	// 	var subscription = document.createElement("p");
+	// 	body.append(errorMessage);
+	// 	body.append(errorMessage2);
+	// 	body.append(errorMessage3);
+	// 	body.append(subscription);
+	// 	body.style.textAlign = "center";
+	// 	errorMessage.innerHTML = "Error getting lock/confirming subscription";
+	// 	errorMessage2.innerHTML = "Your subscription or lock wasn't found!";
+	// 	errorMessage3.innerHTML =
+	// 		"Please relaunch the app, if issue persits please message Starlight(@starlightwt) on discord!";
+	// 	subscription.innerHTML = `If you do not have a subscription <a href="https://ko-fi.com/mistressevelyn/tiers">click here</a> to get it!`;
+	// 	return;
+	// }
 
 	return lock;
 }
 
 async function loadAllKHLocks() {
-	var KHLocks = await window.electronAPI.getKHLocks();
+	var KHLocks = await window.electronAPI.get("khlocks");
 
 	const currentDate = Date.now(); //Is also UTC
 
-	console.log(KHLocks);
 	const KHLockList = document.getElementById("KHLocks");
 	KHLockList.innerHTML = "";
 	KHLocks.forEach((lock) => {
@@ -114,14 +120,12 @@ async function loadAllKHLocks() {
 
 async function updateLockExtensions(lock) {
 	var extension_list = [];
-	console.log("Updating extesions...");
 	//Encode extension list that chaster provides
 	lock.extensions.forEach((extension) => {
 		var extensionName = extension.displayName;
 		var extensionID = extension._id;
 		extension_list.push(`${extensionID}:${extensionName}`);
 	});
-	console.log(extension_list);
 
 	//Add every extension to the extension list in the UI
 	extension_list.forEach((extension) => {
@@ -139,7 +143,6 @@ async function updateLockExtensions(lock) {
 }
 
 async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt) {
-	console.log("Updating time...");
 	const timer = document.getElementById("timer");
 	//check if the timer is currently hidden
 	if (!isAllowedToViewTime) return (timer.innerHTML = "Time hidden");
@@ -149,8 +152,8 @@ async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt) {
 	//calculate time remaining
 	const endDate = new Date(endDateTimestamp).getTime(); //Is UTC
 	const currentDate = Date.now(); //Is also UTC
-	if (currentDate > endDate) return;
 	var timeLeft = endDate - currentDate;
+	if (timeLeft <= 0) return (timer.innerHTML = "Ready to unlock!");
 	//if lock is frozen calculate time from the time of being frozen.
 	if (frozenAt == null) timeLeft = endDate - currentDate;
 	else {
@@ -186,9 +189,8 @@ async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt) {
 
 async function updateLockHistory() {
 	var i = 0;
-	console.log("Updating lock history...");
 	//Request lock history from api
-	const lockHistory = await window.electronAPI.getLockHistory();
+	const lockHistory = await window.electronAPI.get("history");
 	//Get only latest 10 logs
 	const lastLogs = lockHistory.results.slice(0, 10);
 	//Get the log list and clear it
@@ -224,25 +226,4 @@ async function updateLockHistory() {
 		entryDescription.innerHTML = log.description;
 		i++;
 	});
-}
-
-async function updateDisplay() {
-	var DBProfile = await window.electronAPI.getDBProfile(lock.user._id);
-	var DBProfile = DBProfile[0]._doc;
-	switch (DBProfile.role) {
-		case "switch":
-			loadAllKHLocks();
-			lockeeUI.style = "display: block;";
-			keyholderUI.style = "display: block;";
-			break;
-		case "lockee":
-			lockeeUI.style = "display: block;";
-			keyholderUI.style = "display: none;";
-			break;
-		case "keyholder":
-			loadAllKHLocks();
-			lockeeUI.style = "display: none;";
-			keyholderUI.style = "display: block;";
-			break;
-	}
 }
