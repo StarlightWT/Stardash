@@ -143,7 +143,7 @@ function endGame() {
 	if (playerTotal > dealerTotal) {
 		console.log("Adding time...");
 		winnerTitle.innerHTML = "player";
-		window.electronAPI.remTime(bet * 2);
+		window.electronAPI.action("remtime", bet * 2);
 		window.electronAPI.log(
 			"BlackJack added time",
 			"Added time for losing at BJ",

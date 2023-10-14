@@ -6,26 +6,32 @@ async function loadProfileInfo() {
 	const discord = document.getElementById("discord");
 	usernameBox.innerHTML = profile.username;
 	avatar.setAttribute("src", profile.avatarUrl);
-	discord.innerHTML = "@" + profile.discordUsername;
+	// discord.innerHTML = "@" + profile.discordUsername;
+}
+
+function toggleDropdown() {
+	document.getElementById("dropdown").classList.toggle("show");
+	console.log("Showing...");
 }
 
 const repNav = document.getElementById("replace_nav");
-let navBar;
 fetch("../nav.html").then(async (nav) => {
-	// console.log(await nav.text());
-
 	var newBar = document.createElement("nav");
 	newBar.className = "dash";
 	newBar.innerHTML = await nav.text();
 	repNav.replaceWith(newBar);
+	document.body.scrollTop = document.documentElement.scrollTop = 0; //Scroll to the top so new bar is visible
 	loadProfileInfo();
+	setActive(await window.electronAPI.active("get"));
 });
 
 //Get buttons
-const homeBtn = document.getElementById("nav_home");
-const gamesBtn = document.getElementById("nav_games");
-const settingstButton = document.getElementById("nav_settings");
 
 function redirect(location) {
 	window.electronAPI.redirect(location);
+}
+
+function setActive(location) {
+	const activePage = document.getElementById(location);
+	activePage.classList.add("active");
 }

@@ -1,9 +1,8 @@
 const lockeeUI = document.getElementById("lockee");
 const keyholderUI = document.getElementById("keyholder");
 const dbConnectTitle = document.getElementById("dbStatus");
-const dbConnectMark = document.getElementById("connnectMark");
-const nav = document.getElementById("nav");
 async function start() {
+	window.electronAPI.active("home");
 	//Load all informatin
 	const profile = await window.electronAPI.get("profile");
 	const DBProfileSearch = await window.electronAPI.get("dbprofile");

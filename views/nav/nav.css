@@ -4,6 +4,7 @@ html {
 	--background-colour: #161616;
 	--secondary-bg-colour: #363636;
 	--accent-colour: #8f2efd;
+	--accent-colour-highlight: #b45efa;
 }
 
 body {
@@ -27,12 +28,6 @@ i {
 	width: 50px;
 }
 
-#connnectMark {
-	color: #6cea53;
-	position: absolute;
-	right: 145;
-}
-
 .fa-gear:hover {
 	cursor: pointer;
 	color: #8f2efd;
@@ -51,12 +46,14 @@ i {
 	align-content: baseline;
 	justify-content: space-between;
 	padding-inline: 2rem;
-	background-color: #080808;
 	max-height: 75px;
+	border-bottom: solid;
+	border-bottom-color: var(--accent-colour);
 }
 
 .dash button {
 	all: unset;
+	transition-duration: 0.25s;
 }
 
 .dash ul {
@@ -68,19 +65,16 @@ i {
 
 .dash ul button {
 	color: white;
+	cursor: pointer;
 }
 
-.dash ul button:hover {
+.dash ul button:hover > :not(.active) {
 	cursor: pointer;
-	color: purple;
+	color: var(--accent-colour-highlight);
 	transition-duration: 0.25s;
 }
 
-.dash #logout {
-	cursor: pointer;
-}
-
-.dash li {
+.dash button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -90,37 +84,76 @@ i {
 	font-size: larger;
 }
 
-.dash div {
-	display: flex;
-	justify-content: right;
-	max-width: 30%;
-	padding-right: 1rem;
+.active {
+	margin: 0;
+	background-color: var(--accent-colour);
+	padding: 1rem;
+	border-radius: 1rem;
 }
 
-.dash div img {
-	clip-path: circle();
-	margin-right: 15px;
+.active:hover {
+	color: var(--accent-colour-highlight);
+	transition-duration: 0.25s;
 }
 
-.dash div h2 {
-	display: flex;
-	align-items: center;
+.dropdown {
+	margin-block: auto;
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	top: 80%;
+	right: 0.5rem;
+	background-color: var(--secondary-bg-colour);
+	min-width: 100;
+	text-align: center;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	border-radius: 1rem;
+	overflow: hidden;
+}
+
+.show {
+	display: block;
 }
 
 .names {
 	display: flex;
-	flex-direction: column;
-	margin: auto;
-	margin-left: 0;
-	margin-right: 5%;
 }
 
-.names h2,
-.names h3 {
+.dropdown-text {
+	transition-duration: 0.25s;
 	margin: 0;
+	padding: 10px 5px;
+	cursor: pointer;
+	border-bottom: dashed 1px black;
+	border-top: dashed 1px black;
 }
 
-.names h3 {
-	font-size: 16px;
-	font-weight: 200;
+.noUnderLine {
+	border-bottom: unset;
+}
+.noOverLine {
+	border-top: unset;
+}
+
+.dropdown-text:hover {
+	background-color: var(--accent-colour);
+	transition-duration: 0.25s;
+}
+
+#username {
+	margin-left: 1rem;
+	cursor: pointer;
+}
+
+#avatar {
+	margin: auto;
+	margin-inline: 0;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
 }

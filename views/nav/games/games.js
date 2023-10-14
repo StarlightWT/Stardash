@@ -3,3 +3,5 @@ function select(id) {
 	window.electronAPI.redirect(id);
 	//request redirect to specific game
 }
+
+window.electronAPI.active("games");

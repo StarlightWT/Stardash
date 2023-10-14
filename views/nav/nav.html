@@ -1,30 +1,27 @@
 <ul>
-	<button id="nav_home" class="active"><li>Home</li></button>
+	<button id="nav_home" onclick="redirect('home')">
+		<li id="home">Home</li>
+	</button>
 	<button id="nav_games" onclick="redirect('games')">
-		<li>Games</li>
+		<li id="games">Games</li>
 	</button>
 	<button id="nav_locks" onclick="redirect('locks')">
 		<li>Locks</li>
 	</button>
 </ul>
-<div>
-	<img id="avatar" src="" />
-	<div class="names">
-		<button id="nav_settings">
-			<h2 id="username">Loading...</h2>
-		</button>
-		<h3 id="discord">Loading...</h3>
-	</div>
-	<div class="icons">
-		<i class="fa-solid fa-check" id="connnectMark" style="display: none"></i>
-		<i
-			class="fa-solid fa-server fa-xl"
-			style="color: #8f2efd"
-			title="Not connected!"
-			id="dbStatus"></i>
-		<i
-			onclick="redirect('settings')"
-			class="fa-solid fa-gear fa-xl"
-			style="color: #ffffff"></i>
+<div class="names">
+	<img id="avatar" src="" onclick="toggleDropdown()" />
+	<div class="dropdown">
+		<h1 id="username" onclick="toggleDropdown()"></h1>
+		<div class="dropdown-content" id="dropdown">
+			<h3 onclick="redirect('settings')" class="dropdown-text noOverLine">
+				Settings
+			</h3>
+			<h3
+				onclick="window.electronAPI.logout();"
+				class="dropdown-text noUnderLine">
+				Logout
+			</h3>
+		</div>
 	</div>
 </div>

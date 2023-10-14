@@ -84,6 +84,13 @@ ipcMain.on("redirect", (event, page) => {
 	redirects.redirect(win, page);
 });
 
+let activeLocation;
+
+ipcMain.handle("active", (event, location) => {
+	if (location == "get") return activeLocation;
+	activeLocation = location;
+});
+
 //Handle requests from renderers
 
 ipcMain.handle("get", async (event, what, option) => {
