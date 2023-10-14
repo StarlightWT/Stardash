@@ -58,7 +58,9 @@ versionCopy.addEventListener("click", () => {
 });
 
 backBtn.addEventListener("click", () => {
-	window.electronAPI.redirect("home");
+	window.electronAPI.updateSettings().then(() => {
+		window.electronAPI.redirect("home");
+	});
 });
 
 logoutBtn.addEventListener("click", () => {

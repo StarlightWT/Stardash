@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const secret = require("../../secrets.json");
+const api = require("./api_handler");
 
 var dbProfile, dbProfileId;
 
@@ -52,9 +53,9 @@ async function getUser(_id) {
 
 async function setUserRole(_id, role) {
 	await mongoose.connect(secret.DATABASE_URI);
-
+	console.log(dbProfile);
 	await userModel.findOneAndUpdate({ id: _id }, { role: role });
-	dbProfile = findUser(_id);
+	return 1;
 }
 
 module.exports = {

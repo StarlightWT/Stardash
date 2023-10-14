@@ -3,8 +3,6 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("electronAPI", {
 	redirect: (page) => ipcRenderer.send("redirect", page),
 	login: () => ipcRenderer.send("login"),
-	addTime: (time) => ipcRenderer.send("addTime", time),
-	remTime: (time) => ipcRenderer.send("remTime", time),
 	loaded: () => ipcRenderer.invoke("loadStatus", 1),
 	log: (title, description, role, colour, logIcon) =>
 		ipcRenderer.send("log", title, description, role, colour, logIcon),
@@ -17,4 +15,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	get: (what) => ipcRenderer.invoke("get", what),
 	action: (what, option) => ipcRenderer.invoke("action", what, option),
 	active: (location) => ipcRenderer.invoke("active", location),
+	updateSettings: () => ipcRenderer.invoke("updateSettings"),
 });

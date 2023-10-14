@@ -5,7 +5,7 @@ async function start() {
 	window.electronAPI.active("home");
 	//Load all informatin
 	const profile = await window.electronAPI.get("profile");
-	const DBProfileSearch = await window.electronAPI.get("dbprofile");
+	var DBProfileSearch = await window.electronAPI.get("dbprofile");
 	const DBProfile = await DBProfileSearch[0]._doc;
 
 	//Load, update and pass info depending on role
@@ -228,4 +228,5 @@ async function updateLockHistory() {
 		i++;
 	});
 }
+
 start();

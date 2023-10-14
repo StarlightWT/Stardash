@@ -19,4 +19,5 @@ setInterval(async () => {
 }, 1000);
 
 const loadingText = document.getElementById("loadingText");
-var i = 0;
+var i = 0,
+	j = 0;

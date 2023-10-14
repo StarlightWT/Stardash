@@ -103,12 +103,16 @@ ipcMain.handle("action", async (event, what, option) => {
 });
 
 ipcMain.handle("setUserRole", async (e, id, role) => {
-	database.setUserRole(id, role);
+	if (await database.setUserRole(id, role)) request.updateInfo();
 });
 
 ipcMain.handle("loadStatus", (event, status) => {
 	console.log(`[Main] Load status ${loadStatus}...`);
 	return loadStatus;
+});
+
+ipcMain.handle("updateSettings", () => {
+	request.updateInfo();
 });
 
 ipcMain.handle("version", async () => {

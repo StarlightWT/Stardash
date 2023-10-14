@@ -26,15 +26,18 @@ async function updatePeriodicInfo() {
 
 	//Keyholder
 	khLocksVar = await call.get("khlocks"); //Load all KH's locks
-
-	return 1;
+	updating = false;
+	if (dbprofileVar && profileVar && loaded) {
+		return 1;
+	}
+	loaded = true;
+	return 0;
 }
 
 //PeriodicInfo
 async function updateInfo(accessToken, sessionToken) {
 	if (accessToken) call.setToken(accessToken);
 	if (sessionToken) call.setSession(sessionToken);
-
 	return await updatePeriodicInfo();
 }
 
