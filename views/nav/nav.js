@@ -9,7 +9,17 @@ async function loadProfileInfo() {
 	discord.innerHTML = "@" + profile.discordUsername;
 }
 
-loadProfileInfo();
+const repNav = document.getElementById("replace_nav");
+let navBar;
+fetch("../nav.html").then(async (nav) => {
+	// console.log(await nav.text());
+
+	var newBar = document.createElement("nav");
+	newBar.className = "dash";
+	newBar.innerHTML = await nav.text();
+	repNav.replaceWith(newBar);
+	loadProfileInfo();
+});
 
 //Get buttons
 const homeBtn = document.getElementById("nav_home");

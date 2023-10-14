@@ -1,0 +1,30 @@
+<ul>
+	<button id="nav_home" class="active"><li>Home</li></button>
+	<button id="nav_games" onclick="redirect('games')">
+		<li>Games</li>
+	</button>
+	<button id="nav_locks" onclick="redirect('locks')">
+		<li>Locks</li>
+	</button>
+</ul>
+<div>
+	<img id="avatar" src="" />
+	<div class="names">
+		<button id="nav_settings">
+			<h2 id="username">Loading...</h2>
+		</button>
+		<h3 id="discord">Loading...</h3>
+	</div>
+	<div class="icons">
+		<i class="fa-solid fa-check" id="connnectMark" style="display: none"></i>
+		<i
+			class="fa-solid fa-server fa-xl"
+			style="color: #8f2efd"
+			title="Not connected!"
+			id="dbStatus"></i>
+		<i
+			onclick="redirect('settings')"
+			class="fa-solid fa-gear fa-xl"
+			style="color: #ffffff"></i>
+	</div>
+</div>

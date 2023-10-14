@@ -2,6 +2,10 @@ html {
 	background-color: #161616;
 	color: white;
 	font-family: Arial, Helvetica, sans-serif;
+
+	--background-colour: #161616;
+	--secondary-bg-colour: #363636;
+	--accent-colour: #8f2efd;
 }
 
 body {
@@ -11,9 +15,16 @@ body {
 	text-align: center;
 }
 
-button {
-	height: 40px;
-	width: 120px;
+i {
+	position: absolute;
+	left: 2rem;
+	top: 2rem;
+}
+
+i {
+	padding: 1rem;
+	border-radius: 50%;
+	background-color: var(--secondary-bg-colour);
 }
 
 #max_bet {

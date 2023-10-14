@@ -14,25 +14,29 @@ body {
 i {
 	margin-block: auto;
 	margin-right: -4rem;
+	width: 1px;
+	height: 1px;
 }
 
-@keyframes rotation {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+.icons {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	margin-right: -1rem;
+	margin-left: 1rem;
+	width: 50px;
+}
+
+#connnectMark {
+	color: #6cea53;
+	position: absolute;
+	right: 145;
 }
 
 .fa-gear:hover {
 	cursor: pointer;
 	color: #8f2efd;
 	display: block;
-	animation: rotation 2s;
-	transition-duration: 2s;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
 }
 
 .login_body {
@@ -64,8 +68,6 @@ i {
 
 .dash ul button {
 	color: white;
-	/* border-color: white;
-    border-style: solid; */
 }
 
 .dash ul button:hover {
@@ -93,7 +95,6 @@ i {
 	justify-content: right;
 	max-width: 30%;
 	padding-right: 1rem;
-	margin-right: 2rem;
 }
 
 .dash div img {

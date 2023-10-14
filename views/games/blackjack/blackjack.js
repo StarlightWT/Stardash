@@ -220,6 +220,6 @@ refBtn.addEventListener("click", () => {
 	location.reload();
 });
 
-retBtn.addEventListener("click", () => {
+function back() {
 	window.electronAPI.redirect("games");
-});
+}

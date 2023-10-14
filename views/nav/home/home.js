@@ -1,5 +1,8 @@
 const lockeeUI = document.getElementById("lockee");
 const keyholderUI = document.getElementById("keyholder");
+const dbConnectTitle = document.getElementById("dbStatus");
+const dbConnectMark = document.getElementById("connnectMark");
+const nav = document.getElementById("nav");
 async function start() {
 	//Load all informatin
 	const profile = await window.electronAPI.get("profile");
@@ -22,7 +25,6 @@ async function start() {
 			break;
 	}
 }
-start();
 
 async function loadLockInfo(profile, DBProfile) {
 	//Update all information upon page load
@@ -227,3 +229,4 @@ async function updateLockHistory() {
 		i++;
 	});
 }
+start();
