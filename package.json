@@ -35,7 +35,7 @@
 	},
 	"homepage": "https://github.com/StarlightWT/Stardash#readme",
 	"devDependencies": {
-		"electron": "^26.2.1",
+		"electron": "^26.4.0",
 		"electron-builder": "^24.6.4"
 	},
 	"dependencies": {

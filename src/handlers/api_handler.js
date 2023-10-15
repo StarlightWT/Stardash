@@ -7,13 +7,14 @@ let profileVar,
 	starConnectVar,
 	khLocksVar;
 
-var loaded = false,
-	updating = false;
-
-async function updatePeriodicInfo() {
+async function updatePeriodicInfo(loaded) {
 	console.log("Updating info");
-	if (updating) return;
-	updating = true;
+	if (
+		profileVar != undefined &&
+		dbprofileVar != undefined &&
+		profileVar?._id == dbprofileVar[0]?.id
+	)
+		loaded = true;
 	profileVar = await call.get("profile"); //Call api and ask for the logged in profile's info
 	dbprofileVar = await database.getUser(profileVar._id);
 	//Lockee
@@ -26,19 +27,14 @@ async function updatePeriodicInfo() {
 
 	//Keyholder
 	khLocksVar = await call.get("khlocks"); //Load all KH's locks
-	updating = false;
-	if (dbprofileVar && profileVar && loaded) {
-		return 1;
-	}
-	loaded = true;
-	return 0;
+	return loaded;
 }
 
 //PeriodicInfo
 async function updateInfo(accessToken, sessionToken) {
 	if (accessToken) call.setToken(accessToken);
 	if (sessionToken) call.setSession(sessionToken);
-	return await updatePeriodicInfo();
+	return await updatePeriodicInfo(false);
 }
 
 async function get(what) {

@@ -8,7 +8,6 @@ const hitBtn = document.getElementById("hit_button");
 const staBtn = document.getElementById("start_button");
 const refBtn = document.getElementById("refresh_button");
 const standBtn = document.getElementById("stand_button");
-const retBtn = document.getElementById("return");
 
 const lostClr = "ee111a";
 const wonClr = "1fe044";

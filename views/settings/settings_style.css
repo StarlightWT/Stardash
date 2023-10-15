@@ -8,6 +8,8 @@ html {
 
 body {
 	background-color: var(--background-colour);
+	position: relative;
+	overflow: hidden;
 }
 
 ul {
@@ -33,6 +35,7 @@ li input {
 	width: 50%;
 	height: 30px;
 	margin-block: auto;
+	cursor: pointer;
 }
 
 li select {
@@ -62,4 +65,49 @@ li select {
 	width: 50%;
 	height: 30px;
 	margin-block: auto;
+}
+
+.updatingInfoElement h1,
+.copiedInfoElement h1 {
+	padding: 0;
+	margin: 0;
+}
+
+.updatingInfoElement,
+.copiedInfoElement {
+	position: absolute;
+	width: 15rem;
+	text-align: center;
+	margin-inline: auto;
+	/* bottom: 0; */
+	left: 0;
+	right: 0;
+	background-color: rgba(60, 255, 0, 0.473);
+	border-radius: 1rem;
+	padding-block: 1rem;
+	opacity: 0;
+	bottom: -10rem;
+	transition-duration: 0.5s;
+}
+
+.show {
+	bottom: 0;
+	opacity: 1;
+}
+
+i {
+	position: absolute;
+	left: 0.5rem;
+	top: 0.5rem;
+}
+
+i {
+	padding: 1rem;
+	border-radius: 50%;
+	background-color: var(--secondary-bg-colour);
+	cursor: pointer;
+}
+
+.main_ul {
+	padding-top: 4rem;
 }

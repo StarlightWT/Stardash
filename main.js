@@ -106,13 +106,12 @@ ipcMain.handle("setUserRole", async (e, id, role) => {
 	if (await database.setUserRole(id, role)) request.updateInfo();
 });
 
-ipcMain.handle("loadStatus", (event, status) => {
-	console.log(`[Main] Load status ${loadStatus}...`);
+ipcMain.handle("loadStatus", () => {
 	return loadStatus;
 });
 
-ipcMain.handle("updateSettings", () => {
-	request.updateInfo();
+ipcMain.handle("updateSettings", async () => {
+	return await request.updateInfo();
 });
 
 ipcMain.handle("version", async () => {
@@ -146,9 +145,9 @@ ipcMain.on("updateCheck", () => {
 //Load info and update it every 5 seconds
 async function startInfoUpdate(accessToken) {
 	loadStatus = await request.updateInfo(accessToken);
-	await request.get("extension").then((sessionList) => {
-		sessionList.results.forEach(async (session) => {
-			const profile = await request.get("profile");
+	request.get("extension").then((sessionList) => {
+		sessionList.results.forEach((session) => {
+			const profile = request.get("profile");
 			if (session.lock.user._id == profile._id) {
 				request.updateInfo(accessToken, session.sessionId);
 			}

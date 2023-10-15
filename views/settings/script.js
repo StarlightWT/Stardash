@@ -49,20 +49,6 @@ function select(selection) {
 	window.electronAPI.setUserRole(tokenCopy.value, selection);
 }
 
-tokenCopy.addEventListener("click", () => {
-	window.electronAPI.setClipboard(tokenCopy.value);
-});
-
-versionCopy.addEventListener("click", () => {
-	window.electronAPI.setClipboard(versionCopy.value);
-});
-
-backBtn.addEventListener("click", () => {
-	window.electronAPI.updateSettings().then(() => {
-		window.electronAPI.redirect("home");
-	});
-});
-
 logoutBtn.addEventListener("click", () => {
 	window.electronAPI.logout();
 });
@@ -81,3 +67,22 @@ devTriggerBtn.addEventListener("click", () => {
 			break;
 	}
 });
+
+var saving = false;
+async function saveAndExitSettings() {
+	if (saving) return;
+	saving = true;
+	const updatingInfoElement = document.getElementById("updatingInfo");
+	updatingInfoElement.classList.add("show");
+	if ((await window.electronAPI.updateSettings()) == 1)
+		window.electronAPI.redirect("home");
+}
+
+function copy(what) {
+	const copiedInfoElement = document.getElementById("copiedInfo");
+	copiedInfoElement.classList.add("show");
+	window.electronAPI.setClipboard(what);
+	setTimeout(() => {
+		copiedInfoElement.classList.remove("show");
+	}, 1000);
+}

@@ -1,10 +1,15 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="settings_style.css" />
+
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 	</head>
 	<body id="body">
-		<button id="backBtn">Back</button>
-		<ul>
+		<i class="fa-solid fa-arrow-left" onclick="saveAndExitSettings();"></i>
+		<!-- <button id="backBtn">Back</button> -->
+		<ul class="main_ul">
 			<li>
 				<h1>Token</h1>
 				<input
@@ -12,7 +17,8 @@
 					type="text"
 					name=""
 					id="tokenInput"
-					readonly />
+					readonly
+					onclick="copy(value)" />
 			</li>
 			<li>
 				<h1>Role</h1>
@@ -24,7 +30,13 @@
 			</li>
 			<li>
 				<h1>Version</h1>
-				<input class="text" type="text" name="" id="versionInput" readonly />
+				<input
+					class="text"
+					type="text"
+					name=""
+					id="versionInput"
+					readonly
+					onclick="copy(value)" />
 			</li>
 			<li>
 				<h1>Logout</h1>
@@ -51,6 +63,12 @@
 					<button id="checkUpdate" onclick="checkUpdate()">Check update</button>
 				</li>
 			</ul>
+		</div>
+		<div class="updatingInfoElement" id="updatingInfo">
+			<h1>Saving...</h1>
+		</div>
+		<div class="copiedInfoElement" id="copiedInfo">
+			<h1>Copied</h1>
 		</div>
 	</body>
 	<script src="script.js"></script>
