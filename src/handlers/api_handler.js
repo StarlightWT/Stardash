@@ -37,7 +37,7 @@ async function updateInfo(accessToken, sessionToken) {
 	return await updatePeriodicInfo(false);
 }
 
-async function get(what) {
+function get(what) {
 	switch (what) {
 		case "lock":
 			return lockVar;
@@ -55,7 +55,7 @@ async function get(what) {
 }
 
 async function action(what, option) {
-	call.action(what, option);
+	return await call.action(what, option);
 }
 
 module.exports = {

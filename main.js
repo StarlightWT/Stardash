@@ -122,18 +122,6 @@ ipcMain.handle("getStatus", async () => {
 	return await updater.getStatus();
 });
 
-ipcMain.on("log", async (event, title, description, role, colour, logIcon) => {
-	// console.log(`Logging... ${logIcon}`);
-	// await call.log(
-	// 	secrets.DEV_TKN,
-	// 	stardashConnectID,
-	// 	title,
-	// 	description,
-	// 	role,
-	// 	colour
-	// );
-});
-
 ipcMain.on("clip", async (event, text) => {
 	clipboard.writeText(text);
 });
@@ -145,13 +133,12 @@ ipcMain.on("updateCheck", () => {
 //Load info and update it every 5 seconds
 async function startInfoUpdate(accessToken) {
 	loadStatus = await request.updateInfo(accessToken);
-	request.get("extension").then((sessionList) => {
-		sessionList.results.forEach((session) => {
-			const profile = request.get("profile");
-			if (session.lock.user._id == profile._id) {
-				request.updateInfo(accessToken, session.sessionId);
-			}
-		});
+	var sessionList = request.get("extension");
+	sessionList.results.forEach((session) => {
+		const profile = request.get("profile");
+		if (session.lock.user._id == profile._id) {
+			request.updateInfo(accessToken, session.sessionId);
+		}
 	});
 	setInterval(async () => {
 		loadStatus = await request.updateInfo(accessToken);

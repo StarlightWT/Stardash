@@ -72,6 +72,28 @@ function updatePlayerTotal() {
 	if (playerStand) playerTotalTitle.innerHTML += `<br>(standing)`;
 }
 
+function playerWin(time, bj) {
+	if (bj) time *= 1.5;
+	else time *= 1.8;
+	window.electronAPI.action("remtime", time);
+	window.electronAPI.action("log", {
+		role: "extension",
+		colour: wonClr,
+		title: "BlackJack removed time",
+		description: "Removed time for winning at BJ",
+	});
+}
+
+function playerLose(time) {
+	window.electronAPI.action("addtime", time);
+	window.electronAPI.action("log", {
+		role: "extension",
+		colour: lostClr,
+		title: "BlackJack added time",
+		description: "Time added for losing at BJ",
+	});
+}
+
 function endGame() {
 	if (!gameActive) return;
 	while (secretDealerTotal < 17) {
@@ -79,59 +101,30 @@ function endGame() {
 	}
 	dealerTotal = secretDealerTotal;
 	gameEnd = true;
-	updateDealerTotal();
-	console.log(bet);
 	if (playerTotal > 21) {
 		winnerTitle.innerHTML = "dealer";
 		console.log("Adding time...");
-		window.electronAPI.action("addtime", bet);
-		window.electronAPI.log(
-			"BlackJack added time",
-			"Added time for losing at BJ",
-			"extension",
-			lostClr,
-			"far fa-club"
-		);
+		playerLose(bet);
 		return;
 	}
+	updateDealerTotal();
 	if (dealerTotal > 21) {
 		winnerTitle.innerHTML = "player";
 		console.log("Removing time...");
-		window.electronAPI.action("remtime", bet * 2);
-		window.electronAPI.log(
-			"BlackJack removed time",
-			"Removed time for winning at BJ",
-			"extension",
-			wonClr,
-			"far fa-club"
-		);
+		playerWin(bet, false);
 		return;
 	}
 	if (playerTotal == 21) {
 		console.log("Removing time...");
 		winnerTitle.innerHTML = "player";
 		playerTotalTitle.innerHTML = "21! BlackJack!";
-		window.electronAPI.action("remtime", bet * 1.5);
-		window.electronAPI.log(
-			"BlackJack removed time",
-			"Removed time for winning at BJ",
-			"extension",
-			wonClr,
-			"far fa-club"
-		);
+		playerWin(bet, true);
 		return;
 	}
 	if (playerTotal < dealerTotal) {
 		console.log("Adding time...");
 		winnerTitle.innerHTML = "dealer";
-		window.electronAPI.action("addtime", bet);
-		window.electronAPI.log(
-			"BlackJack added time",
-			"Added time for losing at BJ",
-			"extension",
-			lostClr,
-			"far fa-club"
-		);
+		playerLose(bet);
 		return;
 	}
 	if (playerTotal == dealerTotal) {
@@ -142,14 +135,7 @@ function endGame() {
 	if (playerTotal > dealerTotal) {
 		console.log("Adding time...");
 		winnerTitle.innerHTML = "player";
-		window.electronAPI.action("remtime", bet * 2);
-		window.electronAPI.log(
-			"BlackJack added time",
-			"Added time for losing at BJ",
-			"extension",
-			lostClr,
-			"far fa-club"
-		);
+		playerWin(bet, false);
 		return;
 	}
 }
@@ -201,10 +187,10 @@ staBtn.addEventListener("click", async () => {
 	console.log(`Trying to start game!\nActive: ${gameActive}\nEnd ${!gameEnd}`);
 	if (gameActive && !gameEnd) return;
 	var value = betInput.value;
-	// if (value.length < 2 && !value.includes(":")) return;
 
 	var inputArr = value.split(":");
 	bet = inputArr[0] * 60 * 60 + inputArr[1] * 60;
+	if (bet <= 0) return;
 
 	startGame();
 

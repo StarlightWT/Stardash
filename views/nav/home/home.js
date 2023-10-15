@@ -193,7 +193,17 @@ async function updateLockHistory() {
 	//Request lock history from api
 	const lockHistory = await window.electronAPI.get("history");
 	//Get only latest 10 logs
-	const lastLogs = lockHistory.results.slice(0, 10);
+	const logs = lockHistory.results;
+	var lastLogs = logs.filter(function (log) {
+		if (
+			(log.type != "time_changed" && log.extension != "stardash-connect") ||
+			(log.type == "time_changed" && log.extension != "stardash-connect") ||
+			(log.type != "time_changed" && log.extension == "stardash-connect")
+		)
+			return 1;
+		return 0;
+	});
+	console.log(lastLogs);
 	//Get the log list and clear it
 	const logList = await document.getElementById("logList");
 	logList.innerHTML = "";
@@ -218,8 +228,6 @@ async function updateLockHistory() {
 				lastLogs[i].extension.slice(1);
 			var temp = extensionTitle.split("-");
 			extensionTitle = temp.join(" ");
-			if (extensionTitle.startsWith("Stardash"))
-				extensionTitle = extensionTitle.slice(0, 8);
 			title = extensionTitle + lastLogs[i].title.slice(6);
 		}
 

@@ -1,15 +1,15 @@
-console.error(`[API Calls] LOADED! THIS MODULE SHOULDN'T BE LOADED!`);
-
 const secrets = require("../../secrets.json");
 
 var token, session;
 function setToken(tokenInput) {
 	if (tokenInput == null || tokenInput == undefined) return;
 	token = tokenInput;
+	console.log(`[API Calls] Updated oauth token! ${token.slice(10, 15)}`);
 }
 function setSession(sessionInput) {
 	if (sessionInput == null || sessionInput == undefined) return;
 	session = sessionInput;
+	console.log(`[API Calls] Updated session token! ${session.slice(5, 10)}`);
 }
 /**
  *
@@ -43,6 +43,7 @@ async function get(what, option) {
 		case "history":
 			link += `/locks/${option}/history`;
 			method = "POST";
+			var history = 1;
 			break;
 		case "extension":
 			token = secrets.DEV_TKN;
@@ -86,7 +87,7 @@ async function get(what, option) {
 /**
  *
  * @param {string} what addtime, remtime, freeze, unfreeze, togglefreeze, pillory, log
- * @param {*} option Can be an object, for log {role, colour, title, description}, for pillory {duration, reason}
+ * @param {*} option Can be an object, for log {role, colour, title, description, icon}, for pillory {duration, reason}
  * @returns
  */
 async function action(what, option) {
@@ -117,7 +118,7 @@ async function action(what, option) {
 			};
 			break;
 		case "log":
-			link = `https://api.chaster.app/api/extensions/sessions/${sessionID}/logs/custom`;
+			link = `https://api.chaster.app/api/extensions/sessions/${session}/logs/custom`;
 			body = {
 				role: option.role,
 				color: `#${option.colour}`,
@@ -135,6 +136,7 @@ async function action(what, option) {
 		},
 		body: JSON.stringify(body),
 	});
+	console.log(response.status);
 	return response;
 }
 
