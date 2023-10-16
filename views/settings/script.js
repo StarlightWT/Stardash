@@ -20,7 +20,9 @@ async function loadsettings() {
 
 	tokenCopy.value = dbprofile.id; //Set token into field
 	//Check for dev mode
-	if (dbprofile.role == "developer") devTrigger.style = "display: flex";
+	console.log(dbprofile.tier);
+	if (dbprofile.tier.toLowerCase() == "developer")
+		devTrigger.style = "display: flex";
 
 	//Get verison
 	const version = await window.electronAPI.getVersion();
