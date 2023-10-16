@@ -203,7 +203,7 @@ async function updateLockHistory() {
 			return 1;
 		return 0;
 	});
-	console.log(lastLogs);
+	lastLogs = lastLogs.slice(0, 5);
 	//Get the log list and clear it
 	const logList = await document.getElementById("logList");
 	logList.innerHTML = "";

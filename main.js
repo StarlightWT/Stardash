@@ -19,6 +19,11 @@ function createWindow() {
 	return new BrowserWindow({
 		minWidth: 1000,
 		minHeight: 800,
+		width: 1000,
+		height: 800,
+		roundedCorners: true,
+		icon: "./icon.ico",
+		backgroundColor: "#000",
 		webPreferences: {
 			preload: path.join(__dirname, "/src/preload.js"),
 		},
@@ -40,7 +45,6 @@ app.whenReady().then(async () => {
 	}, 1000 * 60);
 
 	win = createWindow();
-	win.setIcon("./icon.ico");
 
 	//Authorize user
 	session.defaultSession.webRequest.onBeforeRequest(
