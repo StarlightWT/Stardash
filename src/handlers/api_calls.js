@@ -42,8 +42,10 @@ async function get(what, option) {
 			break;
 		case "history":
 			link += `/locks/${option}/history`;
+			body = {
+				limit: 100,
+			};
 			method = "POST";
-			var history = 1;
 			break;
 		case "extension":
 			token = secrets.DEV_TKN;

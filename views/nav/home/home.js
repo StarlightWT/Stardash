@@ -203,13 +203,12 @@ async function updateLockHistory() {
 			return 1;
 		return 0;
 	});
-	console.log(lastLogs);
 	//Get the log list and clear it
 	const logList = await document.getElementById("logList");
 	logList.innerHTML = "";
 
 	//Add each log to the list
-	lastLogs.forEach(async (log) => {
+	lastLogs.slice(0, 5).forEach(async (log) => {
 		const entry = document.createElement("li");
 		const entryTitle = document.createElement("h1");
 		const entryDescription = document.createElement("p");
