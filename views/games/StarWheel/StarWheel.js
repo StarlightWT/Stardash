@@ -1,29 +1,51 @@
-function scrollAndStopRandomly() {
-	console.log("Trying to spin...");
-	const ul = document.getElementById("spinner");
-	const listItems = ul.getElementsByTagName("li");
-	let currentIndex = 0;
+function scrollList() {
+	const list = document.getElementById("spinner");
+	const listItems = list.querySelectorAll("li");
+	let scrollSpeed = 25; // Initial scroll speed
+	const deceleration = 0.9; // Rate of deceleration
+	let currentItem = 0;
+	let targetItem = Math.floor(Math.random() * listItems.length);
+	let = false;
 
-	const scrollInterval = setInterval(function () {
-		// Scroll to the current list item's position
-		const offsetTop = listItems[currentIndex].offsetTop;
-		ul.scrollTop = offsetTop;
+	function scroll() {
+		if (!slowingDown) {
+			list.scrollTop += scrollSpeed;
 
-		// Increment the current index for the next iteration
-		currentIndex = (currentIndex + 1) % listItems.length;
-	}, 100); // Adjust the scroll speed (in milliseconds) as needed
+			if (list.scrollTop >= list.scrollHeight - list.clientHeight) {
+				list.scrollTop = 0; // Reset to the top when reaching the end
+			}
+		} else {
+			if (list.scrollTop >= listItems[targetItem].offsetTop) {
+				clearInterval(scrollInterval);
+			} else {
+				list.scrollTop += scrollSpeed;
+				scrollSpeed -= deceleration;
 
-	// After a certain time (e.g., 5000ms or 5 seconds), stop scrolling
-	setTimeout(function () {
-		clearInterval(scrollInterval);
+				if (scrollSpeed < 0) {
+					scrollSpeed = 0; // Ensure it doesn't become negative
+				}
+			}
+		}
 
-		// Choose a random index
-		const randomIndex = Math.floor(Math.random() * listItems.length);
+		if (
+			!slowingDown &&
+			list.scrollTop >=
+				listItems[currentItem].offsetTop + listItems[currentItem].clientHeight
+		) {
+			currentItem++;
+			if (currentItem === listItems.length) {
+				currentItem = 0;
+			}
+		}
 
-		// Get the top offset of the selected list item
-		const offsetTop = listItems[randomIndex].offsetTop;
+		if (currentItem === targetItem) {
+			slowingDown = true;
+		}
+	}
 
-		// Scroll to the selected list item's position
-		ul.scrollTop = offsetTop;
-	}, 2000); // Adjust the stop time (in milliseconds) as needed
+	// Change the scroll speed by adjusting the second argument (e.g., 20 for faster)
+	const scrollInterval = setInterval(scroll, 20);
 }
+
+// Call the scrollList function to start scrolling
+scrollList();

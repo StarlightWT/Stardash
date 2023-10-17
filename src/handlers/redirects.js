@@ -13,7 +13,7 @@ function getPaths(dirPath, arrayOfFiles) {
 	});
 	return arrayOfFiles;
 }
-const paths = getPaths("./views");
+const paths = getPaths(path.join(__dirname + "../../../views"));
 
 async function redirect(win, location) {
 	if (location == "slots") {
