@@ -48,7 +48,6 @@ async function get(what, option) {
 			method = "POST";
 			break;
 		case "extension":
-			token = secrets.DEV_TKN;
 			link += "/api/extensions/sessions/search";
 			body = {
 				status: "locked",
@@ -71,6 +70,17 @@ async function get(what, option) {
 			});
 			break;
 		case "POST":
+			if (link.includes("/api/extensions/sessions/search")) {
+				response = await fetch(link, {
+					method: "POST",
+					headers: {
+						Authorization: `Bearer ${secrets.DEV_TKN}`,
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(body),
+				});
+				break;
+			}
 			response = await fetch(link, {
 				method: "POST",
 				headers: {
@@ -133,7 +143,7 @@ async function action(what, option) {
 	const response = await fetch(link, {
 		method: "POST",
 		headers: {
-			Authorization: `Bearer ${token}`,
+			Authorization: `Bearer ${secrets.DEV_TKN}`,
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify(body),

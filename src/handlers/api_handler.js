@@ -17,6 +17,12 @@ async function updatePeriodicInfo(loaded) {
 		loaded = true;
 	profileVar = await call.get("profile"); //Call api and ask for the logged in profile's info
 	dbprofileVar = await database.getUser(profileVar._id);
+	if (profileVar && dbprofileVar && dbprofileVar.length == 0)
+		database.createNewUser(
+			profileVar.username,
+			profileVar._id,
+			profileVar.role
+		);
 	//Lockee
 	lockVar = await call.get("lock"); //Get lock of the account from the api
 	if (lockVar[0]?._id != undefined || lockVar[0]?._id != null) {

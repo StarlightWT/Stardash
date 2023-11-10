@@ -93,14 +93,14 @@ async function refreshTokens() {
 
 		accessToken = response.data.access_token;
 		refreshToken = response.data.refresh_token;
-		console.log("[Oauth] Access token updated!!!");
+		console.log("[Oauth] Access&Refresh token updated!!!");
 	} catch (e) {
 		console.log(`You stupid bitch wtf did you do: ${e}`);
 		throw e;
 	}
 }
 
-var stateKey = Math.floor(Math.random() * 10000000000);
+const stateKey = Math.floor(Math.random() * 10000000000);
 var authLink = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/auth?client_id=${secrets.CLIENT_ID}&response_type=code&scope=profile locks keyholder&state=${stateKey}`;
 
 module.exports = {

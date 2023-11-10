@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
 	id: String,
 	discordId: String,
 	subscribed: Boolean,
+	tier: String,
 	role: String,
 });
 
@@ -16,11 +17,13 @@ const userModel = mongoose.model("User", userSchema, "users");
 
 async function createNewUser(username, id, role) {
 	if (!username || !id || !role) return;
+	if (role == "unspecified") role = "switch";
 	var user = new userModel({
 		username: username,
 		id: id,
 		discordId: null,
 		subscribed: false,
+		tier: "Basic",
 		role: role,
 	});
 

@@ -1,6 +1,6 @@
 {
 	"name": "stardash",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Chaster dashboard",
 	"main": "./main.js",
 	"scripts": {

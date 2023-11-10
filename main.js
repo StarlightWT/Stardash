@@ -42,7 +42,7 @@ app.whenReady().then(async () => {
 	setInterval(() => {
 		console.log("Updating token!!");
 		oauth.refreshTokens();
-	}, 1000 * 60);
+	}, 1000 * 300);
 
 	win = createWindow();
 
@@ -145,6 +145,6 @@ async function startInfoUpdate(accessToken) {
 		}
 	});
 	setInterval(async () => {
-		loadStatus = await request.updateInfo(accessToken);
+		loadStatus = await request.updateInfo();
 	}, 5 * 1000); //5seconds
 }
