@@ -13,4 +13,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	action: (what, option) => ipcRenderer.invoke("action", what, option),
 	active: (location) => ipcRenderer.invoke("active", location),
 	updateSettings: () => ipcRenderer.invoke("updateSettings"),
+	createWeheel: (container, props) =>
+		ipcRenderer.invoke("createWheel", container, props),
 });

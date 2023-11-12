@@ -65,7 +65,7 @@ async function get(what, option) {
 			response = await fetch(link, {
 				method: "GET",
 				headers: {
-					Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${secrets.DEV_TKN}`,
 				},
 			});
 			break;

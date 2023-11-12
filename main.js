@@ -6,10 +6,7 @@ const request = require("./src/handlers/api_handler.js");
 const redirects = require("./src/handlers/redirects.js");
 const database = require("./src/handlers/db_handler.js");
 const updater = require("./src/handlers/updater.js");
-
 let win;
-var extension;
-var stardashConnectID;
 var loadStatus = 0;
 
 //Run auto-updater

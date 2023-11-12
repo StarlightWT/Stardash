@@ -85,6 +85,7 @@ async function loadAllKHLocks() {
 	const currentDate = Date.now(); //Is also UTC
 
 	const KHLockList = document.getElementById("KHLocks");
+
 	KHLockList.innerHTML = "";
 	KHLocks.forEach((lock) => {
 		var endDate = new Date(lock.endDate).getTime(); //Is UTC
