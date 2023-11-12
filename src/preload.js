@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	setUserRole: (id, role) => ipcRenderer.invoke("setUserRole", id, role),
 	get: (what) => ipcRenderer.invoke("get", what),
 	action: (what, option) => ipcRenderer.invoke("action", what, option),
+	khaction: (what, option) => ipcRenderer.invoke("khaction", what, option),
 	active: (location) => ipcRenderer.invoke("active", location),
 	updateSettings: () => ipcRenderer.invoke("updateSettings"),
 	createWeheel: (container, props) =>

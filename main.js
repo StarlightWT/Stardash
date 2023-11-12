@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain, session, clipboard } = require("electron");
 const path = require("node:path");
 const oauth = require("./src/handlers/oauth.js");
-const secrets = require("./secrets.json");
 const request = require("./src/handlers/api_handler.js");
 const redirects = require("./src/handlers/redirects.js");
 const database = require("./src/handlers/db_handler.js");
@@ -39,7 +38,7 @@ app.whenReady().then(async () => {
 	setInterval(() => {
 		console.log("Updating token!!");
 		oauth.refreshTokens();
-	}, 1000 * 300);
+	}, 1000 * 100);
 
 	win = createWindow();
 
@@ -101,6 +100,10 @@ ipcMain.handle("get", async (event, what, option) => {
 ipcMain.handle("action", async (event, what, option) => {
 	console.log(what + "||" + option);
 	return await request.action(what, option);
+});
+ipcMain.handle("khaction", async (event, what, option) => {
+	console.log(what + "||" + option);
+	return await request.khaction(what, option);
 });
 
 ipcMain.handle("setUserRole", async (e, id, role) => {

@@ -53,29 +53,6 @@ async function updateLock() {
 	lockObject = await window.electronAPI.get("lock"); //Get lock list json from API
 	lock = lockObject[0]; //Select first lock
 
-	// if (DBProfile.tier != "Developer" && !DBProfile.subscribed) {
-	// 	console.warn("Unsupported lock / No lock found!!!");
-	// 	const body = document.getElementById("dash_body");
-
-	// 	body.innerHTML = "";
-
-	// 	var errorMessage = document.createElement("h1");
-	// 	var errorMessage2 = document.createElement("h2");
-	// 	var errorMessage3 = document.createElement("p");
-	// 	var subscription = document.createElement("p");
-	// 	body.append(errorMessage);
-	// 	body.append(errorMessage2);
-	// 	body.append(errorMessage3);
-	// 	body.append(subscription);
-	// 	body.style.textAlign = "center";
-	// 	errorMessage.innerHTML = "Error getting lock/confirming subscription";
-	// 	errorMessage2.innerHTML = "Your subscription or lock wasn't found!";
-	// 	errorMessage3.innerHTML =
-	// 		"Please relaunch the app, if issue persits please message Starlight(@starlightwt) on discord!";
-	// 	subscription.innerHTML = `If you do not have a subscription <a href="https://ko-fi.com/mistressevelyn/tiers">click here</a> to get it!`;
-	// 	return;
-	// }
-
 	return lock;
 }
 
@@ -112,10 +89,34 @@ async function loadAllKHLocks() {
 
 		var name = document.createElement("h3");
 		var card = document.createElement("li");
+		var actionPanel = document.createElement("div");
+		actionPanel.classList.add("actionPanel");
+		var changeTime = document.createElement("i");
+		var toggleFreeze = document.createElement("i");
 		name.innerHTML = lock.user.username;
 		timer.innerHTML = `${days}:${hours}:${minutes}:${seconds}`;
 		card.append(name);
 		card.append(timer);
+
+		changeTime.classList.add("fa-regular");
+		changeTime.classList.add("fa-clock");
+		changeTime.onclick = function (e) {
+			console.log(lock._id);
+			//Add file
+		};
+		toggleFreeze.classList.add("fa-regular");
+		toggleFreeze.classList.add("fa-snowflake");
+		toggleFreeze.onclick = function (e) {
+			//Toggle freeze on lock
+			console.log(lock);
+			window.electronAPI.khaction("freeze", {
+				state: !lock.isFrozen,
+				id: lock._id,
+			});
+		};
+		actionPanel.append(changeTime);
+		actionPanel.append(toggleFreeze);
+		card.append(actionPanel);
 		KHLockList.append(card);
 	});
 }

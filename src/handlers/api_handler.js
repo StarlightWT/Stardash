@@ -63,9 +63,12 @@ function get(what) {
 async function action(what, option) {
 	return await call.action(what, option);
 }
-
+async function khaction(what, option) {
+	return await call.khaction(what, option);
+}
 module.exports = {
 	get,
 	action,
+	khaction,
 	updateInfo,
 };

@@ -111,3 +111,20 @@ html {
 	border-top: solid white;
 	border-bottom: solid white;
 }
+
+.fa-regular {
+	width: 20px;
+	height: 20px;
+	margin: 0;
+	padding: 0;
+}
+
+i:hover {
+	cursor: pointer;
+}
+
+.actionPanel {
+	display: flex;
+	height: 20px;
+	position: relative;
+}

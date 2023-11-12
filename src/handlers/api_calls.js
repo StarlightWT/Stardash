@@ -151,10 +151,31 @@ async function action(what, option) {
 	console.log(response.status);
 	return response;
 }
+async function khaction(what, option) {
+	var link = `https://api.chaster.app/`;
+	var body;
+	switch (what) {
+		case "freeze":
+			link += `locks/${option.id}/freeze`;
+			body = { isFrozen: option.state };
+			break;
+	}
 
+	const response = await fetch(link, {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${secrets.DEV_TKN}`,
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(body),
+	});
+	console.log(response.status);
+	return response;
+}
 module.exports = {
 	setToken,
 	setSession,
 	get,
 	action,
+	khaction,
 };
