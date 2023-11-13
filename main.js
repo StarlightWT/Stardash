@@ -80,8 +80,8 @@ ipcMain.on("logout", () => {
 });
 
 //Handle redirects
-ipcMain.on("redirect", (event, page) => {
-	redirects.redirect(win, page);
+ipcMain.on("redirect", (event, page, modal) => {
+	redirects.redirect(win, page, modal);
 });
 
 let activeLocation;

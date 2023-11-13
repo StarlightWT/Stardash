@@ -1,7 +1,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
-	redirect: (page) => ipcRenderer.send("redirect", page),
+	redirect: (page, modal) => ipcRenderer.send("redirect", page, modal),
 	loaded: () => ipcRenderer.invoke("loadStatus"),
 	logout: () => ipcRenderer.send("logout"),
 	setClipboard: (text) => ipcRenderer.send("clip", text),

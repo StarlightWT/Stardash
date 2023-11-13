@@ -10,6 +10,7 @@ html {
 body {
 	margin: 0;
 	padding: 0;
+	background-color: var(--background-colour);
 }
 
 i {
@@ -41,6 +42,7 @@ i {
 
 ul {
 	list-style: none;
+	padding: 0;
 }
 
 ul li {

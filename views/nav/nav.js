@@ -27,8 +27,8 @@ fetch("../nav.html").then(async (nav) => {
 
 //Get buttons
 
-function redirect(location) {
-	window.electronAPI.redirect(location);
+function redirect(location, modal) {
+	window.electronAPI.redirect(location, modal);
 }
 
 function setActive(location) {

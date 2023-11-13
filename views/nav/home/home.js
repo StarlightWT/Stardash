@@ -157,7 +157,13 @@ async function updateLockExtensions(lock) {
 		const extensionId = extension.slice(0, 24);
 		const lockId = lock._id;
 		a.innerHTML = extension.slice(25);
-		a.href = `https://chaster.app/locks/${lockId}/extensions/${extensionId}`;
+		a.removeAttribute("href");
+		// a.href = `https://chaster.app/locks/${lockId}/extensions/${extensionId}`;
+		a.onclick = function (e) {
+			window.electronAPI.redirect(
+				`https://chaster.app/locks/${lockId}/extensions/${extensionId}`
+			);
+		};
 	});
 }
 

@@ -51,5 +51,5 @@ async function updateLockHistory() {
 updateLockHistory();
 
 function back() {
-	window.electronAPI.redirect("home");
+	window.close();
 }
