@@ -7,16 +7,25 @@ StarDash is an extension of Chaster which adds games, functionality and QoL chan
 App itself is open source, usage is limited to free version with most of basic access, and premium with full access.
 
 Games:
-  Blackjack
-  Chess
-  Poker *
-  Slots
-  Hazard *
-  Edgeathon
-
-Functionality: 
+<ul>
+  <li>Blackjack</li>
+  <li>Chess</li>
+  <li>Poker *</li>
+  <li>Slots</li>
+  <li>Hazard *</li>
+  <li>Edgeathon</li>
+</ul>
+Functionality:
+<ul>
+  <li>
   Total Power Exchange addons
+  </li>
+  <li>
   Reward System for completion of tasks
+  </li>
+  <li>
   "Points Shop" to get rewards using the points
-  
+  </li>
+</ul>
+  <br>
 * Games marked with a star, are multiplayer only!
