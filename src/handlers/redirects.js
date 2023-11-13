@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const request = require("./api_handler");
+const { BrowserWindow } = require("electron");
 function getPaths(dirPath, arrayOfFiles) {
 	files = fs.readdirSync(dirPath);
 	arrayOfFiles = arrayOfFiles || [];
@@ -23,12 +24,21 @@ async function redirect(win, location) {
 		if (dbProfile.role != "developer") return;
 	}
 	console.log(`[Redirects] Trying to redirect to ${location}...`);
-	paths.forEach((path) => {
-		if (path.endsWith(location) || path.endsWith(location + ".html"))
-			win.loadFile(path).then(() => {
-				win.show();
-			});
-	});
+	if (location.startsWith("http")) {
+		const child = new BrowserWindow({ parent: win, modal: true, show: false });
+
+		child.loadURL(location);
+		child.once("ready-to-show", () => {
+			child.show();
+		});
+	} else
+		paths.forEach((path) => {
+			if (path.endsWith(location) || path.endsWith(location + ".html"))
+				win.loadFile(path).then(() => {
+					win.show();
+				});
+		});
+
 	return console.log(`[Redirects] Redirected!`);
 }
 

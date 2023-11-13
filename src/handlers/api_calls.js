@@ -159,6 +159,12 @@ async function khaction(what, option) {
 			link += `locks/${option.id}/freeze`;
 			body = { isFrozen: option.state };
 			break;
+		case "settings":
+			link += `locks/${option.id}/settings`;
+			body = {
+				displayRemainingTime: option.time,
+				hideTimeLogs: option.logs,
+			};
 	}
 
 	const response = await fetch(link, {
