@@ -149,17 +149,14 @@ async function updateLockExtensions(lock) {
 	//Add every extension to the extension list in the UI
 	extension_list.forEach((extension) => {
 		const li = document.createElement("li");
-		const a = document.createElement("a");
 		const ul = document.getElementById("extensionList");
-		li.append(a);
 		ul.append(li);
 
 		const extensionId = extension.slice(0, 24);
 		const lockId = lock._id;
-		a.innerHTML = extension.slice(25);
-		a.removeAttribute("href");
-		// a.href = `https://chaster.app/locks/${lockId}/extensions/${extensionId}`;
-		a.onclick = function (e) {
+		li.innerHTML = extension.slice(25);
+		li.classList.add("selectable");
+		li.onclick = function (e) {
 			window.electronAPI.redirect(
 				`https://chaster.app/locks/${lockId}/extensions/${extensionId}`
 			);

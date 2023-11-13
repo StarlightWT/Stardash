@@ -13,6 +13,7 @@ html {
 	background-color: var(--secondary-bg-colour);
 	text-align: center;
 	font-size: 30px;
+	border-radius: 2rem;
 }
 
 #dash_main {
@@ -52,11 +53,13 @@ html {
 	list-style: none;
 	position: sticky;
 	padding: 0;
+	border-radius: 1rem;
+	overflow: hidden;
 }
 
 #extensionList li {
 	background-color: var(--secondary-bg-colour);
-	padding: 15px;
+	padding-block: 10px;
 }
 
 #extensionList li a {
@@ -64,8 +67,8 @@ html {
 	text-decoration: none;
 }
 
-#extensionList li a:hover {
-	color: purple;
+#extensionList .selectable:hover {
+	background-color: var(--accent-colour);
 	cursor: pointer;
 	transition-duration: 0.25s;
 }
@@ -101,6 +104,11 @@ html {
 	padding: 0;
 }
 
+#sidebar {
+	text-align: center;
+	width: 25%;
+}
+
 .SectionTitle {
 	width: 100%;
 	padding-block: 0.5rem;
@@ -132,4 +140,11 @@ i:hover {
 	display: flex;
 	height: 20px;
 	position: relative;
+}
+
+#extTitle {
+	font-size: large;
+	font-weight: bold;
+	border-bottom: solid 3px white;
+	padding: 0;
 }
