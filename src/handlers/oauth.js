@@ -11,7 +11,7 @@ const redirectUri = "http://localhost:5000/callback";
 const secrets = require("../../secrets.json");
 const clientId = secrets.CLIENT_ID;
 const superSecretSecret = secrets.CLIENT_SECRET;
-
+const request = require("./api_handler");
 const tokenUrl = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/token`;
 
 let accessToken = null,
@@ -94,6 +94,8 @@ async function refreshTokens() {
 		accessToken = response.data.access_token;
 		refreshToken = response.data.refresh_token;
 		console.log("[Oauth] Access&Refresh token updated!!!");
+		console.log(`|${accessToken.slice(0, 5)}| Refreshed!`);
+		request.updateInfo(accessToken);
 	} catch (e) {
 		console.log(`You stupid bitch wtf did you do: ${e}`);
 		throw e;

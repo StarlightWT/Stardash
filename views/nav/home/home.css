@@ -67,6 +67,10 @@ html {
 	text-decoration: none;
 }
 
+.selectable {
+	transition-duration: 0.25s;
+}
+
 #extensionList .selectable:hover {
 	background-color: var(--accent-colour);
 	cursor: pointer;
