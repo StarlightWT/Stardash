@@ -53,7 +53,7 @@ app.whenReady().then(async () => {
 		}
 	);
 
-	// win.removeMenu();
+	win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 
@@ -133,18 +133,29 @@ ipcMain.on("clip", async (event, text) => {
 ipcMain.on("updateCheck", () => {
 	updater.check();
 });
+let network = true;
+ipcMain.on("network", async (event, status) => {
+	if (status == "online") {
+		network = true;
+		if (activeLocation == "loading") redirects.redirect(win, "home");
+	}
+	if (status == "offline") {
+		network = false;
+		if (activeLocation != "loading") redirects.redirect(win, "loading");
+	}
+});
 
 //Load info and update it every 5 seconds
 async function startInfoUpdate(accessToken) {
-	loadStatus = await request.updateInfo(accessToken);
+	loadStatus = await request.updateInfo(accessToken, null, network);
 	var sessionList = request.get("extension");
 	sessionList.results.forEach((session) => {
-		const profile = request.get("profile");
+		const profile = request.get("profile", null, network);
 		if (session.lock.user._id == profile._id) {
-			request.updateInfo(accessToken, session.sessionId);
+			request.updateInfo(accessToken, session.sessionId, network);
 		}
 	});
 	setInterval(async () => {
-		loadStatus = await request.updateInfo();
+		loadStatus = await request.updateInfo(null, null, network);
 	}, 5 * 1000); //5seconds
 }

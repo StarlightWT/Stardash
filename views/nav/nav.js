@@ -35,3 +35,24 @@ function setActive(location) {
 	const activePage = document.getElementById(location);
 	activePage.classList.add("active");
 }
+
+const internetStatus = document.getElementById("internetStatus");
+window.addEventListener("load", function (event) {
+	detectInternet();
+});
+window.addEventListener("online", function (event) {
+	detectInternet();
+});
+window.addEventListener("offline", function (event) {
+	detectInternet();
+});
+
+function detectInternet() {
+	if (navigator.onLine) {
+		console.log("online");
+		window.electronAPI.network("online");
+	} else {
+		console.log("offline");
+		window.electronAPI.network("offline");
+	}
+}

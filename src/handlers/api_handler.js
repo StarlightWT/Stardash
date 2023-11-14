@@ -37,10 +37,11 @@ async function updatePeriodicInfo(loaded) {
 }
 
 //PeriodicInfo
-async function updateInfo(accessToken, sessionToken) {
+async function updateInfo(accessToken, sessionToken, network) {
 	if (accessToken) call.setToken(accessToken);
 	if (sessionToken) call.setSession(sessionToken);
-	return await updatePeriodicInfo(false);
+	if (network) return await updatePeriodicInfo(false);
+	else return 0;
 }
 
 function get(what) {

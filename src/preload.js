@@ -16,4 +16,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	updateSettings: () => ipcRenderer.invoke("updateSettings"),
 	createWeheel: (container, props) =>
 		ipcRenderer.invoke("createWheel", container, props),
+	network: (status) => ipcRenderer.send("network", status),
 });

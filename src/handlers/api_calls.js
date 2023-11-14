@@ -17,10 +17,11 @@ function setSession(sessionInput) {
  * @param {string} option History - lockId
  * @returns
  */
-async function get(what, option) {
+async function get(what, option, network) {
 	var link = "https://api.chaster.app";
 	var body, method;
 	let response;
+	if (network == false) return;
 	switch (what) {
 		case "profile":
 			link += "/auth/profile";

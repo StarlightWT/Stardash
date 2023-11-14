@@ -29,7 +29,7 @@ async function redirect(win, location, modal) {
 			parent: win,
 			modal: true,
 			show: false,
-			// autoHideMenuBar: true,
+			autoHideMenuBar: true,
 			minimizable: false,
 			fullscreenable: false,
 			resizable: false,
