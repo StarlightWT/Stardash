@@ -7,7 +7,21 @@
 		<link rel="stylesheet" href="hazard.css" />
 	</head>
 	<body>
-		<h1>Hello world!</h1>
+		<div class="setup" id="setup">
+			<h1>Bet time</h1>
+			<input type="time" name="bet" id="bet" />
+			<h1>Main</h1>
+			<input type="text" name="main" id="main" placeholder="5-9" />
+		</div>
+		<div class="game hidden" id="game">
+			<div class="diceWrapper">
+				<h2 class="dice" id="0">5</h2>
+				<h2 class="dice" id="1">5</h2>
+			</div>
+		</div>
+		<div class="wrapper">
+			<button id="throwDiceBtn" onclick="throwDice()">Start</button>
+		</div>
 		<script src="hazard.js"></script>
 	</body>
 </html>
