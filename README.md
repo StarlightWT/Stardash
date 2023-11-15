@@ -12,7 +12,7 @@ Games:
   <li>Chess</li>
   <li>Poker *</li>
   <li>Slots</li>
-  <li>Hazard *</li>
+  <li>Hazard</li>
   <li>Edgeathon</li>
 </ul>
 Functionality:
