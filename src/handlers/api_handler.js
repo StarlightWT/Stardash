@@ -1,7 +1,7 @@
 const call = require("./api_calls");
 const database = require("./db_handler");
-let profileVar,
-	dbprofileVar,
+let profileVar = null,
+	dbprofileVar = null,
 	lockVar,
 	lockHistoryVar,
 	starConnectVar,
@@ -41,6 +41,10 @@ async function updatePeriodicInfo(loaded, network) {
 async function updateInfo(accessToken, sessionToken, network) {
 	if (accessToken) call.setToken(accessToken);
 	if (sessionToken) call.setSession(sessionToken);
+	if (accessToken == "clear") {
+		profileVar = null;
+		dbprofileVar = null;
+	}
 	if (network) return await updatePeriodicInfo(false, network);
 	else return 0;
 }

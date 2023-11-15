@@ -1,11 +1,5 @@
 @import url(../../general.css);
 
-body {
-	background-color: var(--background-colour);
-	margin: 0;
-	padding: 0;
-}
-
 .setup {
 	width: 20%;
 	margin-inline: auto;

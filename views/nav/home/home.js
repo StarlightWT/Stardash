@@ -40,13 +40,18 @@ async function loadLockInfo(profile, DBProfile) {
 	}, 1000);
 }
 
+var KhLocksUpdate = [];
 async function loadKHInfo() {
 	//Update all information upon page load
 	loadAllKHLocks();
+	KhLocksUpdate = [];
 	//Setup intervals to keep info up to date
 	setInterval(async () => {
 		loadAllKHLocks();
-	}, 1500);
+	}, 1000);
+	setInterval(() => {
+		KhLocksUpdate = [];
+	}, 5000);
 }
 
 async function updateLock() {
@@ -57,14 +62,24 @@ async function updateLock() {
 }
 
 async function loadAllKHLocks() {
-	var KHLocks = await window.electronAPI.get("khlocks");
-
+	const KHLocks = await window.electronAPI.get("khlocks");
+	//Setup home.js khlocks
 	const currentDate = Date.now(); //Is also UTC
 
 	const KHLockList = document.getElementById("KHLocks");
 
 	KHLockList.innerHTML = "";
+	for (i = 0; i <= KHLockList.length; i++) {
+		if (KhLocksUpdate[i] == undefined || KhLocksUpdate[i] == null) {
+			console.log(KhLocksUpdate[i]);
+			console.log("CHANGING!!");
+			KhLocksUpdate[i] = { id: lock._id, status: "notSet" };
+			console.log(KhLocksUpdate[i]);
+		}
+	}
+
 	KHLocks.forEach((lock) => {
+		var changing = false;
 		var endDate = new Date(lock.endDate).getTime(); //Is UTC
 		var timeLeft = endDate - currentDate;
 		//	if lock is frozen calculate time from the time of being frozen.
@@ -87,43 +102,69 @@ async function loadAllKHLocks() {
 		var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 		if (seconds < 10) seconds = "0" + `${seconds}`;
 
-		var name = document.createElement("h3");
-		var card = document.createElement("li");
-		var actionPanel = document.createElement("div");
-		actionPanel.classList.add("actionPanel");
-		var changeTime = document.createElement("i");
-		var toggleFreeze = document.createElement("i");
-		var toggleVisibility = document.createElement("i");
-		var openLock = document.createElement("i");
-		name.innerHTML = lock.user.username;
-		timer.innerHTML = `${days}:${hours}:${minutes}:${seconds}`;
-		if (!lock.displayRemainingTime) timer.innerHTML += "[H]";
-		if (lock.isFrozen) timer.innerHTML += "[F]";
-		card.append(name);
-		card.append(timer);
+		//Create elements
+		const name = document.createElement("h3");
+		const card = document.createElement("li");
+		const actionPanel = document.createElement("div");
+		const changeTime = document.createElement("i");
+		const toggleFreeze = document.createElement("i");
+		const toggleVisibility = document.createElement("i");
+		const openLock = document.createElement("i");
 
+		card.classList.add("card");
+		actionPanel.classList.add("actionPanel");
 		changeTime.classList.add("fa-regular", "fa-clock");
 		toggleFreeze.classList.add("fa-regular", "fa-snowflake");
 		toggleVisibility.classList.add("fa-regular", "fa-eye-slash");
 		openLock.classList.add("fa-solid", "fa-arrow-up-right-from-square");
+
+		name.innerHTML = lock.user.username;
+		timer.innerHTML = `${days}:${hours}:${minutes}:${seconds}`;
+		if (!lock.displayRemainingTime) timer.innerHTML += "[H]";
+		if (lock.isFrozen) timer.innerHTML += "[F]";
+
+		for (i = 0; i <= KhLocksUpdate.length; i++) {
+			if (
+				KhLocksUpdate[i]?.id == lock._id &&
+				KhLocksUpdate[i]?.status == "freeze"
+			) {
+				changing = true;
+				toggleFreeze.classList.add("processing");
+			}
+			if (
+				KhLocksUpdate[i]?.id == lock._id &&
+				KhLocksUpdate[i]?.status == "hidden"
+			) {
+				toggleVisibility.classList.add("processing");
+				changing = true;
+			}
+		}
+
+		//Add functions to button
 		changeTime.onclick = function (e) {
-			console.log(lock);
 			window.electronAPI.lockId(lock._id);
 			blurPage(true);
 			window.electronAPI.redirect("addtime", true);
 		};
+
 		toggleFreeze.onclick = function (e) {
+			if (changing) return;
 			//Toggle freeze on lock
-			console.log("Toggle freeze lock");
+			KhLocksUpdate[i] = { id: lock._id, status: "freeze" };
+			toggleFreeze.classList.add("processing");
 			window.electronAPI.khaction("freeze", {
 				state: !lock.isFrozen,
 				id: lock._id,
 			});
-			if (!lock.isFrozen) timer.innerHTML += "[F]";
-			else timer.innerHTML = timer.innerHTML.slice(0, 10);
+			if (!lock.isFrozen) {
+				timer.innerHTML += "[F]";
+			} else timer.innerHTML = timer.innerHTML.replace("[F]", "");
 		};
+
 		toggleVisibility.onclick = function (e) {
-			console.log("Toggle hide lock");
+			if (changing) return;
+			KhLocksUpdate[i] = { id: lock._id, status: "hidden" };
+			toggleVisibility.classList.add("processing");
 			window.electronAPI.khaction("settings", {
 				id: lock._id,
 				time: !lock.displayRemainingTime,
@@ -131,17 +172,26 @@ async function loadAllKHLocks() {
 			});
 			showTimer = !lock.displayRemainingTime;
 
-			if (lock.displayRemainingTime) timer.innerHTML += "[H]";
-			else timer.innerHTML = timer.innerHTML.slice(0, 10);
+			if (lock.displayRemainingTime) {
+				timer.innerHTML += "[H]";
+			} else timer.innerHTML = timer.innerHTML.replace("[H]", "");
 		};
+
 		openLock.onclick = function (e) {
 			window.electronAPI.redirect(`https://chaster.app/keyholder/${lock._id}`);
 		};
+
+		//Add all items to card and add card to the list
+
 		actionPanel.append(changeTime);
 		actionPanel.append(toggleFreeze);
 		actionPanel.append(toggleVisibility);
 		actionPanel.append(openLock);
+
+		card.append(name);
+		card.append(timer);
 		card.append(actionPanel);
+
 		KHLockList.append(card);
 	});
 }

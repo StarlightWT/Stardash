@@ -12,11 +12,14 @@ var loadStatus = 0;
 
 //Create window for everything to be inside of
 function createWindow() {
+	var height = 700;
+	var width = 1000;
 	return new BrowserWindow({
-		minWidth: 1000,
-		minHeight: 700,
-		width: 1000,
-		height: 600,
+		minWidth: width,
+		width: width,
+		minHeight: height,
+		height: height,
+		center: false,
 		fullscreenable: false,
 		roundedCorners: true,
 		icon: "./icon.ico",
@@ -54,10 +57,9 @@ app.whenReady().then(async () => {
 		}
 	);
 
-	win.removeMenu();
+	// win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
-
 	//Create initial window(?)
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -72,6 +74,7 @@ app.whenReady().then(async () => {
 //Handle logging out
 var logoutLink = `https://chaster.app/logout`;
 ipcMain.on("logout", () => {
+	request.updateInfo("clear", "clear", network);
 	win.loadURL(logoutLink).then(() => {
 		setTimeout(() => {
 			app.relaunch();
@@ -157,6 +160,7 @@ async function startInfoUpdate(accessToken) {
 	sessionList.results.forEach((session) => {
 		const profile = request.get("profile", null, network);
 		if (session.lock.user._id == profile._id) {
+			console.log(session.lock.user._id);
 			request.updateInfo(accessToken, session.sessionId, network);
 		}
 	});

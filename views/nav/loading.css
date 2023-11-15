@@ -1,9 +1,6 @@
 @import url(../general.css);
 
 body {
-	color: white;
-	margin: 0;
-	background: var(--background-colour);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

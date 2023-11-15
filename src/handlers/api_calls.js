@@ -4,12 +4,12 @@ var token, session;
 function setToken(tokenInput) {
 	if (tokenInput == null || tokenInput == undefined) return;
 	token = tokenInput;
-	console.log(`[API Calls] Updated oauth token! ${token.slice(10, 15)}`);
+	console.log(`[API Calls] Updated oauth token! ${token.slice(0, 5)}`);
 }
 function setSession(sessionInput) {
 	if (sessionInput == null || sessionInput == undefined) return;
 	session = sessionInput;
-	console.log(`[API Calls] Updated session token! ${session.slice(5, 10)}`);
+	console.log(`[API Calls] Updated session token! ${session.slice(0, 5)}`);
 }
 /**
  *
@@ -66,7 +66,7 @@ async function get(what, option, network) {
 			response = await fetch(link, {
 				method: "GET",
 				headers: {
-					Authorization: `Bearer ${secrets.DEV_TKN}`,
+					Authorization: `Bearer ${token}`,
 				},
 			});
 			break;

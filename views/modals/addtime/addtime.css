@@ -3,9 +3,6 @@
 body {
 	overflow-y: hidden;
 	border-radius: 1rem;
-	margin: 0;
-	padding: 0;
-	background-color: var(--background-colour);
 }
 
 i {

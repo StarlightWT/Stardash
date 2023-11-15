@@ -127,6 +127,10 @@
 	padding: 0;
 }
 
+.processing {
+	color: var(--accent-colour);
+}
+
 .fa-solid {
 	margin-inline: 0.3rem;
 }
@@ -146,4 +150,8 @@ i:hover {
 	font-weight: bold;
 	border-bottom: solid 3px white;
 	padding: 0;
+}
+
+.card {
+	position: relative;
 }

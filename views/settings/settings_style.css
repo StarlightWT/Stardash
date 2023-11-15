@@ -1,7 +1,6 @@
 @import url(../general.css);
 
 body {
-	background-color: var(--background-colour);
 	position: relative;
 	overflow: hidden;
 }

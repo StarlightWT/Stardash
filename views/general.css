@@ -6,3 +6,8 @@ html {
 	--secondary-bg-colour: #363636;
 	--accent-colour: #8f2efd;
 }
+
+body {
+	background-color: var(--background-colour);
+	padding: 0;
+}
