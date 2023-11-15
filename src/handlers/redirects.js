@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const request = require("./api_handler");
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, ipcMain } = require("electron");
 function getPaths(dirPath, arrayOfFiles) {
 	files = fs.readdirSync(dirPath);
 	arrayOfFiles = arrayOfFiles || [];
@@ -17,6 +17,9 @@ function getPaths(dirPath, arrayOfFiles) {
 const paths = getPaths(path.join(__dirname + "../../../views"));
 
 async function redirect(win, location, modal) {
+	var modalHeight, modalWidth, frame;
+	frame = true;
+
 	if (location == "slots") {
 		const profile = await request.get("profile");
 		const dbProfileObject = await request.get("dbprofile", profile._id);
@@ -24,8 +27,26 @@ async function redirect(win, location, modal) {
 		if (dbProfile.role != "developer") return;
 	}
 	console.log(`[Redirects] Trying to redirect to ${location}...`);
+	if (modal) {
+		switch (location) {
+			case "addtime":
+				frame = false;
+				modalHeight = 200;
+				modalWidth = 800;
+				break;
+			case "history":
+				frame = false;
+
+				break;
+		}
+	}
 	if (location.startsWith("http") || modal) {
 		const child = new BrowserWindow({
+			transparent: true,
+			frame: frame,
+			hasShadow: true,
+			height: modalHeight,
+			width: modalWidth,
 			parent: win,
 			modal: true,
 			show: false,

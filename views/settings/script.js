@@ -9,7 +9,7 @@ const devTools = document.getElementById("dev_tools");
 const checkUpdateBtn = document.getElementById("checkUpdate");
 const roleSelect = document.getElementById("role");
 var devMode = false;
-
+var change = false;
 async function loadsettings() {
 	//Get token
 	const profile = await window.electronAPI.get("profile");
@@ -48,6 +48,7 @@ function checkUpdate() {
 }
 
 function select(selection) {
+	change = true;
 	window.electronAPI.setUserRole(tokenCopy.value, selection);
 }
 
@@ -74,6 +75,7 @@ var saving = false;
 async function saveAndExitSettings() {
 	if (saving) return;
 	saving = true;
+	if (!change) window.electronAPI.redirect("home");
 	const updatingInfoElement = document.getElementById("updatingInfo");
 	updatingInfoElement.classList.add("show");
 	if ((await window.electronAPI.updateSettings()) == 1)

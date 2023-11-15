@@ -107,23 +107,32 @@ async function loadAllKHLocks() {
 		toggleVisibility.classList.add("fa-regular", "fa-eye-slash");
 		openLock.classList.add("fa-solid", "fa-arrow-up-right-from-square");
 		changeTime.onclick = function (e) {
-			console.log(lock._id);
-
-			//Add file
+			console.log(lock);
+			window.electronAPI.lockId(lock._id);
+			blurPage(true);
+			window.electronAPI.redirect("addtime", true);
 		};
 		toggleFreeze.onclick = function (e) {
 			//Toggle freeze on lock
+			console.log("Toggle freeze lock");
 			window.electronAPI.khaction("freeze", {
 				state: !lock.isFrozen,
 				id: lock._id,
 			});
+			if (!lock.isFrozen) timer.innerHTML += "[F]";
+			else timer.innerHTML = timer.innerHTML.slice(0, 10);
 		};
 		toggleVisibility.onclick = function (e) {
+			console.log("Toggle hide lock");
 			window.electronAPI.khaction("settings", {
 				id: lock._id,
 				time: !lock.displayRemainingTime,
 				logs: lock.hideTimeLogs,
 			});
+			showTimer = !lock.displayRemainingTime;
+
+			if (lock.displayRemainingTime) timer.innerHTML += "[H]";
+			else timer.innerHTML = timer.innerHTML.slice(0, 10);
 		};
 		openLock.onclick = function (e) {
 			window.electronAPI.redirect(`https://chaster.app/keyholder/${lock._id}`);
@@ -157,6 +166,7 @@ async function updateLockExtensions(lock) {
 		li.innerHTML = extension.slice(25);
 		li.classList.add("selectable");
 		li.onclick = function (e) {
+			blurPage(true);
 			window.electronAPI.redirect(
 				`https://chaster.app/locks/${lockId}/extensions/${extensionId}`
 			);
@@ -259,3 +269,17 @@ async function updateLockHistory() {
 }
 
 start();
+
+function blurPage(option) {
+	const page = document.getElementById("body");
+	if (option == true) page.style = "filter: blur(5px);";
+	if (option == false) page.style = "";
+}
+
+function openHistory() {
+	blurPage(true);
+	window.electronAPI.redirect("history", true);
+}
+window.addEventListener("focus", () => {
+	blurPage(false);
+});

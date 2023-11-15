@@ -8,6 +8,8 @@ html {
 }
 
 body {
+	overflow-y: hidden;
+	border-radius: 1rem;
 	margin: 0;
 	padding: 0;
 	background-color: var(--background-colour);
@@ -17,20 +19,12 @@ i {
 	position: absolute;
 	left: 2rem;
 	top: -0.4rem;
-}
-
-i {
 	padding: 1rem;
 	border-radius: 50%;
-	/* background-color: var(--secondary-bg-colour); */
 }
 
-.wrapper {
-	width: 100%;
-	min-height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+i:hover {
+	cursor: pointer;
 }
 
 #title {
@@ -40,31 +34,27 @@ i {
 	margin: 0;
 }
 
-ul {
-	list-style: none;
-	padding: 0;
+table {
+	margin-inline: auto;
 }
 
-ul li {
-	background-color: var(--secondary-bg-colour);
-	border-radius: 1rem;
-	padding: 1rem;
-	margin: 0.5rem;
-}
-
-ul li h1 {
-	font-size: 24px;
-}
-
-ul li div {
-	display: flex;
-	justify-content: space-between;
-}
-
-ul li div h2 {
-	font-size: 18px;
-}
-
-ul li * {
+h2 {
+	text-align: center;
 	margin: 0;
+}
+
+.buton_wrapper {
+	width: 40%;
+	height: 200px;
+	margin-inline: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.buton_wrapper button {
+	height: 30px;
+}
+
+.button_wrapper button:hover {
+	cursor: pointer;
 }

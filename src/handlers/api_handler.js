@@ -8,7 +8,7 @@ let profileVar,
 	khLocksVar;
 
 async function updatePeriodicInfo(loaded) {
-	console.log("Updating info");
+	console.log("[API Handler]Updating info");
 	if (
 		profileVar != undefined &&
 		dbprofileVar != undefined &&

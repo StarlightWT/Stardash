@@ -53,7 +53,7 @@ app.whenReady().then(async () => {
 		}
 	);
 
-	win.removeMenu();
+	// win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 
@@ -98,16 +98,15 @@ ipcMain.handle("get", async (event, what, option) => {
 });
 
 ipcMain.handle("action", async (event, what, option) => {
-	console.log(what + "||" + option);
 	return await request.action(what, option);
 });
 ipcMain.handle("khaction", async (event, what, option) => {
-	console.log(what + "||" + option);
 	return await request.khaction(what, option);
 });
 
 ipcMain.handle("setUserRole", async (e, id, role) => {
-	if (await database.setUserRole(id, role)) request.updateInfo();
+	if (await database.setUserRole(id, role))
+		request.updateInfo(null, null, network);
 });
 
 ipcMain.handle("loadStatus", () => {
@@ -115,7 +114,7 @@ ipcMain.handle("loadStatus", () => {
 });
 
 ipcMain.handle("updateSettings", async () => {
-	return await request.updateInfo();
+	return await request.updateInfo(null, null, network);
 });
 
 ipcMain.handle("version", async () => {
@@ -143,6 +142,11 @@ ipcMain.on("network", async (event, status) => {
 		network = false;
 		if (activeLocation != "loading") redirects.redirect(win, "loading");
 	}
+});
+let LockId;
+ipcMain.handle("lockId", async (event, lockId) => {
+	if (lockId == "get") return LockId;
+	LockId = lockId;
 });
 
 //Load info and update it every 5 seconds

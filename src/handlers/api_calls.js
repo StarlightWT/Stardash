@@ -158,6 +158,7 @@ async function khaction(what, option) {
 	switch (what) {
 		case "freeze":
 			link += `locks/${option.id}/freeze`;
+			console.log(link);
 			body = { isFrozen: option.state };
 			break;
 		case "settings":
@@ -166,12 +167,19 @@ async function khaction(what, option) {
 				displayRemainingTime: option.time,
 				hideTimeLogs: option.logs,
 			};
+			break;
+		case "time":
+			link += `locks/${option.id}/update-time`;
+			body = {
+				duration: option.time,
+			};
+			break;
 	}
 
 	const response = await fetch(link, {
 		method: "POST",
 		headers: {
-			Authorization: `Bearer ${secrets.DEV_TKN}`,
+			Authorization: `Bearer ${token}`,
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify(body),

@@ -7,7 +7,7 @@
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 	</head>
-	<body>
+	<body id="body">
 		<div id="dash_body">
 			<nav id="replace_nav"></nav>
 			<div id="lockee">
@@ -23,7 +23,7 @@
 					<div id="sidebar">
 						<ul id="extensionList">
 							<li id="extTitle">Extensions</li>
-							<li onclick="redirect('history', true)" class="selectable">
+							<li onclick="openHistory()" class="selectable">
 								<a>History</a>
 							</li>
 						</ul>

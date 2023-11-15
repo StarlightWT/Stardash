@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="addtime.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+	</head>
+	<body>
+		<h1 id="title">Modify lock time</h1>
+		<i class="fa-solid fa-arrow-left" onclick="back();"></i>
+		<table>
+			<tr>
+				<td><h2>Weeks</h2></td>
+				<td><h2>Days</h2></td>
+				<td><h2>Hours</h2></td>
+				<td><h2>Minutes</h2></td>
+			</tr>
+			<tr>
+				<td>
+					<input type="number" name="weeks" id="weeks" />
+				</td>
+				<td>
+					<input type="number" name="days" id="days" />
+				</td>
+				<td>
+					<input type="number" name="hours" id="hours" />
+				</td>
+				<td>
+					<input type="number" name="minutes" id="minutes" />
+				</td>
+			</tr>
+		</table>
+		<div class="buton_wrapper">
+			<button onclick="done('add')">Add time</button>
+			<button onclick="done('rem')">Remove time</button>
+		</div>
+		<script src="addtime.js"></script>
+	</body>
+</html>
