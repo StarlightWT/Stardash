@@ -1,12 +1,4 @@
-html {
-	background-color: #161616;
-	color: white;
-	font-family: Arial, Helvetica, sans-serif;
-
-	--background-colour: #161616;
-	--secondary-bg-colour: #363636;
-	--accent-colour: #8f2efd;
-}
+@import url(../../general.css);
 
 body {
 	display: flex;

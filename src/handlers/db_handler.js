@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
 
 const userModel = mongoose.model("User", userSchema, "users");
 
-async function createNewUser(username, id, role) {
+async function createNewUser(username, id, role, network) {
 	if (!username || !id || !role) return;
 	if (role == "unspecified") role = "switch";
 	var user = new userModel({

@@ -7,8 +7,9 @@ let profileVar,
 	starConnectVar,
 	khLocksVar;
 
-async function updatePeriodicInfo(loaded) {
+async function updatePeriodicInfo(loaded, network) {
 	console.log("[API Handler]Updating info");
+	if (network == "offline") return false;
 	if (
 		profileVar != undefined &&
 		dbprofileVar != undefined &&
@@ -40,7 +41,7 @@ async function updatePeriodicInfo(loaded) {
 async function updateInfo(accessToken, sessionToken, network) {
 	if (accessToken) call.setToken(accessToken);
 	if (sessionToken) call.setSession(sessionToken);
-	if (network) return await updatePeriodicInfo(false);
+	if (network) return await updatePeriodicInfo(false, network);
 	else return 0;
 }
 

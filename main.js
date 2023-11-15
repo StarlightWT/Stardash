@@ -14,9 +14,10 @@ var loadStatus = 0;
 function createWindow() {
 	return new BrowserWindow({
 		minWidth: 1000,
-		minHeight: 800,
+		minHeight: 700,
 		width: 1000,
-		height: 800,
+		height: 600,
+		fullscreenable: false,
 		roundedCorners: true,
 		icon: "./icon.ico",
 		backgroundColor: "#000",
@@ -53,7 +54,7 @@ app.whenReady().then(async () => {
 		}
 	);
 
-	// win.removeMenu();
+	win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 

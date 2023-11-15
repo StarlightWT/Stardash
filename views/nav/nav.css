@@ -1,11 +1,4 @@
-html {
-	font-family: Arial, Helvetica, sans-serif;
-	color: white;
-	--background-colour: #161616;
-	--secondary-bg-colour: #363636;
-	--accent-colour: #8f2efd;
-	--accent-colour-highlight: #b45efa;
-}
+@import url(../general.css);
 
 body {
 	background-color: #161616;
