@@ -8,15 +8,23 @@ body {
 }
 
 i {
+	color: white;
 	position: absolute;
 	left: 2rem;
-	top: 2rem;
-}
-
-i {
+	top: -0.4rem;
 	padding: 1rem;
 	border-radius: 50%;
+}
+
+i:hover {
+	cursor: pointer;
+}
+
+#title {
+	text-align: center;
+	width: 100%;
 	background-color: var(--secondary-bg-colour);
+	margin: 0;
 }
 
 #max_bet {
@@ -45,6 +53,10 @@ i {
 
 #play {
 	display: none;
+}
+
+#setup {
+	width: 100%;
 }
 
 #setup input {

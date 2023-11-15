@@ -1,5 +1,25 @@
 @import url(../../general.css);
 
+i {
+	color: white;
+	position: absolute;
+	left: 2rem;
+	top: -0.4rem;
+	padding: 1rem;
+	border-radius: 50%;
+}
+
+i:hover {
+	cursor: pointer;
+}
+
+#title {
+	text-align: center;
+	width: 100%;
+	background-color: var(--secondary-bg-colour);
+	margin: 0;
+}
+
 .setup {
 	width: 20%;
 	margin-inline: auto;
@@ -45,4 +65,25 @@
 
 #throwDiceBtn {
 	width: 7rem;
+}
+
+.status {
+	width: 50%;
+	border-radius: 1rem;
+	margin-inline: auto;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+.victory {
+	background-color: green;
+}
+
+.loss {
+	background-color: red;
+}
+
+p {
+	text-align: center;
+	margin: 0;
 }

@@ -7,37 +7,36 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 	</head>
 	<body>
-		<main>
-			<div id="play">
-				<h1 id="winner"></h1>
-				<div class="totals">
-					<div>
-						<h1>Dealer total<br /><span id="dealer_total"></span></h1>
-					</div>
-					<div>
-						<h1>Player total<br /><span id="player_total"></span></h1>
-					</div>
+		<h1 id="title" class="title">BlackJack</h1>
+		<i class="fa-solid fa-arrow-left" id="back" onclick="back();"></i>
+		<div id="play">
+			<h1 id="winner"></h1>
+			<div class="totals">
+				<div>
+					<h1>Dealer total<br /><span id="dealer_total"></span></h1>
 				</div>
-				<div class="player">
-					<button id="hit_button">Hit</button>
-					<button id="stand_button">Stand</button>
-					<br />
-					<button id="refresh_button">refresh</button>
+				<div>
+					<h1>Player total<br /><span id="player_total"></span></h1>
 				</div>
 			</div>
-			<div id="setup">
-				<i class="fa-solid fa-arrow-left" onclick="back();"></i>
-				<h1>BlackJack</h1>
-				<input
-					type="time"
-					value="00:00"
-					name=""
-					placeholder="weeks:days:hours:minutes"
-					id="betInput" />
+			<div class="player">
+				<button id="hit_button">Hit</button>
+				<button id="stand_button">Stand</button>
 				<br />
-				<button id="start_button">Place bet</button>
+				<button id="refresh_button">refresh</button>
 			</div>
-		</main>
+		</div>
+		<div id="setup">
+			<h1>BlackJack</h1>
+			<input
+				type="time"
+				value="00:00"
+				name=""
+				placeholder="weeks:days:hours:minutes"
+				id="betInput" />
+			<br />
+			<button id="start_button">Place bet</button>
+		</div>
 	</body>
 	<script src="./blackjack.js"></script>
 </html>

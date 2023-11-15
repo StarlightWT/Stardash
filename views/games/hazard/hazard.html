@@ -3,13 +3,15 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
+		<title>StarDash</title>
 		<link rel="stylesheet" href="hazard.css" />
 	</head>
 	<body>
+		<h1 id="title">Hazard</h1>
+		<i class="fa-solid fa-arrow-left" id="back" onclick="back();"></i>
 		<div class="setup" id="setup">
 			<h1>Bet time</h1>
-			<input type="time" name="bet" id="bet" />
+			<input type="time" name="bet" id="bet" value="00:00" />
 			<h1>Main</h1>
 			<input type="text" name="main" id="main" placeholder="5-9" />
 		</div>

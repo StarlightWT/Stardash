@@ -8,6 +8,8 @@ const hitBtn = document.getElementById("hit_button");
 const staBtn = document.getElementById("start_button");
 const refBtn = document.getElementById("refresh_button");
 const standBtn = document.getElementById("stand_button");
+const title = document.getElementById("title");
+const backbtn = document.getElementById("back");
 
 const lostClr = "ee111a";
 const wonClr = "1fe044";
@@ -149,6 +151,9 @@ var dealerTotal = 0,
 	bet = 0;
 
 function startGame() {
+	title.classList.add("hidden");
+	backbtn.classList.add("hidden");
+
 	(dealerTotal = 0),
 		(secretDealerTotal = dealerTotal),
 		(playerTotal = 0),
