@@ -18,6 +18,12 @@ Games:
 Functionality:
 <ul>
   <li>
+    Management of lockee's lock
+  </li>
+  <li>
+    Management of all KH locks
+  </li>
+  <li>
   Total Power Exchange addons
   </li>
   <li>
