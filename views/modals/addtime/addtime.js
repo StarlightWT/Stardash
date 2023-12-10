@@ -1,13 +1,24 @@
-let lockId;
+let lockId, userLock;
 async function setLockId() {
 	lockId = await window.electronAPI.lockId("get");
 }
+async function setUsersLock() {
+	userLock = await window.electronAPI.get("lock");
+}
 setLockId();
+setUsersLock();
 
 const weeks = document.getElementById("weeks");
 const days = document.getElementById("days");
 const hours = document.getElementById("hours");
 const minutes = document.getElementById("minutes");
+
+window.onload = (e) => {
+	if (lockId == userLock._id) {
+		const remBtn = document.getElementById("rem");
+		remBtn.remove();
+	}
+};
 
 function done(type) {
 	total =
@@ -19,6 +30,8 @@ function done(type) {
 	if ((total < 0 && type == "add") || (total > 0 && type == "rem")) total *= -1;
 
 	window.electronAPI.khaction("time", { id: lockId, time: total });
+	console.log(`[MODAL - ADDTIME] lockId: ${lockId}|||time:${total}`);
+	debugger;
 	window.close();
 }
 

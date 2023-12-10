@@ -155,6 +155,7 @@ async function action(what, option) {
 async function khaction(what, option) {
 	var link = `https://api.chaster.app/`;
 	var body;
+	let method = "POST";
 	switch (what) {
 		case "freeze":
 			link += `locks/${option.id}/freeze`;
@@ -174,16 +175,26 @@ async function khaction(what, option) {
 				duration: option.time,
 			};
 			break;
+		case "unlock":
+			link += `locks/${option.id}/unlock`;
+			break;
+		case "combo":
+			console.log(option.id);
+			method = "GET";
+			link += `locks/${option.id}/combination`;
 	}
 
 	const response = await fetch(link, {
-		method: "POST",
+		method: method,
 		headers: {
 			Authorization: `Bearer ${token}`,
 			"Content-Type": "application/json",
+			Accept: "application/json",
 		},
 		body: JSON.stringify(body),
 	});
+
+	console.log(response);
 	console.log(response.status);
 	return response;
 }

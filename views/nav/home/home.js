@@ -28,14 +28,26 @@ async function start() {
 async function loadLockInfo(profile, DBProfile) {
 	//Update all information upon page load
 	var lock = await updateLock();
-	updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
+	updateLockTime(
+		lock.endDate,
+		lock.isAllowedToViewTime,
+		lock.frozenAt,
+		lock.status,
+		lock._id
+	);
 	updateLockHistory();
 	updateLockExtensions(lock);
 
 	//Setup intervals to keep info up to date
 	setInterval(async () => {
 		lock = await updateLock();
-		updateLockTime(lock.endDate, lock.isAllowedToViewTime, lock.frozenAt);
+		updateLockTime(
+			lock.endDate,
+			lock.isAllowedToViewTime,
+			lock.frozenAt,
+			lock.status,
+			lock._id
+		);
 		updateLockHistory();
 	}, 1000);
 }
@@ -224,18 +236,65 @@ async function updateLockExtensions(lock) {
 	});
 }
 
-async function updateLockTime(endDateTimestamp, isAllowedToViewTime, frozenAt) {
+async function updateLockTime(
+	endDateTimestamp,
+	isAllowedToViewTime,
+	frozenAt,
+	status,
+	id
+) {
 	const timer = document.getElementById("timer");
 	//check if the timer is currently hidden
 	if (!isAllowedToViewTime) return (timer.innerHTML = "Time hidden");
-	else
+	else if (status == "unlocked") {
+		timer.innerHTML = "Unlocked!</br>";
+		const unlockButton = document.createElement("button");
+		unlockButton.innerHTML = "SHOW COMBINATION";
+		unlockButton.classList.add("timerBtn");
+
+		unlockButton.onclick = async (e) => {
+			if (status != "unlocked")
+				window.electronAPI.khaction("unlock", { id: id });
+			let combination = await window.electronAPI.khaction("combo", {
+				id: id,
+			});
+			console.log(await combination);
+		};
+
+		timer.append(unlockButton);
+		return;
+	} else
 		timer.innerHTML = `<span id="days">NaN</span>:<span id="hours">NaN</span>:<span id="minutes">NaN</span>:<span id="seconds">NaN</span>`;
 
 	//calculate time remaining
 	const endDate = new Date(endDateTimestamp).getTime(); //Is UTC
 	const currentDate = Date.now(); //Is also UTC
 	var timeLeft = endDate - currentDate;
-	if (timeLeft <= 0) return (timer.innerHTML = "Ready to unlock!");
+	if (timeLeft <= 0) {
+		timer.innerHTML = "Ready to unlock!</br>";
+		const unlockButton = document.createElement("button");
+		unlockButton.innerHTML = "UNLOCK";
+		unlockButton.classList.add("timerBtn");
+		const addTimeButton = document.createElement("button");
+		addTimeButton.innerHTML = "ADD TIME";
+		addTimeButton.classList.add("timerBtn");
+
+		addTimeButton.onclick = (e) => {
+			window.electronAPI.lockId(id);
+			blurPage(true);
+			window.electronAPI.redirect("addtime");
+			loadLockInfo();
+		};
+
+		unlockButton.onclick = (e) => {
+			if (status != "unlocked")
+				window.electronAPI.khaction("unlock", { id: id });
+		};
+
+		timer.append(unlockButton);
+		timer.append(addTimeButton);
+		return;
+	}
 	//if lock is frozen calculate time from the time of being frozen.
 	if (frozenAt == null) timeLeft = endDate - currentDate;
 	else {

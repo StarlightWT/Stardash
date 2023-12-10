@@ -155,3 +155,25 @@ i:hover {
 .card {
 	position: relative;
 }
+
+.timerBtn {
+	color: white;
+	font-size: 14px;
+	font-weight: 700;
+	margin-top: 5px;
+	margin-right: 15px;
+	background-color: var(--secondary-bg-colour);
+	border: none;
+	border-radius: 1rem;
+	border: solid 2px white;
+	padding: 10px;
+	padding-inline: 20px;
+	margin-bottom: -2rem;
+	transition-duration: 0.25s;
+}
+
+.timerBtn:hover {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+	transition-duration: 0.25s;
+}

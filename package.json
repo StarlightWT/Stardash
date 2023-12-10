@@ -1,11 +1,11 @@
 {
 	"name": "stardash",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"description": "Chaster dashboard",
 	"main": "./main.js",
 	"scripts": {
 		"start": "npx electronmon .",
-		"dist": "electron-builder"
+		"dist": "electron-builder -wm"
 	},
 	"build": {
 		"appId": "com.stardash.StarDash",

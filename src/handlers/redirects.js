@@ -20,6 +20,10 @@ async function redirect(win, location, modal) {
 	var modalHeight, modalWidth, frame;
 	frame = true;
 
+	let size = win.getSize();
+	modalHeight = (size[1] / 10) * 9;
+	modalWidth = (size[0] / 10) * 9;
+
 	if (location == "slots") {
 		const profile = await request.get("profile");
 		const dbProfileObject = await request.get("dbprofile", profile._id);
@@ -27,23 +31,36 @@ async function redirect(win, location, modal) {
 		if (dbProfile.role != "developer") return;
 	}
 	console.log(`[Redirects] Trying to redirect to ${location}...`);
-	if (modal) {
-		switch (location) {
-			case "addtime":
-				frame = false;
-				modalHeight = 200;
-				modalWidth = 800;
-				break;
-			case "history":
-				frame = false;
-
-				break;
-		}
+	switch (location) {
+		case "addtime":
+			modal = true;
+			frame = false;
+			modalHeight = 200;
+			modalWidth = 800;
+			break;
+		case "history":
+			modal = true;
+			frame = false;
+			modalHeight = 500;
+			modalWidth = 700;
+			break;
 	}
 	if (location.startsWith("http") || modal) {
+		let pos = win.getPosition(); //Get left top corner of main window
+		let size = win.getSize(); //Get window size
+		let x = pos[0] + size[0] / 2; //Center of window
+		let y = pos[1] + size[1] / 2;
+
+		x = x - modalWidth / 2; //Center the modal around the center of the window
+		y = y - modalHeight / 2;
+
+		console.log(pos);
+
 		const child = new BrowserWindow({
 			transparent: true,
 			frame: frame,
+			x: x,
+			y: y,
 			hasShadow: true,
 			height: modalHeight,
 			width: modalWidth,
