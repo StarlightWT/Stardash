@@ -60,7 +60,8 @@ async function redirect(win, location, modal) {
 
 		const child = new BrowserWindow({
 			transparent: true,
-			frame: frame,
+			// frame: frame,
+			// autoHideMenuBar: true,
 			x: x,
 			y: y,
 			hasShadow: true,
@@ -70,7 +71,6 @@ async function redirect(win, location, modal) {
 			parent: win,
 			modal: true,
 			show: false,
-			autoHideMenuBar: true,
 			minimizable: false,
 			fullscreenable: false,
 			resizable: false,
