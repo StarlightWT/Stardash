@@ -23,6 +23,11 @@ i:hover {
 	margin: 0;
 }
 
+.container {
+	position: sticky;
+	top: 0;
+}
+
 .wrapper {
 	width: 100%;
 	min-height: 100vh;

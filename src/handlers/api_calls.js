@@ -1,5 +1,7 @@
 const secrets = require("../../secrets.json");
 
+console.log(`[API Calls] Loaded!`);
+
 var token, session;
 function setToken(tokenInput) {
 	if (tokenInput == null || tokenInput == undefined) return;
@@ -93,7 +95,7 @@ async function get(what, option, network) {
 			break;
 	}
 
-	const returnJson = await response.json();
+	returnJson = await response.json();
 	return returnJson;
 }
 
@@ -149,7 +151,6 @@ async function action(what, option) {
 		},
 		body: JSON.stringify(body),
 	});
-	console.log(response.status);
 	return response;
 }
 async function khaction(what, option) {
@@ -159,7 +160,6 @@ async function khaction(what, option) {
 	switch (what) {
 		case "freeze":
 			link += `locks/${option.id}/freeze`;
-			console.log(link);
 			body = { isFrozen: option.state };
 			break;
 		case "settings":

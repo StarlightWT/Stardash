@@ -1,14 +1,11 @@
-const { app, BrowserWindow, ipcMain, session, clipboard } = require("electron");
+const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("node:path");
 const oauth = require("./src/handlers/oauth.js");
 const request = require("./src/handlers/api_handler.js");
 const redirects = require("./src/handlers/redirects.js");
-const database = require("./src/handlers/db_handler.js");
 const updater = require("./src/handlers/updater.js");
+const temp = require("./src/temp.json");
 let win;
-var loadStatus = 0;
-
-//Run auto-updater
 
 //Create window for everything to be inside of
 function createWindow() {
@@ -57,7 +54,7 @@ app.whenReady().then(async () => {
 		}
 	);
 
-	// win.removeMenu();
+	//! win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 	//Create initial window(?)
@@ -83,83 +80,28 @@ ipcMain.on("logout", () => {
 	});
 });
 
-//Handle redirects
-ipcMain.on("redirect", (event, page, modal) => {
-	redirects.redirect(win, page, modal);
-});
-
-let activeLocation;
-
-ipcMain.handle("active", (event, location) => {
-	if (location == "get") return activeLocation;
-	activeLocation = location;
-});
-//Handle requests from renderers
-
-ipcMain.handle("get", async (event, what, option) => {
-	return await request.get(what, option);
-});
-
-ipcMain.handle("action", async (event, what, option) => {
-	return await request.action(what, option);
-});
-ipcMain.handle("khaction", async (event, what, option) => {
-	return await request.khaction(what, option);
-});
-
-ipcMain.handle("setUserRole", async (e, id, role) => {
-	if (await database.setUserRole(id, role))
-		request.updateInfo(null, null, network);
-});
-
+var loadStatus = 0;
 ipcMain.handle("loadStatus", () => {
 	return loadStatus;
 });
 
-ipcMain.handle("updateSettings", async () => {
-	return await request.updateInfo(null, null, network);
-});
-
-ipcMain.handle("version", async () => {
-	return await updater.version();
-});
-
-ipcMain.handle("getStatus", async () => {
-	return await updater.getStatus();
-});
-
-ipcMain.on("clip", async (event, text) => {
-	clipboard.writeText(text);
-});
-
-ipcMain.on("updateCheck", () => {
-	updater.check();
-});
 let network = true;
 ipcMain.on("network", async (event, status) => {
+	console.log();
 	if (status == "online") {
 		network = true;
-		if (activeLocation == "loading") redirects.redirect(win, "home");
+		if (temp.activeLocation == "loading") redirects.redirect(win, "home");
 	}
 	if (status == "offline") {
 		network = false;
-		if (activeLocation != "loading") redirects.redirect(win, "loading");
+		if (temp.activeLocation != "loading") redirects.redirect(win, "loading");
 	}
 });
 
-let LockId;
-ipcMain.handle("lockId", async (event, lockId) => {
-	if (lockId == "get") return LockId;
-	LockId = lockId;
+ipcMain.on("redirect", (event, page, modal) => {
+	redirects.redirect(win, page, modal);
 });
 
-let lock;
-ipcMain.handle("lock", async (event, action) => {
-	if (action == "get") return lock;
-	lock = action;
-});
-
-//Load info and update it every 5 seconds
 async function startInfoUpdate(accessToken) {
 	loadStatus = await request.updateInfo(accessToken, null, network);
 	var sessionList = request.get("extension");
@@ -174,3 +116,5 @@ async function startInfoUpdate(accessToken) {
 		loadStatus = await request.updateInfo(null, null, network);
 	}, 5 * 1000); //5seconds
 }
+
+require("./src/handlers/ipc_handler.js")(ipcMain);

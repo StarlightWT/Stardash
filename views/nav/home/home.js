@@ -50,6 +50,8 @@ async function loadLockInfo(profile, DBProfile) {
 		);
 		updateLockHistory();
 	}, 1000);
+
+	window.electronAPI.getDBLock(lock._id, profile._id);
 }
 
 var KhLocksUpdate = [];

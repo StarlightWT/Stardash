@@ -3,7 +3,6 @@ async function loadProfileInfo() {
 	const profile = await window.electronAPI.get("profile");
 	const usernameBox = document.getElementById("username");
 	const avatar = document.getElementById("avatar");
-	const discord = document.getElementById("discord");
 	usernameBox.innerHTML = profile.username;
 	avatar.setAttribute("src", profile.avatarUrl);
 	// discord.innerHTML = "@" + profile.discordUsername;

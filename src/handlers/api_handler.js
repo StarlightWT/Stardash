@@ -1,3 +1,5 @@
+console.log(`[API Handler] Loaded!`);
+
 const call = require("./api_calls");
 const database = require("./db_handler");
 let profileVar = null,

@@ -13,7 +13,14 @@ const userSchema = new mongoose.Schema({
 	role: String,
 });
 
+const lockSchema = new mongoose.Schema({
+	id: String,
+	userId: String,
+	modules: Array,
+});
+
 const userModel = mongoose.model("User", userSchema, "users");
+const lockModel = mongoose.model("Lock", lockSchema, "locks");
 
 async function createNewUser(username, id, role) {
 	if (!username || !id || !role) return;
@@ -34,6 +41,8 @@ async function createNewUser(username, id, role) {
 	} else {
 		user.save();
 	}
+	mongoose.disconnect();
+	return user;
 }
 
 async function findUser(_id) {
@@ -41,6 +50,7 @@ async function findUser(_id) {
 	await mongoose.connect(secret.DATABASE_URI);
 
 	const search = await userModel.find({ id: _id });
+	mongoose.disconnect();
 	return await search;
 }
 
@@ -56,9 +66,25 @@ async function getUser(_id) {
 
 async function setUserRole(_id, role) {
 	await mongoose.connect(secret.DATABASE_URI);
-	console.log(dbProfile);
 	await userModel.findOneAndUpdate({ id: _id }, { role: role });
+	mongoose.disconnect();
 	return 1;
+}
+
+async function createLock(id, userId) {
+	const lock = new lockModel({
+		id: id,
+		userId: userId,
+	});
+}
+
+async function getLock(searchObject) {
+	await mongoose.connect(secret.DATABASE_URI);
+	const lock = await lockModel.find(searchObject);
+	mongoose.disconnect();
+	if (lock.length > 0) {
+		return lock;
+	} else return 1;
 }
 
 module.exports = {

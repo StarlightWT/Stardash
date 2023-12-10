@@ -55,8 +55,6 @@ async function redirect(win, location, modal) {
 		x = x - modalWidth / 2; //Center the modal around the center of the window
 		y = y - modalHeight / 2;
 
-		console.log(pos);
-
 		const child = new BrowserWindow({
 			transparent: true,
 			frame: frame,
@@ -64,6 +62,7 @@ async function redirect(win, location, modal) {
 			y: y,
 			hasShadow: true,
 			height: modalHeight,
+			icon: "../../icon.ico",
 			width: modalWidth,
 			parent: win,
 			modal: true,
