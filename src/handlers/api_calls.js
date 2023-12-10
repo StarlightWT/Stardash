@@ -182,6 +182,10 @@ async function khaction(what, option) {
 			method = "GET";
 			link += `locks/${option.id}/combination`;
 			break;
+		case "profile":
+			method = "GET";
+			link += `users/profile/by-id/${option.id}`;
+			break;
 	}
 
 	const response = await fetch(link, {
@@ -189,12 +193,12 @@ async function khaction(what, option) {
 		headers: {
 			Authorization: `Bearer ${token}`,
 			"Content-Type": "application/json",
-			// Accept: "application/json",
+			Accept: "application/json",
 		},
 		body: JSON.stringify(body),
 	});
-	const returnJson = await response.json();
-	return returnJson;
+	if (method == "GET") return await response.json();
+	return response;
 }
 module.exports = {
 	setToken,

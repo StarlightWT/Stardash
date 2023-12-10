@@ -1,4 +1,4 @@
-i {
+#back {
 	position: absolute;
 	left: 2rem;
 	top: -0.4rem;
@@ -6,7 +6,7 @@ i {
 	border-radius: 50%;
 }
 
-i:hover {
+#back:hover {
 	cursor: pointer;
 }
 
@@ -15,4 +15,74 @@ i:hover {
 	width: 100%;
 	background-color: var(--secondary-bg-colour);
 	margin: 0;
+}
+
+.lockee {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 30vw;
+	background-color: var(--secondary-bg-colour);
+	margin-left: 1rem;
+	margin-top: 1rem;
+	text-align: center;
+	border-radius: 0.5rem;
+}
+
+.lockee > h1 {
+	margin: 0;
+}
+
+#description {
+	text-align: justify;
+	width: 90%;
+}
+
+ul {
+	width: 100%;
+	list-style: none;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
+
+#moduleList > li {
+	width: 80%;
+	font-size: 18px;
+	margin-block: 0.2rem;
+	margin-inline: auto;
+	border-radius: 1rem;
+	transition-duration: 250ms;
+}
+
+#moduleList > li:hover {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+	transition-duration: 250ms;
+}
+
+#profilePicture {
+	border-radius: 100%;
+	border: solid 2px white;
+	width: 100px;
+	aspect-ratio: 1/1;
+	margin-top: 0.5rem;
+}
+
+.lockee > h2 {
+	margin: 0;
+	padding: 0;
+	border-bottom: 2px solid white;
+	width: 90%;
+}
+
+#lockInfo {
+	list-style: none;
+	padding: 0;
+	text-align: center;
+}
+
+#lockInfo > li {
+	margin-block: 0.5rem;
 }

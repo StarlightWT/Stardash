@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const secret = require("../../secrets.json");
-const api = require("./api_handler");
-
+mongoose.connect(secret.DATABASE_URI);
 var dbProfile, dbProfileId;
 
 const userSchema = new mongoose.Schema({
@@ -34,24 +33,19 @@ async function createNewUser(username, id, role) {
 		role: role,
 	});
 
-	await mongoose.connect(secret.DATABASE_URI);
 	const search = await findUser(id);
 	if (search.length > 0) {
 		user.updateOne(search._id);
 	} else {
 		user.save();
 	}
-	mongoose.disconnect();
 	return user;
 }
 
 async function findUser(_id) {
 	dbProfileId = _id;
-	await mongoose.connect(secret.DATABASE_URI);
-
 	const search = await userModel.find({ id: _id });
-	mongoose.disconnect();
-	return await search;
+	return search;
 }
 
 setInterval(() => {
@@ -65,30 +59,32 @@ async function getUser(_id) {
 }
 
 async function setUserRole(_id, role) {
-	await mongoose.connect(secret.DATABASE_URI);
 	await userModel.findOneAndUpdate({ id: _id }, { role: role });
-	mongoose.disconnect();
 	return 1;
 }
 
 async function createLock(id, userId) {
+	if ((await getLock({ id: id })) != -1) return 1;
 	const lock = new lockModel({
 		id: id,
 		userId: userId,
 	});
+	lock.save();
+	return lock;
 }
 
 async function getLock(searchObject) {
-	await mongoose.connect(secret.DATABASE_URI);
-	const lock = await lockModel.find(searchObject);
-	mongoose.disconnect();
+	const lock = await lockModel.find(searchObject).lean();
 	if (lock.length > 0) {
 		return lock;
-	} else return 1;
+	}
+	return -1;
 }
 
 module.exports = {
 	createNewUser,
 	getUser,
 	setUserRole,
+	getLock,
+	createLock,
 };

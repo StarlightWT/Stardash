@@ -7,7 +7,8 @@ let profileVar = null,
 	lockVar,
 	lockHistoryVar,
 	starConnectVar,
-	khLocksVar;
+	khLocksVar,
+	DBLock;
 
 async function updatePeriodicInfo(loaded, network) {
 	console.log("[API Handler]Updating info");
@@ -32,6 +33,10 @@ async function updatePeriodicInfo(loaded, network) {
 		//If there is no lock, don't try to load it's info, if there is load it.
 		lockHistoryVar = await call.get("history", lockVar[0]._id);
 		starConnectVar = await call.get("extension");
+
+		DBLock = await database.getLock({ id: lockVar[0]._id });
+		if (DBLock == -1)
+			DBLock = database.createLock(lockVar[0]._id, profileVar._id);
 	}
 
 	//Keyholder

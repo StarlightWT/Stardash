@@ -195,10 +195,12 @@ async function loadAllKHLocks() {
 		};
 
 		openLock.onclick = function (e) {
+			blurPage(true);
 			window.electronAPI.redirect(`https://chaster.app/keyholder/${lock._id}`);
 		};
 
 		starDash.onclick = function (e) {
+			blurPage(true);
 			window.electronAPI.lock(lock);
 			window.electronAPI.redirect("locks", true);
 		};
@@ -394,8 +396,14 @@ start();
 
 function blurPage(option) {
 	const page = document.getElementById("body");
-	if (option == true) page.style = "filter: blur(5px);";
-	if (option == false) page.style = "";
+	if (option == true) {
+		page.style = "filter: blur(5px);";
+		disableScroll();
+	}
+	if (option == false) {
+		page.style = "";
+		enableScroll();
+	}
 }
 
 function openHistory() {
@@ -405,3 +413,15 @@ function openHistory() {
 window.addEventListener("focus", () => {
 	blurPage(false);
 });
+
+function disableScroll() {
+	let x = window.scrollX;
+	let y = window.scrollY;
+	window.onscroll = () => {
+		window.scrollTo(x, y);
+	};
+}
+
+function enableScroll() {
+	window.onscroll = null;
+}

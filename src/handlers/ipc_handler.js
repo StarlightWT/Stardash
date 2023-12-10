@@ -2,6 +2,9 @@ console.log(`[IPC Handler] Loaded!`);
 const request = require("./api_handler.js");
 const temp = require("../temp.json");
 const { clipboard } = require("electron");
+const database = require("./db_handler.js");
+const updater = require("./updater.js");
+
 module.exports = (ipcMain) => {
 	ipcMain.handle("updateSettings", async () => {
 		return await request.updateInfo(null, null, temp.network);
@@ -44,7 +47,12 @@ module.exports = (ipcMain) => {
 			request.updateInfo(null, null, temp.network);
 	});
 
-	ipcMain.handle("getDBLock", async (event, lockId, userId) => {});
+	ipcMain.handle("getDBLock", async (event, lockId, userId) => {
+		let filter;
+		if (lockId) filter = { id: lockId };
+		if (userId) filter = { userId: userId };
+		return await database.getLock(filter);
+	});
 
 	ipcMain.handle("lockId", async (event, lockId) => {
 		if (lockId == "get") return temp.lockId;

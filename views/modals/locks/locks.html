@@ -6,13 +6,26 @@
 		<title>StarDash</title>
 		<link rel="stylesheet" href="../../general.css" />
 		<link rel="stylesheet" href="locks.css" />
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 	</head>
 	<body>
-		<i class="fa-solid fa-arrow-left" onclick="back();"></i>
+		<i class="fa-solid fa-arrow-left" onclick="back();" id="back"></i>
 		<h1 class="title">Manage lock</h1>
+		<div class="container">
+			<div class="lockee">
+				<img src="" alt="" id="profilePicture" />
+				<h1 id="username"></h1>
+				<h2>Lock information</h2>
+				<ul id="lockInfo">
+					<li id="timeRemaining"></li>
+					<li id="timeLocked"></li>
+					<li id="timeFrozen"></li>
+				</ul>
+				<h2>Description</h2>
+				<p id="description"></p>
+				<h2>Modules</h2>
+				<ul id="moduleList"></ul>
+			</div>
+		</div>
 		<script src="locks.js"></script>
 	</body>
 </html>
