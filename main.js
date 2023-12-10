@@ -94,7 +94,6 @@ ipcMain.handle("active", (event, location) => {
 	if (location == "get") return activeLocation;
 	activeLocation = location;
 });
-
 //Handle requests from renderers
 
 ipcMain.handle("get", async (event, what, option) => {
@@ -147,10 +146,17 @@ ipcMain.on("network", async (event, status) => {
 		if (activeLocation != "loading") redirects.redirect(win, "loading");
 	}
 });
+
 let LockId;
 ipcMain.handle("lockId", async (event, lockId) => {
 	if (lockId == "get") return LockId;
 	LockId = lockId;
+});
+
+let lock;
+ipcMain.handle("lock", async (event, action) => {
+	if (action == "get") return lock;
+	lock = action;
 });
 
 //Load info and update it every 5 seconds

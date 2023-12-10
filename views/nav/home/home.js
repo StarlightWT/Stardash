@@ -122,6 +122,7 @@ async function loadAllKHLocks() {
 		const toggleFreeze = document.createElement("i");
 		const toggleVisibility = document.createElement("i");
 		const openLock = document.createElement("i");
+		const starDash = document.createElement("i");
 
 		card.classList.add("card");
 		actionPanel.classList.add("actionPanel");
@@ -129,9 +130,11 @@ async function loadAllKHLocks() {
 		toggleFreeze.classList.add("fa-regular", "fa-snowflake");
 		toggleVisibility.classList.add("fa-regular", "fa-eye-slash");
 		openLock.classList.add("fa-solid", "fa-arrow-up-right-from-square");
+		starDash.classList.add("fa-regular", "fa-star", "move_left");
 
 		name.innerHTML = lock.user.username;
 		timer.innerHTML = `${days}:${hours}:${minutes}:${seconds}`;
+		if (timeLeft < 0) timer.innerHTML = `Ready to unlock!`;
 		if (!lock.displayRemainingTime) timer.innerHTML += "[H]";
 		if (lock.isFrozen) timer.innerHTML += "[F]";
 
@@ -193,12 +196,20 @@ async function loadAllKHLocks() {
 			window.electronAPI.redirect(`https://chaster.app/keyholder/${lock._id}`);
 		};
 
+		starDash.onclick = function (e) {
+			window.electronAPI.lock(lock);
+			window.electronAPI.redirect("locks", true);
+		};
+
 		//Add all items to card and add card to the list
 
 		actionPanel.append(changeTime);
 		actionPanel.append(toggleFreeze);
 		actionPanel.append(toggleVisibility);
 		actionPanel.append(openLock);
+		lock.extensions.forEach((extension) => {
+			if (extension.slug == "stardash-connect") actionPanel.append(starDash);
+		});
 
 		card.append(name);
 		card.append(timer);

@@ -135,6 +135,10 @@
 	margin-inline: 0.3rem;
 }
 
+.move_left {
+	margin-left: -0.4rem;
+}
+
 i:hover {
 	cursor: pointer;
 }

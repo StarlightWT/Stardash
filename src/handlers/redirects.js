@@ -45,6 +45,7 @@ async function redirect(win, location, modal) {
 			modalWidth = 700;
 			break;
 	}
+
 	if (location.startsWith("http") || modal) {
 		let pos = win.getPosition(); //Get left top corner of main window
 		let size = win.getSize(); //Get window size
