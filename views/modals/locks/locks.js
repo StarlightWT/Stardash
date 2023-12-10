@@ -24,8 +24,12 @@ async function initialize() {
 
 	DBLock.modules.forEach((module) => {
 		let moduleLi = document.createElement("li");
-		moduleLi.id = module.id;
+		moduleLi.id = module.name;
 		moduleLi.innerHTML = module.name;
+
+		moduleLi.onclick = (e) => {
+			openModule(moduleLi.id);
+		};
 		moduleList.append(moduleLi);
 	});
 
@@ -82,4 +86,39 @@ function timestampConvert(timestamp) {
 	if (seconds < 10) seconds = "0" + `${seconds}`;
 
 	return `${days}:${hours}:${minutes}:${seconds}`;
+}
+
+function openModule(module) {
+	const moduleCase = document.getElementById("moduleCase");
+	const moduleTitle = document.getElementById("title");
+	const moduleDB = DBLock.modules.find((obj) => obj.name == module);
+	moduleTitle.innerHTML = `Module - ${module}`;
+	moduleCase.innerHTML = "";
+	switch (module) {
+		case "Tasks":
+			const taskList = document.createElement("ul");
+			const allTasks = document.createElement("ul");
+			taskList.id = "assignedTasks";
+			allTasks.id = "unassignedTasks";
+			const taskListTitle = document.createElement("h2");
+			const allTasksTitle = document.createElement("h2");
+			taskListTitle.innerHTML = "Assigned";
+			allTasksTitle.innerHTML = "Not Assigned";
+			taskList.append(taskListTitle);
+			allTasks.append(allTasksTitle);
+			moduleDB.assignedTasks.forEach((task) => {
+				let li = document.createElement("li");
+				li.innerHTML = task.title + `<i class="fa-solid fa-arrow-right">`;
+				taskList.append(li);
+			});
+			moduleDB.taskList.forEach((task) => {
+				let li = document.createElement("li");
+				li.innerHTML = task.title + `<i class="fa-solid fa-arrow-left"></i>`;
+
+				allTasks.append(li);
+			});
+			moduleCase.append(taskList);
+			moduleCase.append(allTasks);
+			break;
+	}
 }

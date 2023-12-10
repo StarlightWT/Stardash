@@ -10,6 +10,27 @@
 	cursor: pointer;
 }
 
+.container {
+	display: flex;
+	align-content: space-between;
+	justify-content: space-between;
+}
+
+.moduleCase {
+	width: 60vw;
+	margin-top: 1rem;
+	margin-right: 1rem;
+	background-color: var(--secondary-bg-colour);
+}
+
+.moduleCase > h1 {
+	width: 85%;
+	border-bottom: solid 2px white;
+	margin: 0;
+	text-align: center;
+	margin-inline: auto;
+}
+
 .title {
 	text-align: center;
 	width: 100%;
@@ -85,4 +106,46 @@ ul {
 
 #lockInfo > li {
 	margin-block: 0.5rem;
+}
+
+.tasks {
+	display: flex;
+	justify-content: space-between;
+}
+
+.tasks > ul {
+	width: 40%;
+	border-radius: 0.5rem;
+	margin-inline: 1rem;
+	margin-top: 1rem;
+	padding: 0;
+	text-align: center;
+	background-color: var(--background-colour);
+}
+
+.tasks > ul > li {
+	position: relative;
+	margin-block: 0.5rem;
+}
+
+.tasks > ul > li > i {
+	position: absolute;
+	transition-duration: 250ms;
+}
+.tasks > #assignedTasks > li > i {
+	right: 10px;
+}
+
+.tasks > #unassignedTasks > li > i {
+	left: 10px;
+}
+.tasks > ul > li > i:hover {
+	color: var(--accent-colour);
+	transition-duration: 250ms;
+	cursor: pointer;
+}
+
+.tasks > ul > h2 {
+	margin: 0;
+	border-bottom: 2px solid white;
 }

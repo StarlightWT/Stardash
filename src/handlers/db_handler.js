@@ -81,10 +81,72 @@ async function getLock(searchObject) {
 	return -1;
 }
 
+async function assignTask(lockId, taskTitle) {
+	let lock = await lockModel.find({ id: lockId });
+	lock = lock[0];
+	let taskModule = lock.modules.find((obj) => obj.name == "Tasks");
+	const task = taskModule.taskList.find((obj) => obj.title == taskTitle);
+
+	let taskList = [];
+	let assignedTasks = taskModule.assignedTasks;
+	let taskListed = false;
+	taskModule.taskList.forEach((task) => {
+		if (task.title != taskTitle) taskList.push(task);
+		else taskListed = true;
+	});
+	if (!taskListed) return 1;
+
+	assignedTasks.push(task);
+
+	return await lockModel.findOneAndUpdate(
+		{ id: lockId },
+		{
+			$set: {
+				"modules.$[elem].assignedTasks": assignedTasks,
+				"modules.$[elem].taskList": taskList,
+			},
+		},
+		{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
+	);
+}
+
+async function unassignTask(lockId, taskTitle) {
+	let lock = await lockModel.find({ id: lockId });
+	lock = lock[0];
+	let taskModule = lock.modules.find((obj) => obj.name == "Tasks");
+	const task = taskModule.assignedTasks.find((obj) => obj.title == taskTitle);
+
+	let assignedTasks = [];
+	let taskAssigned = false;
+	taskModule.assignedTasks.forEach((task) => {
+		if (task.title != taskTitle) assignedTasks.push(task);
+		else taskAssigned = true;
+	});
+	console.log(!taskAssigned);
+	if (!taskAssigned) return 1;
+
+	let taskList = taskModule.taskList;
+	taskList.push(task);
+
+	console.log(taskList);
+	console.log(assignedTasks);
+	return await lockModel.findOneAndUpdate(
+		{ id: lockId },
+		{
+			$set: {
+				"modules.$[elem].assignedTasks": assignedTasks,
+				"modules.$[elem].taskList": taskList,
+			},
+		},
+		{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
+	);
+}
 module.exports = {
 	createNewUser,
 	getUser,
 	setUserRole,
 	getLock,
 	createLock,
+	assignTask,
+	unassignTask,
 };
