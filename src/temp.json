@@ -1,5 +1,6 @@
 {
 	"activeLocation": "loading",
 	"lock": null,
-	"locKId": null
+	"locKId": null,
+	"lastLocation": []
 }

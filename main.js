@@ -1,21 +1,34 @@
-const { app, BrowserWindow, ipcMain, session } = require("electron");
+const {
+	app,
+	BrowserWindow,
+	ipcMain,
+	session,
+	Tray,
+	Menu,
+} = require("electron");
 const path = require("node:path");
 const oauth = require("./src/handlers/oauth.js");
 const request = require("./src/handlers/api_handler.js");
 const redirects = require("./src/handlers/redirects.js");
 const updater = require("./src/handlers/updater.js");
 const temp = require("./src/temp.json");
-let win;
+let win, closing;
+
+app.setLoginItemSettings({
+	openAtLogin: true,
+	openAsHidden: true, // Optional: Hide the app window on startup
+});
 
 //Create window for everything to be inside of
 function createWindow() {
 	var height = 700;
 	var width = 1000;
 	return new BrowserWindow({
-		minWidth: width,
 		width: width,
-		minHeight: height,
 		height: height,
+		x: temp.lastLocation[0] ?? 0,
+		y: temp.lastLocation[1] ?? 0,
+		resizable: false,
 		center: false,
 		fullscreenable: false,
 		roundedCorners: true,
@@ -54,7 +67,7 @@ app.whenReady().then(async () => {
 		}
 	);
 
-	//! win.removeMenu();
+	win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 	//Create initial window(?)
@@ -66,6 +79,44 @@ app.whenReady().then(async () => {
 	app.on("window-all-closed", () => {
 		if (app.platform !== "darwin") app.quit();
 	});
+
+	win.on("close", (e) => {
+		if (!closing) e.preventDefault();
+		win.hide();
+	});
+
+	tray = new Tray(path.join(__dirname, "icon.ico"));
+	const contextMenu = Menu.buildFromTemplate([
+		{
+			label: "Show app",
+			type: "normal",
+			click: (e) => {
+				win.show();
+			},
+		},
+		{
+			label: "Quit app",
+			type: "normal",
+			click: (e) => {
+				closing = true;
+
+				const fs = require("fs");
+				fs.readFile("./src/temp.json", "utf8", (err, data) => {
+					let jsonData = JSON.parse(data);
+					jsonData.lastLocation = win.getPosition();
+					const updatedJson = JSON.stringify(jsonData, null, 2);
+					fs.writeFile("./src/temp.json", updatedJson, "utf8", (err) => {
+						app.quit();
+					});
+				});
+			},
+		},
+	]);
+
+	tray.on("click", (e) => {
+		win.show();
+	});
+	tray.setContextMenu(contextMenu);
 });
 
 //Handle logging out
@@ -118,3 +169,7 @@ async function startInfoUpdate(accessToken) {
 }
 
 require("./src/handlers/ipc_handler.js")(ipcMain);
+
+setInterval(() => {
+	console.log(win.getPosition());
+}, 1000);

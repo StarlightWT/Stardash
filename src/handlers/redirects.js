@@ -1,7 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const request = require("./api_handler");
-const { BrowserWindow, ipcMain } = require("electron");
+const { BrowserWindow } = require("electron");
+
 function getPaths(dirPath, arrayOfFiles) {
 	files = fs.readdirSync(dirPath);
 	arrayOfFiles = arrayOfFiles || [];
@@ -60,8 +61,8 @@ async function redirect(win, location, modal) {
 
 		const child = new BrowserWindow({
 			transparent: true,
-			// frame: frame,
-			// autoHideMenuBar: true,
+			frame: frame,
+			autoHideMenuBar: true,
 			x: x,
 			y: y,
 			hasShadow: true,
