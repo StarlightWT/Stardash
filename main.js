@@ -11,8 +11,10 @@ const oauth = require("./src/handlers/oauth.js");
 const request = require("./src/handlers/api_handler.js");
 const redirects = require("./src/handlers/redirects.js");
 const updater = require("./src/handlers/updater.js");
-const temp = require("./src/temp.json");
+const Store = require("electron-store");
 let win, closing;
+
+const temp = new Store();
 
 app.setLoginItemSettings({
 	openAtLogin: true,
@@ -26,8 +28,8 @@ function createWindow() {
 	return new BrowserWindow({
 		width: width,
 		height: height,
-		x: temp.lastLocation[0] ?? 0,
-		y: temp.lastLocation[1] ?? 0,
+		x: temp.get("x") ?? 0,
+		y: temp.get("y") ?? 0,
 		resizable: false,
 		center: false,
 		fullscreenable: false,
@@ -50,7 +52,6 @@ app.whenReady().then(async () => {
 	await updater.check();
 	//Refresh token every 1,5minutes
 	setInterval(() => {
-		console.log("Updating token!!");
 		oauth.refreshTokens();
 	}, 1000 * 100);
 
@@ -99,16 +100,11 @@ app.whenReady().then(async () => {
 			type: "normal",
 			click: (e) => {
 				closing = true;
+				const pos = win.getPosition();
+				temp.set("x", pos[0]);
+				temp.set("y", pos[1]);
 
-				const fs = require("fs");
-				fs.readFile("./src/temp.json", "utf8", (err, data) => {
-					let jsonData = JSON.parse(data);
-					jsonData.lastLocation = win.getPosition();
-					const updatedJson = JSON.stringify(jsonData, null, 2);
-					fs.writeFile("./src/temp.json", updatedJson, "utf8", (err) => {
-						app.quit();
-					});
-				});
+				app.quit();
 			},
 		},
 	]);
@@ -138,14 +134,15 @@ ipcMain.handle("loadStatus", () => {
 
 let network = true;
 ipcMain.on("network", async (event, status) => {
-	console.log();
 	if (status == "online") {
 		network = true;
-		if (temp.activeLocation == "loading") redirects.redirect(win, "home");
+		if (temp.get("activeLocation") == "loading")
+			redirects.redirect(win, "home");
 	}
 	if (status == "offline") {
 		network = false;
-		if (temp.activeLocation != "loading") redirects.redirect(win, "loading");
+		if (temp.get("activeLocation") != "loading")
+			redirects.redirect(win, "loading");
 	}
 });
 
@@ -159,7 +156,6 @@ async function startInfoUpdate(accessToken) {
 	sessionList.results.forEach((session) => {
 		const profile = request.get("profile", null, network);
 		if (session.lock.user._id == profile._id) {
-			console.log(session.lock.user._id);
 			request.updateInfo(accessToken, session.sessionId, network);
 		}
 	});
@@ -168,4 +164,4 @@ async function startInfoUpdate(accessToken) {
 	}, 5 * 1000); //5seconds
 }
 
-require("./src/handlers/ipc_handler.js")(ipcMain);
+require("./src/handlers/ipc_handler.js")(ipcMain, temp);

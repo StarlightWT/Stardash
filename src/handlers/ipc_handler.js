@@ -1,11 +1,10 @@
 console.log(`[IPC Handler] Loaded!`);
 const request = require("./api_handler.js");
-const temp = require("../temp.json");
 const { clipboard } = require("electron");
 const database = require("./db_handler.js");
 const updater = require("./updater.js");
 
-module.exports = (ipcMain) => {
+module.exports = (ipcMain, temp) => {
 	ipcMain.handle("updateSettings", async () => {
 		return await request.updateInfo(null, null, temp.network);
 	});
@@ -27,8 +26,8 @@ module.exports = (ipcMain) => {
 	});
 
 	ipcMain.handle("active", (event, location) => {
-		if (location == "get") return temp.activeLocation;
-		temp.activeLocation = location;
+		if (location == "get") return temp.get("activeLocation");
+		temp.set("activeLocation", location);
 	});
 
 	ipcMain.handle("get", async (event, what, option) => {
@@ -55,12 +54,12 @@ module.exports = (ipcMain) => {
 	});
 
 	ipcMain.handle("lockId", async (event, lockId) => {
-		if (lockId == "get") return temp.lockId;
-		temp.lockId = lockId;
+		if (lockId == "get") return temp.get("lockId");
+		temp.set("lockId", lockId);
 	});
 
-	ipcMain.handle("lock", async (event, action) => {
-		if (action == "get") return temp.lock;
-		temp.lock = action;
+	ipcMain.handle("lock", async (event, lock) => {
+		if (lock == "get") return temp.get("lock");
+		temp.set("lock", lock);
 	});
 };
