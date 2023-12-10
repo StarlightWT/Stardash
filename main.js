@@ -169,7 +169,3 @@ async function startInfoUpdate(accessToken) {
 }
 
 require("./src/handlers/ipc_handler.js")(ipcMain);
-
-setInterval(() => {
-	console.log(win.getPosition());
-}, 1000);
