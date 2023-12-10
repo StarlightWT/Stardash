@@ -21,4 +21,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	lock: (action) => ipcRenderer.invoke("lock", action),
 	getDBLock: (lockId, userId) =>
 		ipcRenderer.invoke("getDBLock", lockId, userId),
+	bootOnStart: (status) => ipcRenderer.invoke("bootOnStart", status),
 });

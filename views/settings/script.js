@@ -8,6 +8,7 @@ const devTriggerBtn = document.getElementById("devModeTrigger");
 const devTools = document.getElementById("dev_tools");
 const checkUpdateBtn = document.getElementById("checkUpdate");
 const roleSelect = document.getElementById("role");
+const startOnBootSelect = document.getElementById("startOnBoot");
 var devMode = false;
 var change = false;
 async function loadsettings() {
@@ -26,6 +27,12 @@ async function loadsettings() {
 
 	//Get verison
 	const version = await window.electronAPI.getVersion();
+
+	const bootOnStart = await window.electronAPI.bootOnStart("get");
+	startOnBootSelect.checked = bootOnStart;
+	startOnBootSelect.onclick = () => {
+		window.electronAPI.bootOnStart(startOnBootSelect.checked);
+	};
 	// const loaded = await window.electronAPI.updActive();
 	versionCopy.value = version;
 	if (devMode) {

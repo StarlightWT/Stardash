@@ -62,4 +62,10 @@ module.exports = (ipcMain, temp) => {
 		if (lock == "get") return temp.get("lock");
 		temp.set("lock", lock);
 	});
+
+	ipcMain.handle("bootOnStart", async (event, status) => {
+		if (status == "get") return temp.get("bootOnStart");
+		if (status) return temp.set("bootOnStart", true);
+		if (!status) return temp.set("bootOnStart", false);
+	});
 };

@@ -17,7 +17,7 @@ let win, closing;
 const temp = new Store();
 
 app.setLoginItemSettings({
-	openAtLogin: true,
+	openAtLogin: temp.get("bootOnStart") ?? temp.set("bottOnStart", true),
 	openAsHidden: true, // Optional: Hide the app window on startup
 });
 
@@ -68,7 +68,7 @@ app.whenReady().then(async () => {
 		}
 	);
 
-	win.removeMenu();
+	// !win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 	//Create initial window(?)
