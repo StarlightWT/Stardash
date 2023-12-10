@@ -68,4 +68,12 @@ module.exports = (ipcMain, temp) => {
 		if (status) return temp.set("bootOnStart", true);
 		if (!status) return temp.set("bootOnStart", false);
 	});
+
+	ipcMain.handle("assignTask", async (event, lockId, taskTitle) => {
+		return await database.assignTask(lockId, taskTitle);
+	});
+
+	ipcMain.handle("unassignTask", async (event, lockId, taskTitle) => {
+		return await database.unassignTask(lockId, taskTitle);
+	});
 };

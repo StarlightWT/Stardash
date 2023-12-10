@@ -98,16 +98,18 @@ async function assignTask(lockId, taskTitle) {
 
 	assignedTasks.push(task);
 
-	return await lockModel.findOneAndUpdate(
-		{ id: lockId },
-		{
-			$set: {
-				"modules.$[elem].assignedTasks": assignedTasks,
-				"modules.$[elem].taskList": taskList,
+	return await lockModel
+		.findOneAndUpdate(
+			{ id: lockId },
+			{
+				$set: {
+					"modules.$[elem].assignedTasks": assignedTasks,
+					"modules.$[elem].taskList": taskList,
+				},
 			},
-		},
-		{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
-	);
+			{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
+		)
+		.lean();
 }
 
 async function unassignTask(lockId, taskTitle) {
@@ -130,16 +132,18 @@ async function unassignTask(lockId, taskTitle) {
 
 	console.log(taskList);
 	console.log(assignedTasks);
-	return await lockModel.findOneAndUpdate(
-		{ id: lockId },
-		{
-			$set: {
-				"modules.$[elem].assignedTasks": assignedTasks,
-				"modules.$[elem].taskList": taskList,
+	return await lockModel
+		.findOneAndUpdate(
+			{ id: lockId },
+			{
+				$set: {
+					"modules.$[elem].assignedTasks": assignedTasks,
+					"modules.$[elem].taskList": taskList,
+				},
 			},
-		},
-		{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
-	);
+			{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
+		)
+		.lean();
 }
 module.exports = {
 	createNewUser,

@@ -108,12 +108,16 @@ function openModule(module) {
 			allTasks.append(allTasksTitle);
 			moduleDB.assignedTasks.forEach((task) => {
 				let li = document.createElement("li");
-				li.innerHTML = task.title + `<i class="fa-solid fa-arrow-right">`;
+				li.innerHTML =
+					task.title +
+					`<i class="fa-solid fa-arrow-right" onclick="selectTask(this)">`;
 				taskList.append(li);
 			});
 			moduleDB.taskList.forEach((task) => {
 				let li = document.createElement("li");
-				li.innerHTML = task.title + `<i class="fa-solid fa-arrow-left"></i>`;
+				li.innerHTML =
+					task.title +
+					`<i class="fa-solid fa-arrow-left" onclick="selectTask(this)"></i>`;
 
 				allTasks.append(li);
 			});
@@ -121,4 +125,14 @@ function openModule(module) {
 			moduleCase.append(allTasks);
 			break;
 	}
+}
+
+async function selectTask(elem) {
+	const task = elem.parentElement.innerText;
+	let taskType = elem.parentElement.parentElement.id;
+	console.log(lock._id);
+	if (taskType.startsWith("as"))
+		DBLock = await window.electronAPI.unassignTask(lock._id, task);
+	else DBLock = await window.electronAPI.assignTask(lock._id, task);
+	openModule("Tasks");
 }

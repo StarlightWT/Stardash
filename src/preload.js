@@ -22,4 +22,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	getDBLock: (lockId, userId) =>
 		ipcRenderer.invoke("getDBLock", lockId, userId),
 	bootOnStart: (status) => ipcRenderer.invoke("bootOnStart", status),
+	assignTask: (lockId, taskTitle) =>
+		ipcRenderer.invoke("assignTask", lockId, taskTitle),
+	unassignTask: (lockId, taskTitle) =>
+		ipcRenderer.invoke("unassignTask", lockId, taskTitle),
 });
