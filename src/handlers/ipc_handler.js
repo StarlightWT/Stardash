@@ -76,4 +76,8 @@ module.exports = (ipcMain, temp) => {
 	ipcMain.handle("unassignTask", async (event, lockId, taskTitle) => {
 		return await database.unassignTask(lockId, taskTitle);
 	});
+
+	ipcMain.handle("logTask", async (event, lockId, log) => {
+		return await database.logTask(lockId, log);
+	});
 };

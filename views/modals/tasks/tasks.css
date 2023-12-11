@@ -1,0 +1,85 @@
+#back {
+	position: absolute;
+	left: 2rem;
+	top: -0.4rem;
+	padding: 1rem;
+	border-radius: 50%;
+}
+
+#back:hover {
+	cursor: pointer;
+}
+
+.title {
+	text-align: center;
+	width: 100%;
+	background-color: var(--secondary-bg-colour);
+	margin: 0;
+}
+
+#assignedTasks {
+	height: 80vh;
+	background-color: var(--secondary-bg-colour);
+	width: 30vw;
+	margin-left: 1rem;
+	text-align: center;
+	list-style: none;
+	border-radius: 0.5rem;
+	padding: 0;
+}
+
+#assignedTasks > h1 {
+	border-bottom: solid 2px white;
+	width: 90%;
+	margin: 0;
+	margin-inline: auto;
+}
+
+#assignedTasks > li {
+	display: flex;
+	justify-content: space-between;
+	align-content: space-between;
+	width: 90%;
+	margin-inline: auto;
+}
+
+#assignedTasks > li > div > i {
+	margin-left: 0.5rem;
+}
+
+i {
+	transition-duration: 250ms;
+}
+
+i:hover {
+	cursor: pointer;
+	color: var(--accent-colour);
+	transition-duration: 250ms;
+}
+
+.rewards {
+	margin-right: 1rem;
+	margin-top: 1rem;
+	width: 60vw;
+	height: 80vh;
+	border-radius: 0.5rem;
+	background-color: var(--secondary-bg-colour);
+}
+
+.rewards > h1 {
+	width: 90%;
+	text-align: center;
+	margin: 0;
+	margin-inline: auto;
+	border-bottom: 2px solid white;
+}
+
+.rewards > h2 {
+	text-align: center;
+	margin: 0;
+}
+
+.container {
+	display: flex;
+	justify-content: space-between;
+}

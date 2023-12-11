@@ -44,7 +44,8 @@
 	margin-bottom: 0.5rem;
 }
 
-#extensionList {
+#extensionList,
+#moduleList {
 	list-style: none;
 	position: sticky;
 	padding: 0;
@@ -52,12 +53,14 @@
 	overflow: hidden;
 }
 
-#extensionList li {
+#extensionList li,
+#moduleList li {
 	background-color: var(--secondary-bg-colour);
 	padding-block: 10px;
 }
 
-#extensionList li a {
+#extensionList li a,
+#moduleList li a {
 	color: white;
 	text-decoration: none;
 }
@@ -66,7 +69,8 @@
 	transition-duration: 0.25s;
 }
 
-#extensionList .selectable:hover {
+#extensionList > .selectable:hover,
+#moduleList > .selectable:hover {
 	background-color: var(--accent-colour);
 	cursor: pointer;
 	transition-duration: 0.25s;

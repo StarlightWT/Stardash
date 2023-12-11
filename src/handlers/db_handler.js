@@ -145,6 +145,33 @@ async function unassignTask(lockId, taskTitle) {
 		)
 		.lean();
 }
+
+async function logTask(lockId, log) {
+	let lock = await lockModel.find({ id: lockId });
+	lock = lock[0];
+	let taskModule = lock.modules.find((obj) => obj.name == "Tasks");
+	await unassignTask(lockId, log.title);
+
+	const taskLog = taskModule.taskLog;
+
+	let newTaskLog = [log];
+	for (let i = 1; i < 5; i++) {
+		newTaskLog[i] = taskLog[i - 1] ?? {};
+	}
+
+	return await lockModel
+		.findOneAndUpdate(
+			{ id: lockId },
+			{
+				$set: {
+					"modules.$[elem].taskLog": newTaskLog,
+				},
+			},
+			{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
+		)
+		.lean();
+}
+
 module.exports = {
 	createNewUser,
 	getUser,
@@ -153,4 +180,5 @@ module.exports = {
 	createLock,
 	assignTask,
 	unassignTask,
+	logTask,
 };

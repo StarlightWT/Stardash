@@ -9,6 +9,7 @@ async function getLock() {
 async function getDBLock(lockId) {
 	return await window.electronAPI.getDBLock(lockId);
 }
+
 async function initialize() {
 	lock = await getLock();
 	DBLock = await getDBLock(lock._id);

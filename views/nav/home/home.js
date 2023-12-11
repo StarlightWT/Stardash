@@ -425,3 +425,7 @@ function disableScroll() {
 function enableScroll() {
 	window.onscroll = null;
 }
+
+function openModule() {
+	window.electronAPI.redirect("tasks");
+}

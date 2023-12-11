@@ -10,6 +10,13 @@
 	cursor: pointer;
 }
 
+.title {
+	text-align: center;
+	width: 100%;
+	background-color: var(--secondary-bg-colour);
+	margin: 0;
+}
+
 .container {
 	display: flex;
 	align-content: space-between;
@@ -30,13 +37,6 @@
 	margin: 0;
 	text-align: center;
 	margin-inline: auto;
-}
-
-.title {
-	text-align: center;
-	width: 100%;
-	background-color: var(--secondary-bg-colour);
-	margin: 0;
 }
 
 .lockee {
