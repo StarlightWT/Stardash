@@ -134,10 +134,14 @@ function openModule(module) {
 			moduleDB.taskLog.forEach((log) => {
 				const li = document.createElement("li");
 				const title = document.createElement("h3");
-				const completionDate = document.createElement("h4");
+				const completionDate = document.createElement("h3");
 
-				title.innerHTML = log.title;
-				completionDate.innerHTML = log.completedAt;
+				if (!log.title) li.classList.add("hidden");
+				title.innerHTML = log.title ?? ".";
+				completionDate.innerHTML = log.completedAt ?? ".";
+
+				if (log.status == "Completed") li.classList.add("Completed");
+				if (log.status == "Failed") li.classList.add("Failed");
 
 				li.append(title, completionDate);
 				taskLog.append(li);

@@ -155,7 +155,7 @@ async function logTask(lockId, log) {
 	const taskLog = taskModule.taskLog;
 
 	let newTaskLog = [log];
-	for (let i = 1; i < 5; i++) {
+	for (let i = 1; i < 3; i++) {
 		newTaskLog[i] = taskLog[i - 1] ?? {};
 	}
 

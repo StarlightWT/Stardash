@@ -40,7 +40,11 @@ function start(DBlock) {
 async function complete(element) {
 	const task = element.parentElement.parentElement.innerText;
 	const date = new Date(Date.now());
-	let currentDate = `${date.getHours()}:${date.getMinutes()} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+	let hours = date.getHours();
+	let minutes = date.getMinutes();
+	if (hours.toString().length < 2) hours = `0${hours}`;
+	if (minutes.toString().length < 2) minutes = `0${minutes}`;
+	let currentDate = `${hours}:${minutes} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
 	let log = {
 		title: task,
 		completedAt: currentDate,
@@ -52,9 +56,8 @@ async function complete(element) {
 async function fail(element) {
 	const task = element.parentElement.parentElement.innerText;
 	const date = new Date(Date.now());
-	if (hours < 10) hours = `0${hours}`;
-	if (minutes < 10) minutes = `0${minutes}`;
-
+	let hours = date.getHours();
+	let minutes = date.getMinutes();
 	if (hours.toString().length < 2) hours = `0${hours}`;
 	if (minutes.toString().length < 2) minutes = `0${minutes}`;
 	let currentDate = `${hours}:${minutes} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
