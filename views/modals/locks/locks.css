@@ -20,6 +20,7 @@
 	width: 60vw;
 	margin-top: 1rem;
 	margin-right: 1rem;
+	border-radius: 0.5rem;
 	background-color: var(--secondary-bg-colour);
 }
 
@@ -109,11 +110,16 @@ ul {
 }
 
 .tasks {
+	position: relative;
+	height: calc(100% - 39px);
+}
+
+.tasks > div {
 	display: flex;
 	justify-content: space-between;
 }
 
-.tasks > ul {
+.tasks > div > ul {
 	width: 40%;
 	border-radius: 0.5rem;
 	margin-inline: 1rem;
@@ -121,31 +127,86 @@ ul {
 	padding: 0;
 	text-align: center;
 	background-color: var(--background-colour);
+	max-height: 250px;
+	overflow-y: scroll;
+	scrollbar-gutter: transparent;
 }
 
-.tasks > ul > li {
+::-webkit-scrollbar {
+	width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 33, 241, 0.8);
+	border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+.tasks > div > ul > h2 {
+	position: sticky;
+	top: 0;
+	background-color: var(--background-colour);
+	z-index: 9999;
+}
+
+.tasks > div > ul > li {
 	position: relative;
 	margin-block: 0.5rem;
 }
 
-.tasks > ul > li > i {
+.tasks > div > ul > li > i {
 	position: absolute;
 	transition-duration: 250ms;
 }
-.tasks > #assignedTasks > li > i {
+.tasks > div > #assignedTasks > li > i {
 	right: 10px;
 }
 
-.tasks > #unassignedTasks > li > i {
+.tasks > div > #unassignedTasks > li > i {
 	left: 10px;
 }
-.tasks > ul > li > i:hover {
+
+.tasks > div > ul > li > i:hover {
 	color: var(--accent-colour);
 	transition-duration: 250ms;
 	cursor: pointer;
 }
 
-.tasks > ul > h2 {
+.tasks > div > ul > h2 {
 	margin: 0;
 	border-bottom: 2px solid white;
+}
+
+.tasks > .log {
+	position: absolute;
+	bottom: 1rem;
+	left: 0.7rem;
+	background-color: var(--background-colour);
+	width: 95%;
+	margin-inline: auto;
+	border-radius: 0.5rem;
+	margin-top: 1rem;
+}
+
+.tasks > .log > h2 {
+	margin: 0;
+	width: 90%;
+	border-bottom: 2px solid white;
+	margin-inline: auto;
+}
+
+.tasks > .log > li {
+	display: flex;
+	justify-content: space-between;
+	margin: 0;
+	margin-top: 0.25rem;
+}
+
+.tasks > .log > li > h3,
+.tasks > .log > li > h4 {
+	margin: 0;
+	margin-inline: 0.5rem;
 }

@@ -96,6 +96,8 @@ function openModule(module) {
 	moduleCase.innerHTML = "";
 	switch (module) {
 		case "Tasks":
+			const assigningDiv = document.createElement("div");
+
 			const taskList = document.createElement("ul");
 			const allTasks = document.createElement("ul");
 			taskList.id = "assignedTasks";
@@ -121,8 +123,29 @@ function openModule(module) {
 
 				allTasks.append(li);
 			});
-			moduleCase.append(taskList);
-			moduleCase.append(allTasks);
+
+			const taskLog = document.createElement("ul");
+			const taskLogTitle = document.createElement("h2");
+			taskLogTitle.innerHTML = "Tasks log";
+			taskLog.className = "log";
+
+			taskLog.append(taskLogTitle);
+			moduleDB.taskLog.forEach((log) => {
+				const li = document.createElement("li");
+				const title = document.createElement("h3");
+				const completionDate = document.createElement("h4");
+
+				title.innerHTML = log.title;
+				completionDate.innerHTML = log.completedAt;
+
+				li.append(title, completionDate);
+				taskLog.append(li);
+			});
+
+			assigningDiv.append(taskList, allTasks);
+			moduleCase.append(assigningDiv);
+			moduleCase.append(taskLog);
+
 			break;
 	}
 }
