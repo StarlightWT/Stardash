@@ -88,4 +88,9 @@ module.exports = (ipcMain, temp) => {
 	ipcMain.handle("addTask", async (event, id, task) => {
 		return await database.addTask(id, task);
 	});
+
+	ipcMain.handle("DBlock", async (event, action) => {
+		if (action == "get") return temp.get("DBlock");
+		else temp.set("DBlock", action);
+	});
 };

@@ -29,4 +29,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	logTask: (lockId, log) => ipcRenderer.invoke("logTask", lockId, log),
 	toggleModule: (id, module) => ipcRenderer.invoke("toggleModule", id, module),
 	addTask: (id, task) => ipcRenderer.invoke("addTask", id, task),
+	DBlock: (action) => ipcRenderer.invoke("DBlock", action),
 });

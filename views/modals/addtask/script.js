@@ -4,7 +4,8 @@ async function done() {
 	if (task.length < 5) return;
 	task = { title: task };
 	const lockId = await window.electronAPI.lock("get");
-	DBLock = await window.electronAPI.addTask(lockId, task);
+	let newLock = await window.electronAPI.addTask(lockId, task);
+	window.electronAPI.DBlock(newLock);
 	goback();
 }
 

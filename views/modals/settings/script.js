@@ -95,14 +95,11 @@ function openModule(module) {
 	}
 }
 
-window.onfocus = (e) => {
+window.onfocus = async (e) => {
 	if (redirected) {
+		console.log("GETTING DB LOCK");
+		DBLock = await window.electronAPI.DBlock("get");
+		// console.log(DBLock);;
 		openModule(activeModule);
-		redirected = false;
-		console.log("Opening module!");
 	}
 };
-
-setInterval(() => {
-	console.log(DBLock.modules.find((obj) => obj.name == "Tasks").taskList);
-}, 5000);
