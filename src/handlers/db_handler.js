@@ -175,8 +175,7 @@ async function logTask(lockId, log) {
 async function toggleModule(lockId, module) {
 	let lock = await lockModel.find({ id: lockId });
 	lock = lock[0];
-	let moduleDB = lock.modules.find((obj) => obj.name == module);
-	console.log(moduleDB.enabled);
+	let moduleDB = lock.modules.find((obj) => obj.name == "Tasks");
 	return await lockModel
 		.findOneAndUpdate(
 			{ id: lockId },
@@ -188,6 +187,24 @@ async function toggleModule(lockId, module) {
 		.lean();
 }
 
+async function addTask(lockId, task) {
+	let lock = await lockModel.find({ id: lockId });
+	lock = lock[0];
+	let moduleDB = lock.modules.find((obj) => obj.name == "Tasks");
+
+	let newTaskList = moduleDB.taskList;
+	newTaskList.push(task);
+
+	return await lockModel
+		.findOneAndUpdate(
+			{ id: lockId },
+			{
+				$set: { "modules.$[elem].taskList": newTaskList },
+			},
+			{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
+		)
+		.lean();
+}
 module.exports = {
 	createNewUser,
 	getUser,
@@ -198,4 +215,5 @@ module.exports = {
 	unassignTask,
 	logTask,
 	toggleModule,
+	addTask,
 };

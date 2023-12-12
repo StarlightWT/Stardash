@@ -1,5 +1,6 @@
 let DBLock;
-
+let redirected = false;
+let activeModule = null;
 async function initialize() {
 	lock = await window.electronAPI.get("lock");
 	lock = lock[0];
@@ -41,18 +42,21 @@ function back() {
 
 function openModule(module) {
 	const body = document.getElementById("container");
-	body.classList.remove("hidden");
 	body.innerHTML = "";
 	const moduleDB = DBLock.modules.find((obj) => obj.name === module);
 
+	activeModule = module;
+
 	//Module active toggle
 
-	const moduleActiveToggle = document.createElement("input");
-	moduleActiveToggle.type = "checkbox";
-	moduleActiveToggle.value = moduleDB.enabled;
+	const moduleActiveToggle = document.createElement("h4");
+	moduleActiveToggle.id = "activeToggle";
+	if (moduleDB.enabled) moduleActiveToggle.innerText = "Disable";
+	else moduleActiveToggle.innerText = "Enable";
 	moduleActiveToggle.onclick = async (e) => {
 		DBLock = await window.electronAPI.toggleModule(DBLock.id, module);
 		setModules(DBLock);
+		openModule(module);
 	};
 
 	body.append(moduleActiveToggle);
@@ -62,20 +66,43 @@ function openModule(module) {
 	switch (module) {
 		case "Tasks":
 			//Task list
+			body.className = "tasks";
 			const taskList = document.createElement("ul");
 			const taskListTitle = document.createElement("h2");
-			taskListTitle.innerText = "Task list";
-			taskListTitle.class = "elmTitle";
+			taskListTitle.innerText = "Tasks";
+			taskListTitle.className = "elmTitle";
 			taskList.append(taskListTitle);
 			moduleDB.taskList.forEach((task) => {
 				const taskElm = document.createElement("li");
-				taskElm.innerHTML = task.title;
+				taskElm.innerHTML =
+					task.title +
+					`<i class="fa-solid fa-xmark" onclick="remove(this)"></i>`;
 
 				taskList.append(taskElm);
 			});
+			const taskListAdd = document.createElement("i");
+			taskListAdd.classList.add("fa-solid", "fa-plus", "addbutton");
+			taskListAdd.onclick = (e) => {
+				window.electronAPI.lock(DBLock.id);
+				window.electronAPI.redirect("addtask", true);
+				redirected = true;
+			};
+			taskList.append(taskListAdd);
 			//Task list
 
 			body.append(taskList);
 			break;
 	}
 }
+
+window.onfocus = (e) => {
+	if (redirected) {
+		openModule(activeModule);
+		redirected = false;
+		console.log("Opening module!");
+	}
+};
+
+setInterval(() => {
+	console.log(DBLock.modules.find((obj) => obj.name == "Tasks").taskList);
+}, 5000);

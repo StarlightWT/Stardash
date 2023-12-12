@@ -28,4 +28,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 		ipcRenderer.invoke("unassignTask", lockId, taskTitle),
 	logTask: (lockId, log) => ipcRenderer.invoke("logTask", lockId, log),
 	toggleModule: (id, module) => ipcRenderer.invoke("toggleModule", id, module),
+	addTask: (id, task) => ipcRenderer.invoke("addTask", id, task),
 });

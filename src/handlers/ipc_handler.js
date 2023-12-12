@@ -84,4 +84,8 @@ module.exports = (ipcMain, temp) => {
 	ipcMain.handle("toggleModule", async (event, id, module) => {
 		return await database.toggleModule(id, module);
 	});
+
+	ipcMain.handle("addTask", async (event, id, task) => {
+		return await database.addTask(id, task);
+	});
 };

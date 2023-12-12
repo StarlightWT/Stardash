@@ -9,6 +9,7 @@ nav {
 	list-style: none;
 	justify-content: space-evenly;
 	margin: 0;
+	padding: 0;
 	padding-block: 0.5rem;
 	background-color: var(--secondary-bg-colour);
 }
@@ -62,6 +63,77 @@ nav {
 	color: red;
 }
 
+#container {
+	position: relative;
+}
+
+#activeToggle {
+	position: absolute;
+	right: 15px;
+	top: 10px;
+	margin: 0;
+	padding-block: 0.5rem;
+	padding-inline: 1rem;
+	background-color: var(--background-colour);
+	border-radius: 1rem;
+}
+
+#activeToggle:hover {
+	cursor: pointer;
+}
+
+.tasks {
+	display: flex;
+}
+
+.tasks > ul {
+	position: relative;
+	background-color: var(--background-colour);
+	width: 30%;
+	margin-left: 1rem;
+	margin-top: 1rem;
+	padding: 0;
+	list-style: none;
+	text-align: center;
+	border-radius: 0.5rem;
+}
+
 .elmTitle {
 	margin: 0;
+	width: 90%;
+	margin-inline: auto;
+	border-bottom: 2px solid white;
+}
+
+.tasks > ul > li {
+	display: flex;
+	justify-content: space-between;
+	margin-inline: 0.25rem;
+	border-bottom: rgba(255, 255, 255, 0.1) dashed 2px;
+}
+
+.tasks > ul > li > i {
+	transition-duration: 250ms;
+}
+.tasks > ul > li > i:hover {
+	cursor: pointer;
+	color: var(--accent-colour);
+	transition-duration: 250ms;
+}
+
+.tasks > ul > .addbutton {
+	position: absolute;
+	bottom: 0;
+	width: 98.5%;
+	left: 0;
+	background-color: darkgray;
+	border: 2px solid black;
+	border-radius: 0.5rem;
+	transition-duration: 250ms;
+}
+
+.tasks > ul > .addbutton:hover {
+	background-color: gray;
+	cursor: pointer;
+	transition-duration: 250ms;
 }

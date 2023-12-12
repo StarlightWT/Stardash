@@ -39,6 +39,12 @@ async function redirect(win, location, modal) {
 			modalHeight = 200;
 			modalWidth = 800;
 			break;
+		case "addtask":
+			modal = true;
+			frame = false;
+			modalHeight = 500;
+			modalWidth = 800;
+			break;
 		case "history":
 			modal = true;
 			frame = false;

@@ -1,0 +1,17 @@
+.container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#task {
+	width: 90%;
+	text-align: center;
+}
+
+button {
+	width: 40%;
+	height: 30px;
+}
