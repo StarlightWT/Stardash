@@ -426,6 +426,13 @@ function enableScroll() {
 	window.onscroll = null;
 }
 
-function openModule() {
-	window.electronAPI.redirect("tasks");
+function openModule(module) {
+	switch (module) {
+		case "settings":
+			window.electronAPI.redirect("moduleSettings");
+			break;
+		case "tasks":
+			window.electronAPI.redirect("tasks");
+			break;
+	}
 }
