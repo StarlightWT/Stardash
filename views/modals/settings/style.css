@@ -1,0 +1,67 @@
+@import url("../modalsStyle.css");
+
+nav {
+	margin: 0;
+}
+
+#moduleList {
+	display: flex;
+	list-style: none;
+	justify-content: space-evenly;
+	margin: 0;
+	padding-block: 0.5rem;
+	background-color: var(--secondary-bg-colour);
+}
+
+#moduleList > li {
+	background-color: var(--background-colour);
+	border-radius: 1rem;
+	flex-grow: 1;
+	margin-inline: 1rem;
+	text-align: center;
+	font-weight: bold;
+	padding-block: 0.25rem;
+	transition-duration: 250ms;
+	position: relative;
+}
+
+#moduleList > li:hover:not(.locked) {
+	background-color: var(--accent-colour);
+	cursor: pointer;
+	transition-duration: 250ms;
+}
+
+#container {
+	width: 95%;
+	height: 80vh;
+	background-color: var(--secondary-bg-colour);
+	margin-inline: auto;
+	margin-top: 1rem;
+	border-radius: 0.5rem;
+}
+
+.hidden {
+	display: none;
+}
+
+#moduleList > li > .lockStatus {
+	position: absolute;
+	right: 15px;
+}
+
+#moduleList > li > .activeStatus {
+	position: absolute;
+	right: 35px;
+}
+
+.active {
+	color: green;
+}
+
+.inactive {
+	color: red;
+}
+
+.elmTitle {
+	margin: 0;
+}

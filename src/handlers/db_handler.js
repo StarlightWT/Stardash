@@ -172,6 +172,22 @@ async function logTask(lockId, log) {
 		.lean();
 }
 
+async function toggleModule(lockId, module) {
+	let lock = await lockModel.find({ id: lockId });
+	lock = lock[0];
+	let moduleDB = lock.modules.find((obj) => obj.name == module);
+	console.log(moduleDB.enabled);
+	return await lockModel
+		.findOneAndUpdate(
+			{ id: lockId },
+			{
+				$set: { "modules.$[elem].enabled": !moduleDB.enabled },
+			},
+			{ arrayFilters: [{ "elem.name": module }], new: true }
+		)
+		.lean();
+}
+
 module.exports = {
 	createNewUser,
 	getUser,
@@ -181,4 +197,5 @@ module.exports = {
 	assignTask,
 	unassignTask,
 	logTask,
+	toggleModule,
 };

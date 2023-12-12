@@ -2,17 +2,9 @@ let lock;
 let DBLock;
 let lockeeProfile;
 
-async function getLock() {
-	return await window.electronAPI.lock("get");
-}
-
-async function getDBLock(lockId) {
-	return await window.electronAPI.getDBLock(lockId);
-}
-
 async function initialize() {
-	lock = await getLock();
-	DBLock = await getDBLock(lock._id);
+	lock = await window.electronAPI.lock("get");
+	DBLock = await window.electronAPI.getDBLock(lock._id);
 	DBLock = DBLock[0];
 	lockeeProfile = await window.electronAPI.khaction("profile", {
 		id: lock.user._id,

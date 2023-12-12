@@ -80,4 +80,8 @@ module.exports = (ipcMain, temp) => {
 	ipcMain.handle("logTask", async (event, lockId, log) => {
 		return await database.logTask(lockId, log);
 	});
+
+	ipcMain.handle("toggleModule", async (event, id, module) => {
+		return await database.toggleModule(id, module);
+	});
 };
