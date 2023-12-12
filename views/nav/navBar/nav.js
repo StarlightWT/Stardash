@@ -5,7 +5,6 @@ async function loadProfileInfo() {
 	const avatar = document.getElementById("avatar");
 	usernameBox.innerHTML = profile.username;
 	avatar.setAttribute("src", profile.avatarUrl);
-	// discord.innerHTML = "@" + profile.discordUsername;
 }
 
 function toggleDropdown() {
@@ -14,7 +13,7 @@ function toggleDropdown() {
 }
 
 const repNav = document.getElementById("replace_nav");
-fetch("../nav.html").then(async (nav) => {
+fetch("../navBar/nav.html").then(async (nav) => {
 	var newBar = document.createElement("nav");
 	newBar.className = "dash";
 	newBar.innerHTML = await nav.text();
