@@ -96,11 +96,16 @@ nav {
 	list-style: none;
 	text-align: center;
 	border-radius: 0.5rem;
+	overflow-y: scroll;
 }
 
 .elmTitle {
+	position: sticky;
+	background-color: var(--background-colour);
+
+	top: 0;
 	margin: 0;
-	width: 90%;
+	width: 100%;
 	margin-inline: auto;
 	border-bottom: 2px solid white;
 }
@@ -122,7 +127,7 @@ nav {
 }
 
 .tasks > ul > .addbutton {
-	position: absolute;
+	position: sticky;
 	bottom: 0;
 	width: 98.5%;
 	left: 0;
@@ -130,10 +135,54 @@ nav {
 	border: 2px solid black;
 	border-radius: 0.5rem;
 	transition-duration: 250ms;
+	z-index: 1; /* Ensure it's above the other elements */
 }
 
 .tasks > ul > .addbutton:hover {
 	background-color: gray;
 	cursor: pointer;
 	transition-duration: 250ms;
+}
+
+.settingsGrid {
+	margin-left: 1rem;
+	margin-top: 1rem;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr 1fr;
+	gap: 1rem;
+	row-gap: 1rem;
+}
+
+.setting_container {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 150px;
+	height: 100px;
+	background-color: var(--background-colour);
+	border-radius: 0.5rem;
+	margin: 0;
+}
+
+.setting_container > h2 {
+	margin: 0;
+	font-size: 16px;
+	text-align: center;
+}
+
+.setting_container > i:hover {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+	transition-duration: 250ms;
+}
+
+.setting_container > i {
+	transition-duration: 250ms;
+	position: absolute;
+	padding: 0.2rem;
+	border-radius: 1rem;
+	scale: 3;
+	bottom: 40%;
 }

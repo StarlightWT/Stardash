@@ -12,22 +12,16 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	get: (what) => ipcRenderer.invoke("get", what),
 	action: (what, option) => ipcRenderer.invoke("action", what, option),
 	khaction: (what, option) => ipcRenderer.invoke("khaction", what, option),
+	taskAction: (action, option) =>
+		ipcRenderer.invoke("taskAction", action, option),
 	active: (location) => ipcRenderer.invoke("active", location),
 	updateSettings: () => ipcRenderer.invoke("updateSettings"),
-	createWeheel: (container, props) =>
-		ipcRenderer.invoke("createWheel", container, props),
 	network: (status) => ipcRenderer.send("network", status),
 	lockId: (lockId) => ipcRenderer.invoke("lockId", lockId),
 	lock: (action) => ipcRenderer.invoke("lock", action),
 	getDBLock: (lockId, userId) =>
 		ipcRenderer.invoke("getDBLock", lockId, userId),
 	bootOnStart: (status) => ipcRenderer.invoke("bootOnStart", status),
-	assignTask: (lockId, taskTitle) =>
-		ipcRenderer.invoke("assignTask", lockId, taskTitle),
-	unassignTask: (lockId, taskTitle) =>
-		ipcRenderer.invoke("unassignTask", lockId, taskTitle),
-	logTask: (lockId, log) => ipcRenderer.invoke("logTask", lockId, log),
 	toggleModule: (id, module) => ipcRenderer.invoke("toggleModule", id, module),
-	addTask: (id, task) => ipcRenderer.invoke("addTask", id, task),
 	DBlock: (action) => ipcRenderer.invoke("DBlock", action),
 });

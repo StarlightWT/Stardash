@@ -69,28 +69,16 @@ module.exports = (ipcMain, temp) => {
 		if (!status) return temp.set("bootOnStart", false);
 	});
 
-	ipcMain.handle("assignTask", async (event, lockId, taskTitle) => {
-		return await database.assignTask(lockId, taskTitle);
-	});
-
-	ipcMain.handle("unassignTask", async (event, lockId, taskTitle) => {
-		return await database.unassignTask(lockId, taskTitle);
-	});
-
-	ipcMain.handle("logTask", async (event, lockId, log) => {
-		return await database.logTask(lockId, log);
-	});
-
 	ipcMain.handle("toggleModule", async (event, id, module) => {
 		return await database.toggleModule(id, module);
-	});
-
-	ipcMain.handle("addTask", async (event, id, task) => {
-		return await database.addTask(id, task);
 	});
 
 	ipcMain.handle("DBlock", async (event, action) => {
 		if (action == "get") return temp.get("DBlock");
 		else temp.set("DBlock", action);
+	});
+
+	ipcMain.handle("taskAction", async (event, action, options) => {
+		return await database.taskAction(action, options);
 	});
 };
