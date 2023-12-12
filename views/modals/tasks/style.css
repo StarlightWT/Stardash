@@ -1,21 +1,4 @@
-#back {
-	position: absolute;
-	left: 2rem;
-	top: -0.4rem;
-	padding: 1rem;
-	border-radius: 50%;
-}
-
-#back:hover {
-	cursor: pointer;
-}
-
-.title {
-	text-align: center;
-	width: 100%;
-	background-color: var(--secondary-bg-colour);
-	margin: 0;
-}
+@import url("../modalsStyle.css");
 
 #assignedTasks {
 	height: 80vh;
@@ -45,16 +28,6 @@
 
 #assignedTasks > li > div > i {
 	margin-left: 0.5rem;
-}
-
-i {
-	transition-duration: 250ms;
-}
-
-i:hover {
-	cursor: pointer;
-	color: var(--accent-colour);
-	transition-duration: 250ms;
 }
 
 .rewards {

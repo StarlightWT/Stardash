@@ -1,27 +1,9 @@
 @import url(../../general.css);
+@import url("../modalsStyle.css");
 
 body {
 	overflow-y: hidden;
 	border-radius: 1rem;
-}
-
-i {
-	position: absolute;
-	left: 2rem;
-	top: -0.4rem;
-	padding: 1rem;
-	border-radius: 50%;
-}
-
-i:hover {
-	cursor: pointer;
-}
-
-#title {
-	text-align: center;
-	width: 100%;
-	background-color: var(--secondary-bg-colour);
-	margin: 0;
 }
 
 table {
