@@ -28,7 +28,7 @@ function setModules(DBLock) {
 			};
 		} else {
 			moduleLi.className = "locked";
-			moduleLi.innerHTML += `<i class="fa-solid fa-lock lockStatus"></i>`;
+			moduleLi.innerHTML += `<i class="fa-solid fa-lock lockStatus" style="color: #EF2121;"></i>`;
 		}
 		moduleList.append(moduleLi);
 	});
@@ -50,6 +50,7 @@ function openModule(module) {
 	//Module active toggle
 	const moduleActiveToggle = document.createElement("h4");
 	moduleActiveToggle.id = "activeToggle";
+	moduleActiveToggle.className = "toggle";
 	if (moduleDB.enabled) moduleActiveToggle.innerText = "Disable";
 	else moduleActiveToggle.innerText = "Enable";
 	moduleActiveToggle.onclick = async (e) => {
@@ -61,6 +62,22 @@ function openModule(module) {
 	body.append(moduleActiveToggle);
 
 	//Module active toggle
+	//Module lock
+	const moduleLockToggle = document.createElement("h4");
+	moduleLockToggle.id = "moduleLock";
+	moduleLockToggle.className = "toggle";
+	moduleLockToggle.innerText = "Lock";
+	moduleLockToggle.onclick = async (e) => {
+		if (moduleLockToggle.innerText != "You sure?")
+			return (moduleLockToggle.innerText = "You sure?");
+		DBLock = await window.electronAPI.lockModule(DBLock.id, module);
+		setModules(DBLock);
+		window.location.reload();
+	};
+
+	body.append(moduleLockToggle);
+
+	//Module lock
 
 	switch (module) {
 		case "Tasks":
@@ -84,29 +101,6 @@ function openModule(module) {
 			//Settings
 			const settingsGrid = document.createElement("div");
 			settingsGrid.className = "settingsGrid";
-			// const settings = [
-			// 	{
-			// 		title: "Add a task",
-			// 		input: `<i class="fa-solid fa-plus" style="color: #ffffff;" onclick=addtask()></i>`,
-			// 	},
-			// 	{
-			// 		title: "Get tasks from",
-			// 		input: `<select id="getTasksSelect">
-			// 	<option value="0">No one</option>
-			// 	<option value="1">Keyholder</option>
-			// 	<option value="2">Everyone</option>
-			// </select>`,
-			// 	},
-			// 	{ title: "AddTask", input: `<button onclick="addtask()"></button>` },
-			// 	{ title: "AddTask", input: `<button onclick="addtask()"></button>` },
-			// 	{ title: "AddTask", input: `<button onclick="addtask()"></button>` },
-			// 	{ title: "AddTask", input: `<button onclick="addtask()"></button>` },
-			// ];
-			// settings.forEach((setting) => {
-			// 	container.append(title);
-			// 	container.innerHTML += setting.input;
-			// 	settingsGrid.append(container);
-			// });
 
 			//Settings
 			const addTaskContainer = document.createElement("div");
@@ -164,7 +158,7 @@ async function remove(element) {
 
 window.onfocus = async (e) => {
 	if (redirected) {
-		DBLock = await window.electronAPI.DBlock("get");
+		DBLock = await window.electronAPI.DBLock("get");
 		openModule(activeModule);
 	}
 };

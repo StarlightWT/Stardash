@@ -67,10 +67,8 @@ nav {
 	position: relative;
 }
 
-#activeToggle {
+.toggle {
 	position: absolute;
-	right: 15px;
-	top: 10px;
 	margin: 0;
 	padding-block: 0.5rem;
 	padding-inline: 1rem;
@@ -78,8 +76,18 @@ nav {
 	border-radius: 1rem;
 }
 
-#activeToggle:hover {
+.toggle:hover {
 	cursor: pointer;
+}
+
+#activeToggle {
+	right: 15px;
+	top: 10px;
+}
+
+#moduleLock {
+	right: 15px;
+	top: 50px;
 }
 
 .tasks {

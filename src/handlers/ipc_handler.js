@@ -72,6 +72,9 @@ module.exports = (ipcMain, temp) => {
 	ipcMain.handle("toggleModule", async (event, id, module) => {
 		return await database.toggleModule(id, module);
 	});
+	ipcMain.handle("lockModule", async (event, DBLock, module) => {
+		return await database.lockModule(DBLock, module);
+	});
 
 	ipcMain.handle("DBlock", async (event, action) => {
 		if (action == "get") return temp.get("DBlock");

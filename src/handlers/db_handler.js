@@ -168,6 +168,19 @@ async function toggleModule(lockId, module) {
 		)
 		.lean();
 }
+async function lockModule(lockId, module) {
+	let lock = await lockModel.find({ id: lockId });
+	lock = lock[0];
+	return await lockModel
+		.findOneAndUpdate(
+			{ id: lockId },
+			{
+				$set: { "modules.$[elem].locked": true },
+			},
+			{ arrayFilters: [{ "elem.name": module }], new: true }
+		)
+		.lean();
+}
 
 async function addTask(lockId, taskObj, action) {
 	let lock = await lockModel.find({ id: lockId });
@@ -223,4 +236,5 @@ module.exports = {
 	createLock,
 	taskAction,
 	toggleModule,
+	lockModule,
 };

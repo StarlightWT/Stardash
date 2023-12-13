@@ -24,4 +24,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	bootOnStart: (status) => ipcRenderer.invoke("bootOnStart", status),
 	toggleModule: (id, module) => ipcRenderer.invoke("toggleModule", id, module),
 	DBlock: (action) => ipcRenderer.invoke("DBlock", action),
+	lockModule: (DBLock, module) =>
+		ipcRenderer.invoke("lockModule", DBLock, module),
 });
