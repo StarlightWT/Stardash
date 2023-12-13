@@ -165,3 +165,20 @@ async function startInfoUpdate(accessToken) {
 }
 
 require("./src/handlers/ipc_handler.js")(ipcMain, temp);
+
+function LimitedSlowingTimer(startingTime, increment, limit) {
+	setTimeout(() => {
+		console.log(`[Main] Updating window position...`);
+		const pos = win.getPosition();
+		temp.set("x", pos[0]);
+		temp.set("y", pos[1]);
+
+		if (startingTime < limit) startingTime += increment;
+		LimitedSlowingTimer(startingTime, increment, limit);
+	}, startingTime);
+}
+const initialTime = 6 * 10 * 1000; //1 minute
+const stepUp = 6 * 10 * 1000 * 10; //10 minutes
+const limit = 6 * 10 * 1000 * 60; //1 hour
+
+LimitedSlowingTimer(initialTime, stepUp, limit);
