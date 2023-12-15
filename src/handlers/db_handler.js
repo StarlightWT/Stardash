@@ -148,7 +148,7 @@ async function logTask(lockId, log) {
 	let lock = await lockModel.find({ id: lockId });
 	lock = lock[0];
 	let taskModule = lock.modules.find((obj) => obj.name == "Tasks");
-	await unassignTask(lockId, log.title);
+	await assignTask(lockId, log.title, "unassign");
 
 	const taskLog = taskModule.taskLog;
 

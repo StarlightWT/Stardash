@@ -25,7 +25,7 @@ async function initialize() {
 function start(DBlock) {
 	const taskList = document.getElementById("assignedTasks");
 	const DBmodule = DBlock.modules.find((obj) => obj.name == "Tasks");
-
+	console.log(DBmodule);
 	DBmodule.assignedTasks.forEach((task) => {
 		const li = document.createElement("li");
 
@@ -50,7 +50,7 @@ async function complete(element) {
 		completedAt: currentDate,
 		status: "Completed",
 	};
-	lock = await window.electronAPI.logTask(lock._id, log);
+	lock = await window.electronAPI.taskAction("log", { id: lock._id, log: log });
 	window.location.reload();
 }
 async function fail(element) {
@@ -66,7 +66,7 @@ async function fail(element) {
 		completedAt: currentDate,
 		status: "Failed",
 	};
-	lock = await window.electronAPI.logTask(lock._id, log);
+	lock = await window.electronAPI.taskAction("log", { id: lock._id, log: log });
 	window.location.reload();
 }
 
