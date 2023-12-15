@@ -42,7 +42,7 @@ async function redirect(win, location, modal) {
 		case "addtask":
 			modal = true;
 			frame = false;
-			modalHeight = 500;
+			modalHeight = 100;
 			modalWidth = 800;
 			break;
 		case "history":
@@ -67,14 +67,14 @@ async function redirect(win, location, modal) {
 
 		const child = new BrowserWindow({
 			transparent: true,
-			// frame: frame,
-			// autoHideMenuBar: true,
+			frame: frame,
+			autoHideMenuBar: true,
 			x: x,
 			y: y,
 			hasShadow: true,
 			height: modalHeight,
-			icon: "../../icon.ico",
 			width: modalWidth,
+			icon: "../../icon.ico",
 			parent: win,
 			modal: true,
 			show: false,

@@ -6,6 +6,7 @@ async function initialize() {
 	lock = await window.electronAPI.lock("get");
 	DBLock = await window.electronAPI.getDBLock(lock._id);
 	DBLock = DBLock[0];
+	if (!DBLock) sendError();
 	lockeeProfile = await window.electronAPI.khaction("profile", {
 		id: lock.user._id,
 	});
@@ -155,4 +156,16 @@ async function selectTask(elem) {
 		DBLock = await window.electronAPI.unassignTask(lock._id, task);
 	else DBLock = await window.electronAPI.assignTask(lock._id, task);
 	openModule("Tasks");
+}
+
+function sendError() {
+	const ErrorMessage = document.createElement("h1");
+	ErrorMessage.innerHTML = "Unable to find lock information for this user!";
+	ErrorMessage.className = "ERROR";
+	const body = document.getElementById("body");
+	body.innerHTML = "";
+	body.append(ErrorMessage);
+	setTimeout(() => {
+		window.close();
+	}, 1500);
 }

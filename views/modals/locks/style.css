@@ -209,3 +209,13 @@ ul {
 .hidden {
 	visibility: hidden;
 }
+
+.ERROR {
+	position: fixed;
+	margin-top: 50vh;
+	width: 100vw;
+	height: 100vh;
+	z-index: 9999;
+	text-align: center;
+	background-color: var(--background-colour);
+}
