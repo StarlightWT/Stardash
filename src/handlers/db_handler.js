@@ -214,6 +214,20 @@ async function addTask(lockId, taskObj, action) {
 		.lean();
 }
 
+async function giveTask(id, state) {
+	console.log(id);
+	console.log(state);
+	return await lockModel
+		.findOneAndUpdate(
+			{ id: id },
+			{
+				$set: { "modules.$[elem].giveTasks": state },
+			},
+			{ arrayFilters: [{ "elem.name": "Tasks" }], new: true }
+		)
+		.lean();
+}
+
 async function taskAction(action, options) {
 	switch (action) {
 		case "assign":
@@ -225,6 +239,8 @@ async function taskAction(action, options) {
 		case "remove":
 		case "rem":
 			return await addTask(options.id, options.task, action);
+		case "giveTask":
+			return await giveTask(options.id, options.state);
 	}
 }
 

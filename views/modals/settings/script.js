@@ -122,20 +122,25 @@ function openModule(module) {
 			const getTasksFromTitle = document.createElement("h2");
 			getTasksFromTitle.innerHTML = "Get tasks from";
 
-			const getTasksFromSelect = document.createElement("select");
-			const noOne = document.createElement("option");
-			noOne.value = 0;
-			noOne.innerText = "No one";
-			const KH = document.createElement("option");
-			KH.value = 1;
-			KH.innerText = "Keyholder";
-			const Anyone = document.createElement("option");
-			Anyone.value = 2;
-			Anyone.innerText = "Anyone";
+			const getTasksFromButton = document.createElement("h4");
+			getTasksFromButton.className = "taskButton";
+			if (moduleDB.giveTasks == 0) {
+				getTasksFromButton.innerHTML = "No one";
+			} else {
+				getTasksFromButton.innerHTML = "Anyone";
+			}
+			getTasksFromButton.onclick = async (e) => {
+				let newState = 0;
+				if (moduleDB.giveTasks == 0) newState = 1;
+				DBLock = await window.electronAPI.taskAction("giveTask", {
+					id: DBLock.id,
+					state: newState,
+				});
+				setModules(DBLock);
+				openModule(module);
+			};
 
-			getTasksFromSelect.append(noOne, KH, Anyone);
-
-			getTasksFromContainer.append(getTasksFromTitle, getTasksFromSelect);
+			getTasksFromContainer.append(getTasksFromTitle, getTasksFromButton);
 
 			settingsGrid.append(addTaskContainer, getTasksFromContainer);
 			//Settings
@@ -151,7 +156,6 @@ async function remove(element) {
 		id: DBLock.id,
 		task: { title: taskTitle },
 	});
-	console.log(DBLock);
 
 	openModule(activeModule);
 }
