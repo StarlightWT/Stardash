@@ -49,7 +49,7 @@ module.exports = (ipcMain, temp) => {
 	ipcMain.handle("getDBLock", async (event, lockId, userId) => {
 		let filter;
 		if (lockId) filter = { id: lockId };
-		if (userId) filter = { userId: userId };
+		if (userId) filter = { "user.id": userId };
 		return await database.getLock(filter);
 	});
 

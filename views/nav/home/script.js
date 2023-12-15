@@ -1,6 +1,5 @@
 const lockeeUI = document.getElementById("lockee");
 const keyholderUI = document.getElementById("keyholder");
-const dbConnectTitle = document.getElementById("dbStatus");
 async function start() {
 	window.electronAPI.active("home");
 	//Load all informatin
@@ -8,24 +7,27 @@ async function start() {
 	var DBProfileSearch = await window.electronAPI.get("dbprofile");
 	const DBProfile = await DBProfileSearch[0]._doc;
 
+	let DBLock = await window.electronAPI.getDBLock(null, profile._id);
+	DBLock = DBLock[0];
+
 	//Load, update and pass info depending on role
 	switch (DBProfile.role) {
 		case "switch":
-			loadKHInfo(profile, DBProfile);
-			loadLockInfo(profile, DBProfile);
+			loadKHInfo(profile, DBLock);
+			loadLockInfo(profile, DBLock);
 			break;
 		case "keyholder":
 			lockeeUI.style = "display: none;";
-			loadKHInfo(profile, DBProfile);
+			loadKHInfo(profile, DBLock);
 			break;
 		case "lockee":
 			keyholderUI.style = "display: none;";
-			loadLockInfo(profile, DBProfile);
+			loadLockInfo(profile, DBLock);
 			break;
 	}
 }
 
-async function loadLockInfo(profile, DBProfile) {
+async function loadLockInfo(profile, DBLock) {
 	//Update all information upon page load
 	var lock = await updateLock();
 	updateLockTime(
@@ -37,6 +39,7 @@ async function loadLockInfo(profile, DBProfile) {
 	);
 	updateLockHistory();
 	updateLockExtensions(lock);
+	loadModules(DBLock);
 
 	//Setup intervals to keep info up to date
 	setInterval(async () => {
@@ -431,8 +434,23 @@ function openModule(module) {
 		case "settings":
 			window.electronAPI.redirect("moduleSettings");
 			break;
-		case "tasks":
+		case "Tasks":
 			window.electronAPI.redirect("tasks");
 			break;
 	}
+}
+
+function loadModules(DBLock) {
+	const moduleList = document.getElementById("moduleList");
+	DBLock.modules.forEach((module) => {
+		if (!module.enabled) return;
+		const newModule = document.createElement("li");
+		newModule.innerHTML = module.name;
+		newModule.className = "selectable";
+		newModule.onclick = (e) => {
+			console.log(module.name);
+			openModule(module.name);
+		};
+		moduleList.append(newModule);
+	});
 }

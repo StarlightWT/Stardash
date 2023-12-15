@@ -27,7 +27,7 @@ const taskSchema = new mongoose.Schema({
 const lockSchema = new mongoose.Schema({
 	id: String,
 	user: userSchema,
-	modules: [taskSchema],
+	modules: [taskSchema], // Array of modules
 });
 
 const userModel = mongoose.model("User", userSchema, "users");
@@ -81,6 +81,7 @@ async function createLock(id, userId) {
 	const lock = new lockModel({
 		id: id,
 		user: user,
+		modules: [{}],
 	});
 	lock.save();
 	return lock;
