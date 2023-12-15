@@ -68,7 +68,7 @@ app.whenReady().then(async () => {
 		}
 	);
 
-	// win.removeMenu();
+	win.removeMenu();
 	//send user to oauth page
 	win.loadURL(oauth.authLink);
 	//Create initial window(?)
