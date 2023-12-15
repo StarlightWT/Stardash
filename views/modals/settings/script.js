@@ -6,14 +6,7 @@ async function initialize() {
 	lock = lock[0];
 	DBLock = await window.electronAPI.getDBLock(lock._id);
 	DBLock = DBLock[0];
-	console.log(DBLock);
-	if (!DBLock) setUpNewLock(lock);
-	else setModules(DBLock);
-}
-
-async function setUpNewLock(lock) {
-	console.log(lock);
-	// setModules(DBLock);
+	setModules(DBLock);
 }
 
 function setModules(DBLock) {
@@ -169,6 +162,7 @@ async function remove(element) {
 window.onfocus = async (e) => {
 	if (redirected) {
 		DBLock = await window.electronAPI.DBLock("get");
+		console.log(DBLock);
 		openModule(activeModule);
 	}
 };

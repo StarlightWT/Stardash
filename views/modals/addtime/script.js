@@ -31,7 +31,7 @@ function done(type) {
 
 	window.electronAPI.khaction("time", { id: lockId, time: total });
 	console.log(`[MODAL - ADDTIME] lockId: ${lockId}|||time:${total}`);
-	debugger;
+
 	window.close();
 }
 

@@ -8,7 +8,7 @@ async function done() {
 		id: lockId,
 		task: task,
 	});
-	window.electronAPI.DBlock(newLock);
+	window.electronAPI.DBLock(newLock);
 	goback();
 }
 
