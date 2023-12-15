@@ -93,6 +93,22 @@ function openModule(module) {
 		case "Tasks":
 			const assigningDiv = document.createElement("div");
 
+			const addTaskBtn = document.createElement("i");
+			const remTaskBtn = document.createElement("i");
+
+			addTaskBtn.classList.add("fa-solid", "fa-plus");
+			remTaskBtn.classList.add("fa-solid", "fa-minus");
+
+			addTaskBtn.onclick = (e) => {
+				window.electronAPI.DBLock(DBLock);
+				window.electronAPI.redirect("addtask");
+			};
+
+			const buttonsDiv = document.createElement("div");
+			buttonsDiv.className = "buttons";
+
+			buttonsDiv.append(addTaskBtn, remTaskBtn);
+
 			const taskList = document.createElement("ul");
 			const allTasks = document.createElement("ul");
 			taskList.id = "assignedTasks";
@@ -113,8 +129,11 @@ function openModule(module) {
 			moduleDB.taskList.forEach((task) => {
 				let li = document.createElement("li");
 				li.innerHTML =
+					`<div>` +
 					task.title +
-					`<i class="fa-solid fa-arrow-left" onclick="selectTask(this)"></i>`;
+					`</div>
+					<i class="fa-solid fa-arrow-left" onclick="selectTask(this)"></i>
+					<i class="fa-solid fa-xmark" onclick="remove(this)"></i>`;
 
 				allTasks.append(li);
 			});
@@ -141,7 +160,7 @@ function openModule(module) {
 				taskLog.append(li);
 			});
 
-			assigningDiv.append(taskList, allTasks);
+			assigningDiv.append(taskList, buttonsDiv, allTasks);
 			moduleCase.append(assigningDiv);
 			moduleCase.append(taskLog);
 
@@ -163,6 +182,17 @@ async function selectTask(elem) {
 			id: lock._id,
 			taskTitle: task,
 		});
+	openModule("Tasks");
+}
+
+async function remove(element) {
+	const taskTitle = element.parentElement.children[0].innerText;
+
+	DBLock = await window.electronAPI.taskAction("rem", {
+		id: DBLock.id,
+		task: { title: taskTitle },
+	});
+
 	openModule("Tasks");
 }
 

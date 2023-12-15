@@ -138,7 +138,17 @@ ul {
 
 .tasks > div > ul > li {
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-bottom: dashed gray 2px;
 	margin-block: 0.5rem;
+}
+
+.tasks > div > ul > li > div {
+	width: 90%;
+	text-align: center;
 }
 
 .tasks > div > ul > li > i {
@@ -149,8 +159,12 @@ ul {
 	right: 10px;
 }
 
-.tasks > div > #unassignedTasks > li > i {
+.tasks > div > #unassignedTasks > li > i:not(.fa-xmark) {
 	left: 10px;
+}
+
+.fa-xmark {
+	right: 10px;
 }
 
 .tasks > div > ul > li > i:hover {
@@ -218,4 +232,24 @@ ul {
 	z-index: 9999;
 	text-align: center;
 	background-color: var(--background-colour);
+}
+
+.buttons {
+	display: flex;
+	flex-direction: column;
+	margin-top: 3rem;
+	transition-duration: 250ms;
+}
+
+.buttons > i {
+	background-color: var(--background-colour);
+	border-radius: 1rem;
+	padding: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+.buttons > i:hover {
+	cursor: pointer;
+	color: var(--accent-colour);
+	transition-duration: 250ms;
 }

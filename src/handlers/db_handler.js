@@ -90,7 +90,6 @@ async function createLock(id, userId) {
 
 async function getLock(searchObject) {
 	const lock = await lockModel.find(searchObject).lean();
-	console.log(lock[0].modules);
 	if (lock.length > 0) {
 		return lock;
 	}

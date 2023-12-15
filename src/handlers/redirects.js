@@ -53,6 +53,8 @@ async function redirect(win, location, modal) {
 			break;
 		case "locks":
 			frame = false;
+			modalWidth = 1200;
+			modalWidth = 1000;
 			break;
 	}
 
@@ -80,7 +82,7 @@ async function redirect(win, location, modal) {
 			show: false,
 			minimizable: false,
 			fullscreenable: false,
-			resizable: false,
+			// resizable: false,
 			roundedCorners: true,
 			webPreferences: {
 				preload: path.join(__dirname, "../preload.js"),
