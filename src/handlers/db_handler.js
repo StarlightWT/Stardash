@@ -2,20 +2,32 @@ const mongoose = require("mongoose");
 const secret = require("../../secrets.json");
 mongoose.connect(secret.DATABASE_URI);
 var dbProfile, dbProfileId;
-
+var actions = 0,
+	limit = 30;
 const userSchema = new mongoose.Schema({
 	username: String,
 	id: String,
 	discordId: String,
 	subscribed: Boolean,
-	tier: String,
-	role: String,
+	tier: { type: String, default: "Basic" },
+	role: { type: String, default: "switch" },
+});
+
+const taskSchema = new mongoose.Schema({
+	name: { type: String, default: "Tasks" },
+	khId: { type: String, default: null },
+	enabled: { type: Boolean, default: false },
+	locked: { type: Boolean, default: false },
+	taskList: [],
+	assignedTasks: [],
+	taskLog: [],
+	giveTasks: { type: Number, default: 0 },
 });
 
 const lockSchema = new mongoose.Schema({
 	id: String,
-	userId: String,
-	modules: Array,
+	user: userSchema,
+	modules: [taskSchema],
 });
 
 const userModel = mongoose.model("User", userSchema, "users");
@@ -65,9 +77,10 @@ async function setUserRole(_id, role) {
 
 async function createLock(id, userId) {
 	if ((await getLock({ id: id })) != -1) return 1;
+	const user = await userModel.findOne({ id: userId });
 	const lock = new lockModel({
 		id: id,
-		userId: userId,
+		user: user,
 	});
 	lock.save();
 	return lock;
@@ -229,6 +242,8 @@ async function giveTask(id, state) {
 }
 
 async function taskAction(action, options) {
+	if (actions > limit) return 2; //Error 2 -> Too many requests
+	actions++;
 	switch (action) {
 		case "assign":
 		case "unassign":
@@ -254,3 +269,7 @@ module.exports = {
 	toggleModule,
 	lockModule,
 };
+
+setInterval(() => {
+	actions = 0;
+}, 60000);

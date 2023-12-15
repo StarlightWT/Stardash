@@ -6,8 +6,14 @@ async function initialize() {
 	lock = lock[0];
 	DBLock = await window.electronAPI.getDBLock(lock._id);
 	DBLock = DBLock[0];
+	console.log(DBLock);
+	if (!DBLock) setUpNewLock(lock);
+	else setModules(DBLock);
+}
 
-	setModules(DBLock);
+async function setUpNewLock(lock) {
+	console.log(lock);
+	// setModules(DBLock);
 }
 
 function setModules(DBLock) {
