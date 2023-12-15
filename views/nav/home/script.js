@@ -7,27 +7,24 @@ async function start() {
 	var DBProfileSearch = await window.electronAPI.get("dbprofile");
 	const DBProfile = await DBProfileSearch[0]._doc;
 
-	let DBLock = await window.electronAPI.getDBLock(null, profile._id);
-	DBLock = DBLock[0];
-
 	//Load, update and pass info depending on role
 	switch (DBProfile.role) {
 		case "switch":
-			loadKHInfo(profile, DBLock);
-			loadLockInfo(profile, DBLock);
+			loadKHInfo(profile);
+			loadLockInfo(profile);
 			break;
 		case "keyholder":
 			lockeeUI.style = "display: none;";
-			loadKHInfo(profile, DBLock);
+			loadKHInfo(profile);
 			break;
 		case "lockee":
 			keyholderUI.style = "display: none;";
-			loadLockInfo(profile, DBLock);
+			loadLockInfo(profile);
 			break;
 	}
 }
 
-async function loadLockInfo(profile, DBLock) {
+async function loadLockInfo(profile) {
 	//Update all information upon page load
 	var lock = await updateLock();
 	updateLockTime(
@@ -39,6 +36,9 @@ async function loadLockInfo(profile, DBLock) {
 	);
 	updateLockHistory();
 	updateLockExtensions(lock);
+
+	let DBLock = await window.electronAPI.getDBLock(lock._id, profile._id);
+	DBLock = DBLock[0];
 	loadModules(DBLock);
 
 	//Setup intervals to keep info up to date
@@ -53,8 +53,6 @@ async function loadLockInfo(profile, DBLock) {
 		);
 		updateLockHistory();
 	}, 1000);
-
-	window.electronAPI.getDBLock(lock._id, profile._id);
 }
 
 var KhLocksUpdate = [];
@@ -441,14 +439,16 @@ function openModule(module) {
 }
 
 function loadModules(DBLock) {
+	console.log("Loading modules");
 	const moduleList = document.getElementById("moduleList");
+	console.log(moduleList);
 	DBLock.modules.forEach((module) => {
+		console.log(module);
 		if (!module.enabled) return;
 		const newModule = document.createElement("li");
 		newModule.innerHTML = module.name;
 		newModule.className = "selectable";
 		newModule.onclick = (e) => {
-			console.log(module.name);
 			openModule(module.name);
 		};
 		moduleList.append(newModule);

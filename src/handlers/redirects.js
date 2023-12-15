@@ -67,8 +67,8 @@ async function redirect(win, location, modal) {
 
 		const child = new BrowserWindow({
 			transparent: true,
-			frame: frame,
-			autoHideMenuBar: true,
+			// frame: frame,
+			// autoHideMenuBar: true,
 			x: x,
 			y: y,
 			hasShadow: true,

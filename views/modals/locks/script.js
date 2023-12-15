@@ -85,6 +85,7 @@ function timestampConvert(timestamp) {
 function openModule(module) {
 	const moduleCase = document.getElementById("moduleCase");
 	const moduleTitle = document.getElementById("title");
+	console.log(DBLock);
 	const moduleDB = DBLock.modules.find((obj) => obj.name == module);
 	moduleTitle.innerHTML = `Module - ${module}`;
 	moduleCase.innerHTML = "";
@@ -151,10 +152,17 @@ function openModule(module) {
 async function selectTask(elem) {
 	const task = elem.parentElement.innerText;
 	let taskType = elem.parentElement.parentElement.id;
-	console.log(lock._id);
-	if (taskType.startsWith("as"))
-		DBLock = await window.electronAPI.unassignTask(lock._id, task);
-	else DBLock = await window.electronAPI.assignTask(lock._id, task);
+	console.log(taskType);
+	if (taskType.startsWith("un"))
+		DBLock = await window.electronAPI.taskAction("assign", {
+			id: lock._id,
+			taskTitle: task,
+		});
+	else
+		DBLock = await window.electronAPI.taskAction("unassign", {
+			id: lock._id,
+			taskTitle: task,
+		});
 	openModule("Tasks");
 }
 
