@@ -441,7 +441,7 @@ function openModule(module) {
 function loadModules(DBLock) {
 	console.log("Loading modules");
 	const moduleList = document.getElementById("moduleList");
-	console.log(moduleList);
+	console.log(DBLock);
 	DBLock.modules.forEach((module) => {
 		console.log(module);
 		if (!module.enabled) return;

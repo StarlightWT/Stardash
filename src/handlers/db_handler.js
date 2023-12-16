@@ -7,12 +7,13 @@ var actions = 0,
 const userSchema = new mongoose.Schema({
 	username: String,
 	id: String,
+	chasterId: String,
+	token: String,
 	discordId: String,
 	subscribed: Boolean,
 	tier: { type: String, default: "Basic" },
 	role: { type: String, default: "switch" },
 });
-
 const taskSchema = new mongoose.Schema({
 	name: { type: String, default: "Tasks" },
 	khId: { type: String, default: null },
@@ -33,30 +34,59 @@ const lockSchema = new mongoose.Schema({
 const userModel = mongoose.model("User", userSchema, "users");
 const lockModel = mongoose.model("Lock", lockSchema, "locks");
 
-async function createNewUser(username, id, role) {
-	if (!username || !id || !role) return;
+async function createNewUser(username, chasterId, role) {
+	if (!username || !chasterId || !role) return;
 	if (role == "unspecified") role = "switch";
+	let search = await findUser(chasterId);
+	if (search.length > 0) return 1;
+
+	let token = await checkUniqueToken(makeid(32));
+	let id = await checkUniqueId(makeid(32));
+
 	var user = new userModel({
 		username: username,
 		id: id,
+		token: token,
+		chasterId: chasterId,
 		discordId: null,
 		subscribed: false,
 		tier: "Basic",
 		role: role,
 	});
 
-	const search = await findUser(id);
-	if (search.length > 0) {
-		user.updateOne(search._id);
-	} else {
-		user.save();
-	}
+	user.save();
 	return user;
+}
+
+async function checkUniqueToken(token) {
+	let search = await userModel.find({ token: token });
+	if (search.length == 0) return token;
+	else token = makeid(32);
+	return checkUniqueToken(token);
+}
+async function checkUniqueId(id) {
+	let search = await userModel.find({ id: id });
+	if (search.length == 0) return id;
+	else id = makeid(32);
+	return checkUniqueId(id);
+}
+
+function makeid(length) {
+	let result = "";
+	const characters =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	const charactersLength = characters.length;
+	let counter = 0;
+	while (counter < length) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		counter += 1;
+	}
+	return result;
 }
 
 async function findUser(_id) {
 	dbProfileId = _id;
-	const search = await userModel.find({ id: _id });
+	const search = await userModel.find({ chasterId: _id });
 	return search;
 }
 
@@ -66,19 +96,27 @@ setInterval(() => {
 }, 5000);
 
 async function getUser(_id) {
-	if (dbProfileId != _id) return findUser(_id);
+	if (dbProfileId != _id) return await findUser(_id);
 	return dbProfile;
 }
 
-async function setUserRole(_id, role) {
-	await userModel.findOneAndUpdate({ id: _id }, { role: role });
+async function setUserRole(chasterId, role) {
+	await userModel.findOneAndUpdate({ chasterId: chasterId }, { role: role });
 	return 1;
 }
 
 async function createLock(id, userId) {
 	if ((await getLock({ id: id })) != -1) return 1;
-	if ((await getLock({ "user.id": userId })) != -1) return 1;
-	const user = await userModel.findOne({ id: userId });
+	if (
+		(await getLock({
+			$or: [{ "user.chasterId": userId }, { "user.id": userId }],
+		})) != -1
+	)
+		return 1;
+
+	const user = await userModel.findOne({
+		$or: [{ chasterId: userId }, { id: userId }],
+	});
 	const lock = new lockModel({
 		id: id,
 		user: user,
@@ -90,10 +128,42 @@ async function createLock(id, userId) {
 
 async function getLock(searchObject) {
 	const lock = await lockModel.find(searchObject).lean();
-	if (lock.length > 0) {
+	if (lock.length == 1) {
+		return lock;
+	}
+	if (lock.length > 1) {
+		await removeDuplicates();
 		return lock;
 	}
 	return -1;
+}
+
+async function removeDuplicates() {
+	try {
+		const duplicates = await lockModel.aggregate([
+			{
+				$group: {
+					_id: { fieldToCheck: "user.id" },
+					count: { $sum: 1 },
+					docs: { $push: "$_id" },
+				},
+			},
+			{
+				$match: {
+					count: { $gt: 1 },
+				},
+			},
+		]);
+
+		const deletionPromises = duplicates.map(async (duplicate) => {
+			const [keepDocId, ...deleteDocIds] = duplicate.docs;
+
+			// Keep the first document and delete the rest
+			await lockModel.deleteMany({ _id: { $in: deleteDocIds } });
+		});
+
+		await Promise.all(deletionPromises);
+	} catch (error) {}
 }
 
 async function assignTask(lockId, taskTitle, action) {
@@ -231,8 +301,6 @@ async function addTask(lockId, taskObj, action) {
 }
 
 async function giveTask(id, state) {
-	console.log(id);
-	console.log(state);
 	return await lockModel
 		.findOneAndUpdate(
 			{ id: id },

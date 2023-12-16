@@ -16,7 +16,7 @@ async function updatePeriodicInfo(loaded, network) {
 	if (
 		profileVar != undefined &&
 		dbprofileVar != undefined &&
-		profileVar?._id == dbprofileVar[0]?.id
+		profileVar?._id == dbprofileVar[0]?.chasterId
 	)
 		loaded = true;
 	profileVar = await call.get("profile"); //Call api and ask for the logged in profile's info
