@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
 });
 const taskSchema = new mongoose.Schema({
 	name: { type: String, default: "Tasks" },
-	khId: { type: String, default: null },
 	enabled: { type: Boolean, default: false },
 	locked: { type: Boolean, default: false },
 	taskList: [],
@@ -25,9 +24,18 @@ const taskSchema = new mongoose.Schema({
 	giveTasks: { type: Number, default: 0 },
 });
 
+const ruleSchema = new mongoose.Schema({
+	name: { type: String, default: "Rules" },
+	enabled: { type: Boolean, default: false },
+	locked: { type: Boolean, default: false },
+	public: { type: Boolean, default: false },
+	rules: [],
+});
+
 const lockSchema = new mongoose.Schema({
 	id: String,
 	user: userSchema,
+	khId: { type: String, default: null },
 	modules: [taskSchema], // Array of modules
 });
 
