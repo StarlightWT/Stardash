@@ -440,14 +440,15 @@ function openModule(module) {
 }
 
 function loadModules(DBLock) {
-	console.log("Loading modules");
 	const moduleList = document.getElementById("moduleList");
-	console.log(DBLock);
 	DBLock.modules.forEach((module) => {
-		console.log(module);
 		if (!module.enabled) return;
 		const newModule = document.createElement("li");
 		newModule.innerHTML = module.name;
+		if (module.name == "Tasks" && module.assignedTasks.length > 0) {
+			const count = module.assignedTasks.length;
+			newModule.innerHTML += ` <${count}>`;
+		}
 		newModule.className = "selectable";
 		newModule.onclick = (e) => {
 			openModule(module.name);
