@@ -1,46 +1,11 @@
 const mongoose = require("mongoose");
 const secret = require("../../secrets.json");
+const { userModel, lockModel } = require("../schemas");
+
 mongoose.connect(secret.DATABASE_URI);
 var dbProfile, dbProfileId;
 var actions = 0,
 	limit = 30;
-const userSchema = new mongoose.Schema({
-	username: String,
-	id: String,
-	chasterId: String,
-	token: String,
-	discordId: String,
-	subscribed: Boolean,
-	tier: { type: String, default: "Basic" },
-	role: { type: String, default: "switch" },
-});
-const taskSchema = new mongoose.Schema({
-	name: { type: String, default: "Tasks" },
-	enabled: { type: Boolean, default: false },
-	locked: { type: Boolean, default: false },
-	taskList: [],
-	assignedTasks: [],
-	taskLog: [],
-	giveTasks: { type: Number, default: 0 },
-});
-
-const ruleSchema = new mongoose.Schema({
-	name: { type: String, default: "Rules" },
-	enabled: { type: Boolean, default: false },
-	locked: { type: Boolean, default: false },
-	public: { type: Boolean, default: false },
-	rules: [],
-});
-
-const lockSchema = new mongoose.Schema({
-	id: String,
-	user: userSchema,
-	khId: { type: String, default: null },
-	modules: [taskSchema], // Array of modules
-});
-
-const userModel = mongoose.model("User", userSchema, "users");
-const lockModel = mongoose.model("Lock", lockSchema, "locks");
 
 async function createNewUser(username, chasterId, role) {
 	if (!username || !chasterId || !role) return;

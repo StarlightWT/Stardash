@@ -98,10 +98,8 @@ function openModule(module) {
 			const assigningDiv = document.createElement("div");
 
 			const addTaskBtn = document.createElement("i");
-			const remTaskBtn = document.createElement("i");
 
 			addTaskBtn.classList.add("fa-solid", "fa-plus");
-			remTaskBtn.classList.add("fa-solid", "fa-minus");
 
 			addTaskBtn.onclick = (e) => {
 				window.electronAPI.DBLock(DBLock);
@@ -111,7 +109,7 @@ function openModule(module) {
 			const buttonsDiv = document.createElement("div");
 			buttonsDiv.className = "buttons";
 
-			buttonsDiv.append(addTaskBtn, remTaskBtn);
+			buttonsDiv.append(addTaskBtn);
 
 			const taskList = document.createElement("ul");
 			const allTasks = document.createElement("ul");
@@ -126,8 +124,9 @@ function openModule(module) {
 			moduleDB.assignedTasks.forEach((task) => {
 				let li = document.createElement("li");
 				li.innerHTML =
+					`<div>` +
 					task.title +
-					`<i class="fa-solid fa-arrow-right" onclick="selectTask(this)">`;
+					`</div><i class="fa-solid fa-arrow-right" onclick="selectTask(this)">`;
 				taskList.append(li);
 			});
 			moduleDB.taskList.forEach((task) => {

@@ -29,6 +29,7 @@
 	justify-content: center;
 	align-items: center;
 	width: 30vw;
+	max-width: 400px;
 	background-color: var(--secondary-bg-colour);
 	margin-left: 1rem;
 	margin-top: 1rem;
@@ -147,7 +148,7 @@ ul {
 }
 
 .tasks > div > ul > li > div {
-	width: 90%;
+	width: 70%;
 	text-align: center;
 }
 
@@ -205,6 +206,8 @@ ul {
 
 .tasks > .log > li > h3 {
 	margin: 0;
+	font-size: 16px;
+	font-weight: 500;
 	margin-inline: 0.5rem;
 }
 
