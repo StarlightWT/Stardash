@@ -46,6 +46,8 @@ async function setInfo() {
 		timeRemaining = endDate - frozenDate;
 	}
 
+	let timeSpentT = Date.now() - new Date(lock.createdAt).getTime();
+
 	const timeLeft = document.getElementById("timeRemaining");
 	timeLeft.innerHTML =
 		`<i class="fa-regular fa-clock"></i> ` + timestampConvert(timeRemaining);
@@ -53,12 +55,14 @@ async function setInfo() {
 	const timeSpent = document.getElementById("timeLocked");
 
 	timeSpent.innerHTML =
-		`<i class="fa-solid fa-lock"></i> ` + timestampConvert(lock.totalDuration);
+		`<i class="fa-solid fa-lock"></i> ` + timestampConvert(timeSpentT);
 
 	const timeFrozen = document.getElementById("timeFrozen");
 	timeFrozen.innerHTML =
 		`<i class="fa-regular fa-snowflake"></i>` +
 		timestampConvert(Date.now() - new Date(lock.frozenAt).getTime());
+	if (!lock.frozenAt)
+		timeFrozen.innerHTML = `<i class="fa-regular fa-snowflake"></i> 00:00:00:00`;
 }
 
 function back() {

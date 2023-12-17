@@ -40,6 +40,7 @@ async function loadLockInfo(profile) {
 	let DBLock = await window.electronAPI.getDBLock(lock._id, profile._id);
 	DBLock = DBLock[0];
 	loadModules(DBLock);
+	console.log(lock);
 
 	//Setup intervals to keep info up to date
 	setInterval(async () => {
