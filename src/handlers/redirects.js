@@ -26,8 +26,8 @@ async function redirect(win, location, modal) {
 		const currentScreen = screen.getDisplayNearestPoint(
 			screen.getCursorScreenPoint()
 		);
-		size[0] = currentScreen.width;
-		size[1] = currentScreen.height;
+		size[0] = currentScreen.workAreaSize.width;
+		size[1] = currentScreen.workAreaSize.height;
 	}
 	modalHeight = Math.floor(size[1] / 1.1);
 	modalWidth = Math.floor(size[0] / 1.1);
