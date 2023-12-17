@@ -5,6 +5,7 @@ const {
 	session,
 	Tray,
 	Menu,
+	screen,
 } = require("electron");
 const path = require("node:path");
 const oauth = require("./src/handlers/oauth.js");
@@ -23,16 +24,16 @@ app.setLoginItemSettings({
 
 //Create window for everything to be inside of
 function createWindow() {
-	var height = 700;
-	var width = 1000;
+	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
 	return new BrowserWindow({
-		width: width,
-		height: height,
+		width: temp.get("size")[0] ?? width / 1.3,
+		height: temp.get("size")[1] ?? height / 1.2,
+		minHeight: Math.floor(height / 1.4),
+		minWidth: Math.floor(width / 1.8),
 		x: temp.get("x") ?? 0,
 		y: temp.get("y") ?? 0,
-		resizable: false,
 		center: false,
-		fullscreenable: false,
 		roundedCorners: true,
 		icon: "./icon.ico",
 		backgroundColor: "#000",
@@ -83,6 +84,10 @@ app.whenReady().then(async () => {
 
 	win.on("close", (e) => {
 		if (!closing) e.preventDefault();
+		const pos = win.getPosition();
+		temp.set("x", pos[0]);
+		temp.set("y", pos[1]);
+		temp.set("size", win.getSize());
 		win.hide();
 	});
 
@@ -103,6 +108,7 @@ app.whenReady().then(async () => {
 				const pos = win.getPosition();
 				temp.set("x", pos[0]);
 				temp.set("y", pos[1]);
+				temp.set("size", win.getSize());
 
 				app.quit();
 			},
@@ -172,6 +178,7 @@ function LimitedSlowingTimer(startingTime, increment, limit) {
 		const pos = win.getPosition();
 		temp.set("x", pos[0]);
 		temp.set("y", pos[1]);
+		temp.set("size", win.getSize());
 
 		if (startingTime < limit) startingTime += increment;
 		LimitedSlowingTimer(startingTime, increment, limit);
