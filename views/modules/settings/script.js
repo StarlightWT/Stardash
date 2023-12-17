@@ -18,10 +18,10 @@ function setModules(DBLock) {
 		if (module.enabled) active = "active";
 		else active = "inactive";
 		moduleLi.innerHTML =
-			module.name + `<i class="fa-solid fa-circle activeStatus ${active}"></i>`;
+			module.name +
+			`<i class="fa-solid fa-circle activeStatus ${active}" title="${active}"></i>`;
 		if (!module.locked) {
-			moduleLi.innerHTML += `<i class="fa-solid fa-lock-open lockStatus"></i>`;
-
+			moduleLi.innerHTML += `<i class="fa-solid fa-lock-open lockStatus" title=""></i>`;
 			moduleLi.onclick = (e) => {
 				openModule(moduleLi.innerText);
 			};
@@ -29,6 +29,14 @@ function setModules(DBLock) {
 			moduleLi.className = "locked";
 			moduleLi.innerHTML += `<i class="fa-solid fa-lock lockStatus" style="color: #EF2121;"></i>`;
 		}
+		if (module.premium)
+			moduleLi.innerHTML += `<i class="fa-solid fa-star premium" style="color: gold;" title="Premium"></i>`;
+		if (
+			module.premium &&
+			DBLock.user.tier != "Premium" &&
+			DBLock.user.tier != "Developer"
+		)
+			moduleLi.onclick = null;
 		moduleList.append(moduleLi);
 	});
 }
@@ -40,6 +48,7 @@ function back() {
 }
 
 function openModule(module) {
+	console.log(`Opening module: ${module}`);
 	const body = document.getElementById("container");
 	body.innerHTML = "";
 	const moduleDB = DBLock.modules.find((obj) => obj.name === module);
@@ -146,6 +155,16 @@ function openModule(module) {
 
 			body.append(taskList, settingsGrid);
 			break;
+		case "Rules":
+			body.className = "rules";
+			const ruleList = document.createElement("ul");
+			console.log(moduleDB);
+			moduleDB.rules.forEach((rule) => {
+				const ruleLi = document.createElement("li");
+				ruleLi.innerHTML = rule.title;
+				ruleList.append(ruleLi);
+			});
+			body.append(ruleList);
 	}
 }
 
@@ -162,7 +181,6 @@ async function remove(element) {
 window.onfocus = async (e) => {
 	if (redirected) {
 		DBLock = await window.electronAPI.DBLock("get");
-		console.log(DBLock);
 		openModule(activeModule);
 	}
 };

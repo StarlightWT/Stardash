@@ -216,7 +216,7 @@ async function logTask(lockId, log) {
 async function toggleModule(lockId, module) {
 	let lock = await lockModel.find({ id: lockId });
 	lock = lock[0];
-	let moduleDB = lock.modules.find((obj) => obj.name == "Tasks");
+	let moduleDB = lock.modules.find((obj) => obj.name == module);
 	return await lockModel
 		.findOneAndUpdate(
 			{ id: lockId },
