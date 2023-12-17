@@ -1,0 +1,23 @@
+@import url("../general.css");
+
+#back {
+	position: absolute;
+	left: 2rem;
+	top: -0.4rem;
+	padding: 1rem;
+	border-radius: 50%;
+	transition-duration: 250ms;
+}
+
+#back:hover {
+	cursor: pointer;
+	color: var(--accent-colour);
+	transition-duration: 250ms;
+}
+
+.title {
+	text-align: center;
+	width: 100%;
+	background-color: var(--secondary-bg-colour);
+	margin: 0;
+}

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const secret = require("../../secrets.json");
-const { userModel, lockModel } = require("../schemas");
+const { userModel, lockModel, taskModel, ruleModel } = require("../schemas");
 
 mongoose.connect(secret.DATABASE_URI);
 var dbProfile, dbProfileId;
@@ -93,7 +93,7 @@ async function createLock(id, userId) {
 	const lock = new lockModel({
 		id: id,
 		user: user,
-		modules: [{}],
+		modules: [new taskModel(), new ruleModel()],
 	});
 	lock.save();
 	return lock;

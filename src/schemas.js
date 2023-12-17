@@ -14,6 +14,7 @@ const taskSchema = new Schema({
 	name: { type: String, default: "Tasks" },
 	enabled: { type: Boolean, default: false },
 	locked: { type: Boolean, default: false },
+	premium: { type: Boolean, default: false },
 	taskList: [],
 	assignedTasks: [],
 	taskLog: [],
@@ -24,6 +25,7 @@ const ruleSchema = new Schema({
 	name: { type: String, default: "Rules" },
 	enabled: { type: Boolean, default: false },
 	locked: { type: Boolean, default: false },
+	premium: { type: Boolean, default: true },
 	public: { type: Boolean, default: false },
 	rules: [],
 });
@@ -32,13 +34,17 @@ const lockSchema = new Schema({
 	id: String,
 	user: userSchema,
 	khId: { type: String, default: null },
-	modules: [taskSchema], // Array of modules
+	modules: [], // Array of modules
 });
 
 const userModel = model("User", userSchema, "users");
 const lockModel = model("Lock", lockSchema, "locks");
+const taskModel = model("Tasks", taskSchema);
+const ruleModel = model("Rules", ruleSchema);
 
 module.exports = {
 	lockModel,
 	userModel,
+	taskModel,
+	ruleModel,
 };
