@@ -3,7 +3,6 @@ const keyholderUI = document.getElementById("keyholder");
 async function start() {
 	window.electronAPI.active("home");
 	//Load all informatin
-	const profile = await window.electronAPI.get("profile");
 	var DBProfileSearch = await window.electronAPI.get("dbprofile");
 	const DBProfile = await DBProfileSearch[0]._doc;
 

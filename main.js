@@ -8,11 +8,10 @@ const {
 	screen,
 } = require("electron");
 const path = require("node:path");
-const oauth = require("./src/handlers/oauth.js");
-const request = require("./src/handlers/api_handler.js");
 const redirects = require("./src/handlers/redirects.js");
 const updater = require("./src/handlers/updater.js");
 const Store = require("electron-store");
+const { checkToken } = require("./src/handlers/login/login_handler.js");
 let win, closing;
 
 const temp = new Store();
@@ -43,43 +42,17 @@ function createWindow() {
 	});
 }
 
-const redirectUri = "http://localhost:5000/callback";
-
-const filter = {
-	urls: [redirectUri + "*"],
-};
-
 app.whenReady().then(async () => {
 	await updater.check();
-	//Refresh token every 1,5minutes
-	setInterval(() => {
-		oauth.refreshTokens();
-	}, 1000 * 100);
-
 	win = createWindow();
 
-	//Authorize user
-	session.defaultSession.webRequest.onBeforeRequest(
-		filter,
-		async function (details) {
-			const url = details.url;
+	require("./src/handlers/ipc_handler.js")(ipcMain, temp, win);
 
-			await oauth.sufferWithTokens(url, startInfoUpdate);
-			redirects.redirect(win, "loading");
-		}
-	);
-
-	// win.removeMenu();
-	//send user to oauth page
-	win.loadURL(oauth.authLink);
+	redirects.redirect(win, "login");
+	if ((await checkToken(temp)) == 0) redirects.redirect(win, "home");
 	//Create initial window(?)
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
-	});
-
-	//Close app if not on MacOS and all windows are closed
-	app.on("window-all-closed", () => {
-		if (app.platform !== "darwin") app.quit();
 	});
 
 	win.on("close", (e) => {
@@ -121,18 +94,6 @@ app.whenReady().then(async () => {
 	tray.setContextMenu(contextMenu);
 });
 
-//Handle logging out
-var logoutLink = `https://chaster.app/logout`;
-ipcMain.on("logout", () => {
-	request.updateInfo("clear", "clear", network);
-	win.loadURL(logoutLink).then(() => {
-		setTimeout(() => {
-			app.relaunch();
-			app.exit(0);
-		}, 5000);
-	});
-});
-
 var loadStatus = 0;
 ipcMain.handle("loadStatus", () => {
 	return loadStatus;
@@ -155,22 +116,6 @@ ipcMain.on("network", async (event, status) => {
 ipcMain.on("redirect", (event, page, modal) => {
 	redirects.redirect(win, page, modal);
 });
-
-async function startInfoUpdate(accessToken) {
-	loadStatus = await request.updateInfo(accessToken, null, network);
-	var sessionList = request.get("extension");
-	sessionList.results.forEach((session) => {
-		const profile = request.get("profile", null, network);
-		if (session.lock.user._id == profile._id) {
-			request.updateInfo(accessToken, session.sessionId, network);
-		}
-	});
-	setInterval(async () => {
-		loadStatus = await request.updateInfo(null, null, network);
-	}, 5 * 1000); //5seconds
-}
-
-require("./src/handlers/ipc_handler.js")(ipcMain, temp);
 
 function LimitedSlowingTimer(startingTime, increment, limit) {
 	setTimeout(() => {

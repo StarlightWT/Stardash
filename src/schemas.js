@@ -8,8 +8,8 @@ const userSchema = new Schema({
 	discordId: String,
 	subscribed: Boolean,
 	stats: {
-		totalLockedTime: 0,
-		longesLockedTime: 0,
+		totalLockedTime: String,
+		longesLockedTime: String,
 	},
 	tier: { type: String, default: "Basic" },
 	role: { type: String, default: "switch" },
@@ -42,11 +42,12 @@ const lockSchema = new Schema({
 	frozenAt: { type: String, default: null },
 	endsAt: { type: String, required: true },
 	timeLimit: { type: String, default: null },
+	unlockedAt: { type: String, default: null },
 	settings: {
 		timerVisible: { type: Boolean, default: true },
 		timeLogsVisible: { type: Boolean, default: true },
 	},
-	log: [], // Array of actions done to lock
+	combination: { type: String, required: true },
 	modules: [], // Array of modules
 });
 

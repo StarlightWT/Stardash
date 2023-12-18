@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const request = require("./api_handler");
+// const request = require("./api_handler");
 const { BrowserWindow, screen } = require("electron");
 
 function getPaths(dirPath, arrayOfFiles) {
@@ -32,12 +32,6 @@ async function redirect(win, location, modal) {
 	modalHeight = Math.floor(size[1] / 1.1);
 	modalWidth = Math.floor(size[0] / 1.1);
 
-	if (location == "slots") {
-		const profile = await request.get("profile");
-		const dbProfileObject = await request.get("dbprofile", profile._id);
-		const dbProfile = await dbProfileObject[0]._id;
-		if (dbProfile.role != "developer") return;
-	}
 	console.log(`[Redirects] Trying to redirect to ${location}...`);
 	switch (location) {
 		case "addtime":

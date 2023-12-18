@@ -3,7 +3,6 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("electronAPI", {
 	redirect: (page, modal) => ipcRenderer.send("redirect", page, modal),
 	loaded: () => ipcRenderer.invoke("loadStatus"),
-	logout: () => ipcRenderer.send("logout"),
 	setClipboard: (text) => ipcRenderer.send("clip", text),
 	getVersion: () => ipcRenderer.invoke("version"),
 	getStatus: () => ipcRenderer.invoke("getStatus"),
@@ -26,4 +25,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	DBLock: (action) => ipcRenderer.invoke("DBlock", action),
 	lockModule: (DBLock, module) =>
 		ipcRenderer.invoke("lockModule", DBLock, module),
+	//NEW SHIT
+	login: (email, password) => ipcRenderer.invoke("login", email, password),
+	register: (username, email, password) =>
+		ipcRenderer.invoke("register", username, email, password),
+	available: (option) => ipcRenderer.invoke("availale", option),
+	logout: () => ipcRenderer.invoke("logout"),
 });

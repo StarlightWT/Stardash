@@ -4,18 +4,17 @@ module.exports = {
 };
 
 const { lockHistoryModel } = require("../../schemas");
-const { userModel, lockModel, taskModel, ruleModel } = require("../schemas");
+const { userModel, lockModel, taskModel, ruleModel } = require("../../schemas");
 const { getLock, getUser } = require("./db_get");
 /**
  *
  * @param {String} username User's username
  * @returns new user record
  */
-async function createNewUser(username) {
+async function createNewUser(username, id) {
 	if (!username) return;
 
 	let token = await checkUniqueToken(makeid(32));
-	let id = await checkUniqueId(makeid(32));
 
 	var user = new userModel({
 		username: username,
@@ -41,17 +40,6 @@ async function checkUniqueToken(token) {
 	if (search.length == 0) return token;
 	else token = makeid(32);
 	return checkUniqueToken(token);
-}
-/**
- *
- * @param {String} id
- * @returns a unique id that has not been used in the database yet
- */
-async function checkUniqueId(id) {
-	let search = await userModel.find({ id: id });
-	if (search.length == 0) return id;
-	else id = makeid(32);
-	return checkUniqueId(id);
 }
 
 function makeid(length) {

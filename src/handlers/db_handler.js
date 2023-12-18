@@ -10,6 +10,7 @@ module.exports = {
 	tasks,
 	get,
 	create,
+	lock,
 };
 
 const {
@@ -53,17 +54,23 @@ async function module(action, lockId, module) {
 }
 
 const { createNewUser, createLock } = require("./database/db_create");
-async function create(what, option) {
+async function create(what, option, option2) {
 	switch (what) {
 		case "user":
-			return await createNewUser(option);
+			return await createNewUser(option, option2);
 		case "lock":
 			return await createLock(option);
 	}
 	return 2;
 }
 
-const { getUser, getLock, getLockHistory } = require("./database/db_get");
+const {
+	getUser,
+	getLock,
+	getLockHistory,
+	getCombination,
+	getKHLocks,
+} = require("./database/db_get");
 async function get(what, option) {
 	switch (what) {
 		case "user":
@@ -71,8 +78,29 @@ async function get(what, option) {
 		case "lock":
 			return await getLock(option);
 		case "history":
-			var response = await getLockHistory(option);
-			return response;
+			return await getLockHistory(option);
+		case "combination":
+			return await getCombination(option);
+		case "locks":
+			return await getKHLocks(option);
+	}
+	return 2;
+}
+
+const { modifyTime, timerVisibility } = require("./database/db_action");
+
+async function lock(id, what, option) {
+	switch (what) {
+		case "time":
+			return await modifyTime(id, option);
+		case "timer":
+			return await timerVisibility(id, option);
+		case "timeLog":
+			return await timeLogVisibility(id, option);
+		case "freeze":
+			return await setFreeze(id, option);
+		case "history":
+			return await history(id, option);
 	}
 	return 2;
 }

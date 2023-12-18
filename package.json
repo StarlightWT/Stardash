@@ -39,6 +39,7 @@
 		"electron-builder": "^24.6.4"
 	},
 	"dependencies": {
+		"argon2": "^0.31.2",
 		"axios": "^1.5.0",
 		"electron-store": "^8.1.0",
 		"electron-updater": "^6.1.4",

@@ -1,10 +1,17 @@
 console.log(`[IPC Handler] Loaded!`);
-const request = require("./api_handler.js");
+// const request = require("./api_handler.js");
 const { clipboard } = require("electron");
 const database = require("./db_handler.js");
 const updater = require("./updater.js");
+const {
+	login,
+	register,
+	availale,
+	getID,
+	logout,
+} = require("./login/login_handler.js");
 
-module.exports = (ipcMain, temp) => {
+module.exports = (ipcMain, temp, win) => {
 	ipcMain.handle("updateSettings", async () => {
 		return await request.updateInfo(null, null, temp.network);
 	});
@@ -27,6 +34,10 @@ module.exports = (ipcMain, temp) => {
 
 	ipcMain.handle("active", (event, location) => {
 		if (location == "get") return temp.get("activeLocation");
+		if (location == "home") {
+			temp.set("ID", getID(temp.get("GRANT")));
+			console.log(temp.get("ID"));
+		}
 		temp.set("activeLocation", location);
 	});
 
@@ -84,5 +95,21 @@ module.exports = (ipcMain, temp) => {
 
 	ipcMain.handle("taskAction", async (event, action, options) => {
 		return await database.taskAction(action, options);
+	});
+
+	//NEW SHIT
+	ipcMain.handle("login", async (event, email, password) => {
+		return await login(email, password, temp);
+	});
+
+	ipcMain.handle("register", async (event, username, email, password) => {
+		return await register(username, email, password, temp);
+	});
+
+	ipcMain.handle("availale", async (event, option) => {
+		return await availale(option);
+	});
+	ipcMain.handle("logout", (event) => {
+		return logout(win, temp);
 	});
 };

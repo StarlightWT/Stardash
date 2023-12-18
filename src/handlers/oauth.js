@@ -7,15 +7,11 @@
 const axios = require("axios");
 const url = require("url");
 
-const redirectUri = "http://localhost:5000/callback";
 const secrets = require("../../secrets.json");
 const clientId = secrets.CLIENT_ID;
-const superSecretSecret = secrets.CLIENT_SECRET;
-const request = require("./api_handler");
-const tokenUrl = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/token`;
+const tokenUrl = `https://discord.com/api/oauth2/token`;
 
-let accessToken = null,
-	refreshToken = null;
+let accessToken = null;
 
 function getAccessToken() {
 	return accessToken;
@@ -23,15 +19,6 @@ function getAccessToken() {
 
 async function sufferWithTokens(callbackURL, callbackFunction) {
 	const urlParts = url.parse(callbackURL, true);
-	const query = urlParts.query;
-
-	const exchangeOptions = {
-		grant_type: "authorization_code",
-		client_id: clientId,
-		client_secret: superSecretSecret,
-		code: query.code,
-		redirect_uri: redirectUri,
-	};
 
 	var formBody = [];
 	for (var property in exchangeOptions) {
@@ -47,67 +34,25 @@ async function sufferWithTokens(callbackURL, callbackFunction) {
 		headers: {
 			"content-type": "application/x-www-form-urlencoded",
 		},
-		data: formBody,
+		// data: formBody,
 	};
 
 	try {
 		const response = await axios(options);
-		accessToken = response.data.access_token;
-		refreshToken = response.data.refresh_token;
-		console.log("[Oauth] Access token updated!!!");
-		callbackFunction(accessToken);
+		console.log(response);
+		// console.log("[Oauth] Access token updated!!!");
+		// callbackFunction(accessToken);
 	} catch (e) {
 		console.log(`You stupid bitch wtf did you do: ${e}`);
 		throw e;
 	}
 }
 
-async function refreshTokens() {
-	const exchangeOptions = {
-		grant_type: "refresh_token",
-		refresh_token: refreshToken,
-		client_secret: superSecretSecret,
-		client_id: clientId,
-	};
-
-	var formBody = [];
-	for (var property in exchangeOptions) {
-		var encodedKey = encodeURIComponent(property);
-		var encodedValue = encodeURIComponent(exchangeOptions[property]);
-		formBody.push(encodedKey + "=" + encodedValue);
-	}
-	formBody = formBody.join("&");
-	// console.log( `formBody: ${formBody}` )
-
-	const options = {
-		method: "POST",
-		url: tokenUrl,
-		headers: {
-			"content-type": "application/x-www-form-urlencoded",
-		},
-		data: formBody,
-	};
-
-	try {
-		const response = await axios(options);
-
-		accessToken = response.data.access_token;
-		refreshToken = response.data.refresh_token;
-		console.log("[Oauth] Access&Refresh token updated!!!");
-		request.updateInfo(accessToken);
-	} catch (e) {
-		console.log(`You stupid bitch wtf did you do: ${e}`);
-		throw e;
-	}
-}
-
-const stateKey = Math.floor(Math.random() * 10000000000);
-var authLink = `https://sso.chaster.app/auth/realms/app/protocol/openid-connect/auth?client_id=${secrets.CLIENT_ID}&response_type=code&scope=profile locks keyholder&state=${stateKey}`;
+var authLink = `https://discord.com/api/oauth2/authorize?client_id=1186354828427927673&response_type=code&redirect_uri=localhost%3A5000%2Fcallback&scope=identify+email}`;
 
 module.exports = {
 	getAccessToken,
 	clientId,
 	sufferWithTokens,
-	refreshTokens,
 	authLink,
 };
