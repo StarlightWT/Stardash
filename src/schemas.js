@@ -7,6 +7,10 @@ const userSchema = new Schema({
 	token: String,
 	discordId: String,
 	subscribed: Boolean,
+	stats: {
+		totalLockedTime: 0,
+		longesLockedTime: 0,
+	},
 	tier: { type: String, default: "Basic" },
 	role: { type: String, default: "switch" },
 });
@@ -37,14 +41,21 @@ const lockSchema = new Schema({
 	modules: [], // Array of modules
 });
 
+const lockHistorySchema = new Schema({
+	lockID: String,
+	history: [],
+});
+
 const userModel = model("User", userSchema, "users");
 const lockModel = model("Lock", lockSchema, "locks");
 const taskModel = model("Tasks", taskSchema);
 const ruleModel = model("Rules", ruleSchema);
+const lockHistoryModel = model("lockHistory", lockHistorySchema, "History");
 
 module.exports = {
 	lockModel,
 	userModel,
 	taskModel,
 	ruleModel,
+	lockHistoryModel,
 };
