@@ -1,4 +1,4 @@
-# StarDash - Chaster extension
+# StarDash - Chastity experience from the Stars
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D0P4H0K)
 
