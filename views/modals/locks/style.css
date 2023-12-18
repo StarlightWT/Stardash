@@ -29,6 +29,7 @@
 	justify-content: center;
 	align-items: center;
 	width: 30vw;
+	max-width: 400px;
 	background-color: var(--secondary-bg-colour);
 	margin-left: 1rem;
 	margin-top: 1rem;
@@ -138,7 +139,17 @@ ul {
 
 .tasks > div > ul > li {
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-bottom: dashed gray 2px;
 	margin-block: 0.5rem;
+}
+
+.tasks > div > ul > li > div {
+	width: 70%;
+	text-align: center;
 }
 
 .tasks > div > ul > li > i {
@@ -149,8 +160,12 @@ ul {
 	right: 10px;
 }
 
-.tasks > div > #unassignedTasks > li > i {
+.tasks > div > #unassignedTasks > li > i:not(.fa-xmark) {
 	left: 10px;
+}
+
+.fa-xmark {
+	right: 10px;
 }
 
 .tasks > div > ul > li > i:hover {
@@ -191,6 +206,8 @@ ul {
 
 .tasks > .log > li > h3 {
 	margin: 0;
+	font-size: 16px;
+	font-weight: 500;
 	margin-inline: 0.5rem;
 }
 
@@ -208,4 +225,34 @@ ul {
 
 .hidden {
 	visibility: hidden;
+}
+
+.ERROR {
+	position: fixed;
+	margin-top: 50vh;
+	width: 100vw;
+	height: 100vh;
+	z-index: 9999;
+	text-align: center;
+	background-color: var(--background-colour);
+}
+
+.buttons {
+	display: flex;
+	flex-direction: column;
+	margin-top: 3rem;
+	transition-duration: 250ms;
+}
+
+.buttons > i {
+	background-color: var(--background-colour);
+	border-radius: 1rem;
+	padding: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+.buttons > i:hover {
+	cursor: pointer;
+	color: var(--accent-colour);
+	transition-duration: 250ms;
 }

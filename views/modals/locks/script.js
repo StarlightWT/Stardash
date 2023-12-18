@@ -6,6 +6,7 @@ async function initialize() {
 	lock = await window.electronAPI.lock("get");
 	DBLock = await window.electronAPI.getDBLock(lock._id);
 	DBLock = DBLock[0];
+	if (!DBLock) sendError();
 	lockeeProfile = await window.electronAPI.khaction("profile", {
 		id: lock.user._id,
 	});
@@ -45,6 +46,8 @@ async function setInfo() {
 		timeRemaining = endDate - frozenDate;
 	}
 
+	let timeSpentT = Date.now() - new Date(lock.createdAt).getTime();
+
 	const timeLeft = document.getElementById("timeRemaining");
 	timeLeft.innerHTML =
 		`<i class="fa-regular fa-clock"></i> ` + timestampConvert(timeRemaining);
@@ -52,12 +55,14 @@ async function setInfo() {
 	const timeSpent = document.getElementById("timeLocked");
 
 	timeSpent.innerHTML =
-		`<i class="fa-solid fa-lock"></i> ` + timestampConvert(lock.totalDuration);
+		`<i class="fa-solid fa-lock"></i> ` + timestampConvert(timeSpentT);
 
 	const timeFrozen = document.getElementById("timeFrozen");
 	timeFrozen.innerHTML =
 		`<i class="fa-regular fa-snowflake"></i>` +
 		timestampConvert(Date.now() - new Date(lock.frozenAt).getTime());
+	if (!lock.frozenAt)
+		timeFrozen.innerHTML = `<i class="fa-regular fa-snowflake"></i> 00:00:00:00`;
 }
 
 function back() {
@@ -84,12 +89,27 @@ function timestampConvert(timestamp) {
 function openModule(module) {
 	const moduleCase = document.getElementById("moduleCase");
 	const moduleTitle = document.getElementById("title");
+	console.log(DBLock);
 	const moduleDB = DBLock.modules.find((obj) => obj.name == module);
 	moduleTitle.innerHTML = `Module - ${module}`;
 	moduleCase.innerHTML = "";
 	switch (module) {
 		case "Tasks":
 			const assigningDiv = document.createElement("div");
+
+			const addTaskBtn = document.createElement("i");
+
+			addTaskBtn.classList.add("fa-solid", "fa-plus");
+
+			addTaskBtn.onclick = (e) => {
+				window.electronAPI.DBLock(DBLock);
+				window.electronAPI.redirect("addtask");
+			};
+
+			const buttonsDiv = document.createElement("div");
+			buttonsDiv.className = "buttons";
+
+			buttonsDiv.append(addTaskBtn);
 
 			const taskList = document.createElement("ul");
 			const allTasks = document.createElement("ul");
@@ -104,15 +124,19 @@ function openModule(module) {
 			moduleDB.assignedTasks.forEach((task) => {
 				let li = document.createElement("li");
 				li.innerHTML =
+					`<div>` +
 					task.title +
-					`<i class="fa-solid fa-arrow-right" onclick="selectTask(this)">`;
+					`</div><i class="fa-solid fa-arrow-right" onclick="selectTask(this)">`;
 				taskList.append(li);
 			});
 			moduleDB.taskList.forEach((task) => {
 				let li = document.createElement("li");
 				li.innerHTML =
+					`<div>` +
 					task.title +
-					`<i class="fa-solid fa-arrow-left" onclick="selectTask(this)"></i>`;
+					`</div>
+					<i class="fa-solid fa-arrow-left" onclick="selectTask(this)"></i>
+					<i class="fa-solid fa-xmark" onclick="remove(this)"></i>`;
 
 				allTasks.append(li);
 			});
@@ -139,7 +163,7 @@ function openModule(module) {
 				taskLog.append(li);
 			});
 
-			assigningDiv.append(taskList, allTasks);
+			assigningDiv.append(taskList, buttonsDiv, allTasks);
 			moduleCase.append(assigningDiv);
 			moduleCase.append(taskLog);
 
@@ -150,9 +174,39 @@ function openModule(module) {
 async function selectTask(elem) {
 	const task = elem.parentElement.innerText;
 	let taskType = elem.parentElement.parentElement.id;
-	console.log(lock._id);
-	if (taskType.startsWith("as"))
-		DBLock = await window.electronAPI.unassignTask(lock._id, task);
-	else DBLock = await window.electronAPI.assignTask(lock._id, task);
+	console.log(taskType);
+	if (taskType.startsWith("un"))
+		DBLock = await window.electronAPI.taskAction("assign", {
+			id: lock._id,
+			taskTitle: task,
+		});
+	else
+		DBLock = await window.electronAPI.taskAction("unassign", {
+			id: lock._id,
+			taskTitle: task,
+		});
 	openModule("Tasks");
+}
+
+async function remove(element) {
+	const taskTitle = element.parentElement.children[0].innerText;
+
+	DBLock = await window.electronAPI.taskAction("rem", {
+		id: DBLock.id,
+		task: { title: taskTitle },
+	});
+
+	openModule("Tasks");
+}
+
+function sendError() {
+	const ErrorMessage = document.createElement("h1");
+	ErrorMessage.innerHTML = "Unable to find lock information for this user!";
+	ErrorMessage.className = "ERROR";
+	const body = document.getElementById("body");
+	body.innerHTML = "";
+	body.append(ErrorMessage);
+	setTimeout(() => {
+		window.close();
+	}, 1500);
 }

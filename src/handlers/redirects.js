@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const request = require("./api_handler");
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, screen } = require("electron");
 
 function getPaths(dirPath, arrayOfFiles) {
 	files = fs.readdirSync(dirPath);
@@ -22,8 +22,15 @@ async function redirect(win, location, modal) {
 	frame = true;
 
 	let size = win.getSize();
-	modalHeight = (size[1] / 10) * 9;
-	modalWidth = (size[0] / 10) * 9;
+	if (win.isMaximized()) {
+		const currentScreen = screen.getDisplayNearestPoint(
+			screen.getCursorScreenPoint()
+		);
+		size[0] = currentScreen.workAreaSize.width;
+		size[1] = currentScreen.workAreaSize.height;
+	}
+	modalHeight = Math.floor(size[1] / 1.1);
+	modalWidth = Math.floor(size[0] / 1.1);
 
 	if (location == "slots") {
 		const profile = await request.get("profile");
@@ -42,16 +49,15 @@ async function redirect(win, location, modal) {
 		case "addtask":
 			modal = true;
 			frame = false;
-			modalHeight = 500;
+			modalHeight = 100;
 			modalWidth = 800;
 			break;
 		case "history":
 			modal = true;
 			frame = false;
-			modalHeight = 500;
-			modalWidth = 700;
 			break;
 		case "locks":
+			modal = true;
 			frame = false;
 			break;
 	}
@@ -62,19 +68,19 @@ async function redirect(win, location, modal) {
 		let x = pos[0] + size[0] / 2; //Center of window
 		let y = pos[1] + size[1] / 2;
 
-		x = x - modalWidth / 2; //Center the modal around the center of the window
-		y = y - modalHeight / 2;
+		x = Math.floor(x - modalWidth / 2); //Center the modal around the center of the window
+		y = Math.floor(y - modalHeight / 2);
 
 		const child = new BrowserWindow({
 			transparent: true,
-			// frame: frame,
-			// autoHideMenuBar: true,
+			frame: frame,
+			autoHideMenuBar: true,
 			x: x,
 			y: y,
 			hasShadow: true,
 			height: modalHeight,
-			icon: "../../icon.ico",
 			width: modalWidth,
+			icon: "../../icon.ico",
 			parent: win,
 			modal: true,
 			show: false,

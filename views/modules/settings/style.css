@@ -47,12 +47,26 @@ nav {
 
 #moduleList > li > .lockStatus {
 	position: absolute;
-	right: 15px;
+	right: 10px;
 }
 
 #moduleList > li > .activeStatus {
 	position: absolute;
 	right: 35px;
+}
+
+#moduleList > li > i {
+	background-color: var(--secondary-bg-colour);
+	padding: 0.2rem;
+	top: 1px;
+	border-radius: 0.2rem;
+	width: 16px;
+	height: 16px;
+}
+
+.premium {
+	position: absolute;
+	right: 60px;
 }
 
 .active {
@@ -67,10 +81,8 @@ nav {
 	position: relative;
 }
 
-#activeToggle {
+.toggle {
 	position: absolute;
-	right: 15px;
-	top: 10px;
 	margin: 0;
 	padding-block: 0.5rem;
 	padding-inline: 1rem;
@@ -78,8 +90,18 @@ nav {
 	border-radius: 1rem;
 }
 
-#activeToggle:hover {
+.toggle:hover {
 	cursor: pointer;
+}
+
+#activeToggle {
+	right: 15px;
+	top: 10px;
+}
+
+#moduleLock {
+	right: 15px;
+	top: 50px;
 }
 
 .tasks {

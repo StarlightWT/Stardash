@@ -1,6 +1,5 @@
 const lockeeUI = document.getElementById("lockee");
 const keyholderUI = document.getElementById("keyholder");
-const dbConnectTitle = document.getElementById("dbStatus");
 async function start() {
 	window.electronAPI.active("home");
 	//Load all informatin
@@ -11,21 +10,21 @@ async function start() {
 	//Load, update and pass info depending on role
 	switch (DBProfile.role) {
 		case "switch":
-			loadKHInfo(profile, DBProfile);
-			loadLockInfo(profile, DBProfile);
+			loadKHInfo(profile);
+			loadLockInfo(profile);
 			break;
 		case "keyholder":
 			lockeeUI.style = "display: none;";
-			loadKHInfo(profile, DBProfile);
+			loadKHInfo(profile);
 			break;
 		case "lockee":
 			keyholderUI.style = "display: none;";
-			loadLockInfo(profile, DBProfile);
+			loadLockInfo(profile);
 			break;
 	}
 }
 
-async function loadLockInfo(profile, DBProfile) {
+async function loadLockInfo(profile) {
 	//Update all information upon page load
 	var lock = await updateLock();
 	updateLockTime(
@@ -37,6 +36,11 @@ async function loadLockInfo(profile, DBProfile) {
 	);
 	updateLockHistory();
 	updateLockExtensions(lock);
+
+	let DBLock = await window.electronAPI.getDBLock(lock._id, profile._id);
+	DBLock = DBLock[0];
+	loadModules(DBLock);
+	console.log(lock);
 
 	//Setup intervals to keep info up to date
 	setInterval(async () => {
@@ -50,8 +54,6 @@ async function loadLockInfo(profile, DBProfile) {
 		);
 		updateLockHistory();
 	}, 1000);
-
-	window.electronAPI.getDBLock(lock._id, profile._id);
 }
 
 var KhLocksUpdate = [];
@@ -431,8 +433,26 @@ function openModule(module) {
 		case "settings":
 			window.electronAPI.redirect("moduleSettings");
 			break;
-		case "tasks":
+		case "Tasks":
 			window.electronAPI.redirect("tasks");
 			break;
 	}
+}
+
+function loadModules(DBLock) {
+	const moduleList = document.getElementById("moduleList");
+	DBLock.modules.forEach((module) => {
+		if (!module.enabled) return;
+		const newModule = document.createElement("li");
+		newModule.innerHTML = module.name;
+		if (module.name == "Tasks" && module.assignedTasks.length > 0) {
+			const count = module.assignedTasks.length;
+			newModule.innerHTML += ` <${count}>`;
+		}
+		newModule.className = "selectable";
+		newModule.onclick = (e) => {
+			openModule(module.name);
+		};
+		moduleList.append(newModule);
+	});
 }

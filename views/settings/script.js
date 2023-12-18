@@ -16,10 +16,8 @@ async function loadsettings() {
 	const profile = await window.electronAPI.get("profile");
 	const dbprofileObject = await window.electronAPI.get("dbprofile");
 	const dbprofile = dbprofileObject[0]._doc;
-	console.log(profile);
-	console.log(dbprofile);
 
-	tokenCopy.value = dbprofile.id; //Set token into field
+	tokenCopy.value = dbprofile.token; //Set token into field
 	//Check for dev mode
 	console.log(dbprofile.tier);
 	if (dbprofile.tier.toLowerCase() == "developer")
