@@ -38,6 +38,15 @@ const lockSchema = new Schema({
 	id: String,
 	user: userSchema,
 	khId: { type: String, default: null },
+	createdAt: { type: String, default: Date.now() },
+	frozenAt: { type: String, default: null },
+	endsAt: { type: String, required: true },
+	timeLimit: { type: String, default: null },
+	settings: {
+		timerVisible: { type: Boolean, default: true },
+		timeLogsVisible: { type: Boolean, default: true },
+	},
+	log: [], // Array of actions done to lock
 	modules: [], // Array of modules
 });
 
