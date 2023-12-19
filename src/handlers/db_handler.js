@@ -70,6 +70,7 @@ const {
 	getLockHistory,
 	getCombination,
 	getKHLocks,
+	activities,
 } = require("./database/db_get");
 async function get(what, option) {
 	switch (what) {
@@ -83,6 +84,8 @@ async function get(what, option) {
 			return await getCombination(option);
 		case "locks":
 			return await getKHLocks(option);
+		case "activities":
+			return await activities(option.amount, option.reset);
 	}
 	return 2;
 }

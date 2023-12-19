@@ -81,15 +81,17 @@ async function createLock(id) {
 
 async function createActivity(activity) {
 	const title = activity.title;
+	const icon = activity.icon;
 	switch (activity) {
 		case "newLock":
-			const icon = activity.icon;
 			break;
 	}
 	const record = new activityModel({
 		title: title,
 		icon: icon,
-		date: Date.now(),
+		userID: activity.userID,
+		lockID: activity.lockID,
+		Date: Date.now(),
 		interactions: [],
 	});
 	return await record.save();

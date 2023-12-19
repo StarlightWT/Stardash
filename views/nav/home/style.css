@@ -1,187 +1,31 @@
 @import url(../../general.css);
 
-.timer {
-	width: 90%;
-	margin-inline: auto;
-	margin-block: 20px;
-	padding-block: 15px;
-	background-color: var(--secondary-bg-colour);
-	text-align: center;
-	font-size: 30px;
-	border-radius: 2rem;
-}
-
-#dash_main {
-	background-color: var(--background-colour);
-	width: 90%;
-	margin-inline: auto;
-}
-
-#logList {
-	list-style: none;
+#activity {
 	padding: 0;
-	width: 70%;
-}
-
-#logList li {
-	margin-top: 1rem;
-	text-align: center;
-	width: 90%;
-	margin-inline: auto;
-	border-style: solid;
-	border-color: white;
-	border-radius: 1rem;
-}
-
-#logList li h1 {
-	font-size: 24;
-	margin: 0;
-	margin-top: 0.5rem;
-}
-
-#logList li p {
-	margin: 0;
-	margin-bottom: 0.5rem;
-}
-
-#extensionList,
-#moduleList {
-	list-style: none;
-	position: sticky;
-	padding: 0;
-	border-radius: 1rem;
-	overflow: hidden;
-}
-
-#extensionList li,
-#moduleList li {
-	background-color: var(--secondary-bg-colour);
-	padding-block: 10px;
-}
-
-#extensionList li a,
-#moduleList li a {
-	color: white;
-	text-decoration: none;
-}
-
-.selectable {
-	transition-duration: 0.25s;
-}
-
-#extensionList > .selectable:hover,
-#moduleList > .selectable:hover {
-	background-color: var(--accent-colour);
-	cursor: pointer;
-	transition-duration: 0.25s;
-}
-
-#dash_main {
-	display: flex;
-	justify-content: space-between;
-}
-
-#KHLocks {
-	display: flex;
-	flex-wrap: wrap;
-	list-style: none;
-	padding: 0;
-}
-
-#KHLocks li {
-	background-color: var(--secondary-bg-colour);
-	padding: 2rem 4rem;
-	width: 30%;
-	margin-inline: auto;
-	margin-block: 0.25rem;
-	border-radius: 1rem;
-}
-
-#KHLocks h3 {
-	margin: 0;
-	padding: 0;
-}
-
-#KHLocks p {
-	margin: 0;
-	padding: 0;
-}
-
-#sidebar {
-	text-align: center;
-	width: 25%;
-}
-
-.SectionTitle {
-	width: 100%;
-	padding-block: 0.5rem;
 	margin: 0;
 	margin-top: 1rem;
+	width: 40vw;
+	margin-left: 15vw;
+	list-style: none;
 	text-align: center;
+}
+
+#activity > li:not(:last-child) {
 	background-color: var(--secondary-bg-colour);
-	border-top: solid white;
-	border-bottom: solid white;
+	height: 175px;
+	padding: 0.5rem;
+	margin-block: 0.75rem;
+	border-radius: 0.5rem;
 }
 
-.fa-regular,
-.fa-solid {
-	width: 20px;
-	height: 20px;
-	margin: 0;
-	padding: 0;
+#activity > li:not(:last-child) > h1 {
+	font-size: 20px;
 }
 
-.processing {
-	color: var(--accent-colour);
-}
-
-.fa-solid {
-	margin-inline: 0.3rem;
-}
-
-.move_left {
-	margin-left: -0.4rem;
-}
-
-i:hover {
-	cursor: pointer;
-}
-
-.actionPanel {
-	display: flex;
-	height: 20px;
-	position: relative;
-}
-
-#extTitle {
-	font-size: large;
-	font-weight: bold;
-	border-bottom: solid 3px white;
-	padding: 0;
-}
-
-.card {
-	position: relative;
-}
-
-.timerBtn {
-	color: white;
-	font-size: 14px;
-	font-weight: 700;
-	margin-top: 5px;
-	margin-right: 15px;
-	background-color: var(--secondary-bg-colour);
-	border: none;
-	border-radius: 1rem;
-	border: solid 2px white;
-	padding: 10px;
-	padding-inline: 20px;
-	margin-bottom: -2rem;
-	transition-duration: 0.25s;
-}
-
-.timerBtn:hover {
-	cursor: pointer;
-	background-color: var(--accent-colour);
-	transition-duration: 0.25s;
+#activity > li:not(:last-child) > h2 {
+	text-align: justify;
+	width: 90%;
+	margin-inline: auto;
+	font-weight: normal;
+	font-size: 18px;
 }

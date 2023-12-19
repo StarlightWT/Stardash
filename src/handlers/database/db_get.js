@@ -1,4 +1,9 @@
-const { userModel, lockModel, lockHistoryModel } = require("../../schemas");
+const {
+	userModel,
+	lockModel,
+	lockHistoryModel,
+	activityModel,
+} = require("../../schemas");
 
 module.exports = {
 	getUser,
@@ -6,6 +11,7 @@ module.exports = {
 	getLockHistory,
 	getKHLocks,
 	getCombination,
+	activities,
 };
 
 var userCache, lockCache, historyCache, khLocksCache;
@@ -70,4 +76,12 @@ async function getCombination(id) {
 	if (lockCache.length == 1) return (lockCache = lockCache[0]);
 	if (lockCache.length > 1) return 3;
 	return 1;
+}
+
+let skip = 0;
+async function activities(amount, reset) {
+	if (reset) skip = 0;
+	const response = await activityModel.find().skip(skip).limit(amount).lean();
+	skip += amount;
+	return response;
 }

@@ -1,34 +1,42 @@
-function uploadAvatar() {
-	const avatarInput = document.getElementById("avatarInput");
-	const file = avatarInput.files[0];
+async function initialize() {
+	const activities = await window.electronAPI.get("activities", {
+		amount: 10,
+		reset: true,
+	});
+	appendActivities(activities);
+}
 
-	if (file) {
-		const reader = new FileReader();
+initialize();
 
-		reader.onload = async function (e) {
-			const encoder = new TextEncoder();
-			const avatarData = {
-				data: encoder.encode(new Uint8Array(e.target.result)),
-				contentType: file.type,
-			};
+function appendActivities(activities) {
+	const activityFeed = document.getElementById("activity");
+	activities.forEach((activity) => {
+		const activityLi = document.createElement("li");
 
-			const newData = await window.electronAPI.create("avatar", avatarData);
-			const img = document.getElementById("img");
-			const uint8Array = new Uint8Array(avatarData.data);
+		const title = document.createElement("h1");
+		title.innerHTML = activity.title;
 
-			// Use TextDecoder to convert Uint8Array to a string
-			const binaryString = new TextDecoder().decode(uint8Array);
+		const description = document.createElement("h2");
+		description.innerHTML =
+			activity.description + activity.description + activity.description;
 
-			// Convert the binary string to a base64-encoded string
-			const base64Data = btoa(binaryString);
+		const icon = document.createElement("i");
+		icon.className = activity.icon;
 
-			// Create a data URI for the image
-			const dataURI = `data:${avatarData.contentType};base64,${base64Data}==`;
-			console.log(dataURI);
-
-			img.src = dataURI;
-		};
-
-		reader.readAsArrayBuffer(file);
-	}
+		const Date = document.createElement("h3");
+		activityLi.append(title, description, icon, Date);
+		activityFeed.append(activityLi);
+	});
+	const loadMoreButton = document.createElement("li");
+	loadMoreButton.id = "loadMoreBtn";
+	loadMoreButton.innerHTML = "Load More...";
+	loadMoreButton.onclick = async (e) => {
+		const activitiesSearch = await window.electronAPI.get("activities", {
+			amount: 10,
+			reset: false,
+		});
+		loadMoreButton.remove();
+		appendActivities(activitiesSearch);
+	};
+	if (activities.length == 10) activityFeed.append(loadMoreButton);
 }

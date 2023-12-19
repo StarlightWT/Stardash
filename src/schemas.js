@@ -60,9 +60,13 @@ const lockHistorySchema = new Schema({
 });
 
 const activitySchema = new Schema({
+	title: { type: String, required: true },
+	description: { type: String, required: false },
+	icon: { type: String, required: false },
 	userID: { type: String, required: true },
 	lockID: { type: String, required: true },
-	activty: { type: Object, required: true },
+	Date: { type: String, required: true },
+	interactions: [],
 });
 
 const userModel = model("User", userSchema, "users");
