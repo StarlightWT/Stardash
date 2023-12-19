@@ -6,6 +6,7 @@ html {
 	user-select: none;
 	--background-colour: #161616;
 	--secondary-bg-colour: #363636;
+	--sec-bg-rgb-colour: 54, 54, 54;
 	--accent-colour: #8f2efd;
 }
 

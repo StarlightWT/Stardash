@@ -14,7 +14,17 @@ module.exports = {
 	activities,
 };
 
+const cacheLifespan = 60;
+
 var userCache, lockCache, historyCache, khLocksCache;
+
+setInterval(() => {
+	userCache = null;
+	lockCache = null;
+	historyCache = null;
+	khLocksCache = null;
+}, cacheLifespan * 1000);
+
 /**
  *
  * @param {String} id userID
@@ -48,7 +58,7 @@ async function getLock(id) {
  * @returns lock's latest history
  */
 async function getLockHistory(id) {
-	if (historyCache.id == id) return historyCache;
+	if (historyCache && historyCache.id == id) return historyCache;
 	historyCache = await lockHistoryModel.findOne({ lockId: id }).lean();
 	return (historyCache = historyCache[0]);
 }
@@ -59,7 +69,7 @@ async function getLockHistory(id) {
  * @returns list of all KH's locks
  */
 async function getKHLocks(id) {
-	if (khLocksCache.id == id) return khLocksCache.locks;
+	if (khLocksCache && khLocksCache.id == id) return khLocksCache.locks;
 	khLocksCache.id = id;
 	khLocksCache.locks = await lockModel.find({ khId: id }).lean();
 	return khLocksCache.locks;
@@ -71,7 +81,7 @@ async function getKHLocks(id) {
  * @returns lock's combination, 1=Lock not found, 3=Found many locks
  */
 async function getCombination(id) {
-	if (lockCache.id == id) return lockCache.combination;
+	if (lockCache && lockCache.id == id) return lockCache.combination;
 	lockCache = await lockModel.find({ id: id }).lean();
 	if (lockCache.length == 1) return (lockCache = lockCache[0]);
 	if (lockCache.length > 1) return 3;

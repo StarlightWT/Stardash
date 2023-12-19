@@ -1,16 +1,21 @@
 @import url(../../general.css);
 
+main {
+	display: flex;
+	overflow-y: hidden;
+}
+
 #activity {
 	padding: 0;
 	margin: 0;
 	margin-top: 1rem;
 	width: 40vw;
-	margin-left: 15vw;
+	margin-left: 10vw;
 	list-style: none;
 	text-align: center;
 }
 
-#activity > li:not(:last-child) {
+#activity > li:not(#loadMoreBtn) {
 	background-color: var(--secondary-bg-colour);
 	height: 175px;
 	padding: 0.5rem;
@@ -18,14 +23,90 @@
 	border-radius: 0.5rem;
 }
 
-#activity > li:not(:last-child) > h1 {
+#activity > li:first-child {
+	margin-top: 0;
+}
+
+#activity > li:not(#loadMoreBtn) > h1 {
 	font-size: 20px;
 }
 
-#activity > li:not(:last-child) > h2 {
+#activity > li:not(#loadMoreBtn) > h2 {
 	text-align: justify;
 	width: 90%;
 	margin-inline: auto;
 	font-weight: normal;
 	font-size: 18px;
+}
+
+#activity > li:last-child {
+	background-color: var(--secondary-bg-colour);
+	padding: 0.25rem;
+	margin-bottom: 0.5rem;
+	border-radius: 0.5rem;
+	transition-duration: 150ms;
+}
+
+#activity > #loadMoreBtn:hover {
+	cursor: pointer;
+	background-color: rgba(var(--sec-bg-rgb-colour), 0.8);
+	transition-duration: 150ms;
+}
+
+#profile {
+	position: relative;
+	margin-top: 1rem;
+	margin-left: 10vw;
+	width: 300px;
+	background-color: var(--secondary-bg-colour);
+	padding: 1rem;
+	border-radius: 0.5rem;
+}
+
+#profile > .header {
+	display: flex;
+	align-content: baseline;
+}
+
+#profile > .header > img {
+	width: 75px;
+	height: 75px;
+	border-radius: 100%;
+	margin-left: 1rem;
+}
+
+#profile > .header > h1 {
+	margin-left: 1rem;
+}
+
+#profile > #timer {
+	text-align: center;
+	background-color: var(--background-colour);
+	padding-block: 0.5rem;
+	border-radius: 5rem;
+}
+
+#profile > .settings {
+	position: absolute;
+	scale: 1.4;
+	top: 20px;
+	right: 20px;
+	transition-duration: 250ms;
+}
+
+#profile > .settings:hover {
+	cursor: pointer;
+	transform: rotateZ(90deg);
+	color: var(--accent-colour);
+}
+
+#profile > #timer {
+	position: relative;
+}
+
+#profile > #timer > i {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	scale: 0.9;
 }

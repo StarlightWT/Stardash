@@ -1,24 +1,6 @@
 <ul>
-	<button id="nav_home" onclick="redirect('home')">
-		<li id="home">Home</li>
-	</button>
-	<button id="nav_games" onclick="redirect('games')">
-		<li id="games">Games</li>
-	</button>
+	<li onclick="redirect('home')">Home</li>
+	<li onclick="redirect('locks')">Locks</li>
+	<li onclick="redirect('games')">Games</li>
+	<li onclick="redirect('profile')">Profile</li>
 </ul>
-<div class="names">
-	<img id="avatar" src="" onclick="toggleDropdown()" />
-	<div class="dropdown">
-		<h1 id="username" onclick="toggleDropdown()"></h1>
-		<div class="dropdown-content" id="dropdown">
-			<h3 onclick="redirect('settings')" class="dropdown-text noOverLine">
-				Settings
-			</h3>
-			<h3
-				onclick="window.electronAPI.logout();"
-				class="dropdown-text noUnderLine">
-				Logout
-			</h3>
-		</div>
-	</div>
-</div>

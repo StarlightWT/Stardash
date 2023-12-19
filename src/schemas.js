@@ -44,8 +44,8 @@ const lockSchema = new Schema({
 	createdAt: { type: String, default: Date.now() },
 	frozenAt: { type: String, default: null },
 	endsAt: { type: String, required: true },
-	timeLimit: { type: String, default: null },
-	unlockedAt: { type: String, default: null },
+	timeLimit: { type: String, default: null }, //Max lock time
+	unlockedAt: { type: String, default: null }, //When temporary unlocked
 	settings: {
 		timerVisible: { type: Boolean, default: true },
 		timeLogsVisible: { type: Boolean, default: true },
