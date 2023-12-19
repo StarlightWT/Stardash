@@ -1,0 +1,71 @@
+@import url("../../general.css");
+
+section:not(.visible) {
+	display: none;
+}
+
+section {
+	text-align: center;
+	margin-top: 5rem;
+}
+
+h2,
+h1 {
+	margin: 0;
+}
+
+#noLock > .buttons {
+	display: flex;
+	justify-content: space-between;
+	width: 45%;
+	margin-inline: auto;
+}
+
+#noLock > .buttons > h2 {
+	background-color: var(--secondary-bg-colour);
+	padding: 0.75rem;
+	border-radius: 2rem;
+	transition: 250ms;
+}
+
+#noLock > .buttons > .disabled {
+	opacity: 0.5;
+}
+
+#noLock > .buttons > h2:not(.disabled):hover {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+}
+
+.setting {
+	background-color: var(--secondary-bg-colour);
+	width: 70vw;
+	margin-inline: auto;
+	border-radius: 0.5rem;
+	position: relative;
+	padding-bottom: 1rem;
+}
+
+.initial {
+	display: flex;
+	justify-content: space-between;
+	width: 50%;
+	margin-inline: auto;
+}
+
+.counter {
+	display: flex;
+	justify-content: space-evenly;
+	width: 150px;
+}
+
+#warning {
+	color: red;
+	margin: 0;
+	margin-top: 1rem;
+	font-size: 16px;
+}
+
+.hidden {
+	display: none;
+}

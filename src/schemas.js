@@ -50,7 +50,10 @@ const lockSchema = new Schema({
 		timerVisible: { type: Boolean, default: true },
 		timeLogsVisible: { type: Boolean, default: true },
 	},
-	combination: { type: String, required: true },
+	combination: {
+		type: { type: String, required: true },
+		combination: { type: Object, required: true },
+	},
 	modules: [], // Array of modules
 });
 

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>StarDash</title>
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="../../nav/navBar/nav.css" />
+	</head>
+	<body>
+		<nav id="replace_nav"></nav>
+		<section id="noLock">
+			<h1>You're free... or are you?</h1>
+			<div class="buttons">
+				<h2 onclick="showNew()">Create a new lock</h2>
+				<h2 class="disabled">Use a template</h2>
+			</div>
+		</section>
+		<section id="newLock" class="visible">
+			<h1>A new lock it is...</h1>
+			<div class="setting">
+				<h1 class="title">What time to start at?</h1>
+				<div class="initial">
+					<div class="minimum">
+						<h2>Minimum</h2>
+						<div class="counter" id="Minimum">
+							<div class="single_counter">
+								<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+								<div
+									class="single_counter_output"
+									ondblclick="edit(this)"
+									onkeypress="validate(event)">
+									00
+								</div>
+								<i
+									class="fa-solid fa-chevron-down"
+									onclick="decrease(this)"></i>
+							</div>
+							<div class="single_counter">
+								<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+								<div
+									class="single_counter_output"
+									ondblclick="edit(this)"
+									onkeypress="validate(event)">
+									00
+								</div>
+								<i
+									class="fa-solid fa-chevron-down"
+									onclick="decrease(this)"></i>
+							</div>
+							<div class="single_counter">
+								<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+								<div
+									class="single_counter_output"
+									ondblclick="edit(this)"
+									onkeypress="validate(event)">
+									00
+								</div>
+								<i
+									class="fa-solid fa-chevron-down"
+									onclick="decrease(this)"></i>
+							</div>
+						</div>
+					</div>
+					<div class="maximum">
+						<h2>Maximum</h2>
+						<div class="counter" id="Maximum">
+							<div class="single_counter">
+								<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+								<div
+									class="single_counter_output"
+									ondblclick="edit(this)"
+									onkeypress="validate(event)">
+									00
+								</div>
+								<i
+									class="fa-solid fa-chevron-down"
+									onclick="decrease(this)"></i>
+							</div>
+							<div class="single_counter">
+								<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+								<div
+									class="single_counter_output"
+									ondblclick="edit(this)"
+									onkeypress="validate(event)">
+									00
+								</div>
+								<i
+									class="fa-solid fa-chevron-down"
+									onclick="decrease(this)"></i>
+							</div>
+							<div class="single_counter">
+								<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+								<div
+									class="single_counter_output"
+									ondblclick="edit(this)"
+									onkeypress="validate(event)">
+									00
+								</div>
+								<i
+									class="fa-solid fa-chevron-down"
+									onclick="decrease(this)"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="warning" class="hidden">
+					<i class="fa-solid fa-circle-exclamation"></i>
+					Minimum can not be larger than maximum!
+				</div>
+			</div>
+		</section>
+	</body>
+	<script src="script.js"></script>
+	<script src="../navBar/nav.js"></script>
+</html>

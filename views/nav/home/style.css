@@ -3,6 +3,7 @@
 main {
 	display: flex;
 	overflow-y: hidden;
+	--sidebar-width: 300px;
 }
 
 #activity {
@@ -56,10 +57,9 @@ main {
 #profile {
 	position: relative;
 	margin-top: 1rem;
-	margin-left: 10vw;
-	width: 300px;
+	width: calc(var(--sidebar-width) - 16px);
 	background-color: var(--secondary-bg-colour);
-	padding: 1rem;
+	padding: 0.5rem;
 	border-radius: 0.5rem;
 }
 
@@ -109,4 +109,31 @@ main {
 	left: 10px;
 	top: 10px;
 	scale: 0.9;
+}
+
+#moduleList {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-top: 1rem;
+	background-color: var(--secondary-bg-colour);
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+}
+
+#moduleList > li:first-child {
+	display: flex;
+	justify-content: space-between;
+	font-weight: bold;
+	border-bottom: 2px solid white;
+}
+
+#moduleList > li:first-child:hover {
+	cursor: pointer;
+}
+
+.sidebar {
+	width: var(--sidebar-width);
+	position: absolute;
+	right: 10vw;
 }

@@ -50,10 +50,6 @@ async function redirect(win, location, modal) {
 			modal = true;
 			frame = false;
 			break;
-		case "locks":
-			modal = true;
-			frame = false;
-			break;
 	}
 
 	if (location.startsWith("http") || modal) {

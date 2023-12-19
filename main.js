@@ -49,8 +49,8 @@ app.whenReady().then(async () => {
 
 	require("./src/handlers/ipc_handler.js")(ipcMain, temp, win);
 
-	redirects.redirect(win, "login");
 	if ((await checkToken(temp)) == 0) redirects.redirect(win, "home");
+	else redirects.redirect(win, "login");
 	//Create initial window(?)
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
