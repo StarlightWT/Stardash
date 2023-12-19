@@ -13,7 +13,10 @@ const userSchema = new Schema({
 	},
 	tier: { type: String, default: "Basic" },
 	role: { type: String, default: "switch" },
+	achievements: [],
+	avatar: { type: Schema.Types.ObjectId, ref: "FileModel" },
 });
+
 const taskSchema = new Schema({
 	name: { type: String, default: "Tasks" },
 	enabled: { type: Boolean, default: false },
@@ -56,11 +59,18 @@ const lockHistorySchema = new Schema({
 	history: [],
 });
 
+const activitySchema = new Schema({
+	userID: { type: String, required: true },
+	lockID: { type: String, required: true },
+	activty: { type: Object, required: true },
+});
+
 const userModel = model("User", userSchema, "users");
 const lockModel = model("Lock", lockSchema, "locks");
 const taskModel = model("Tasks", taskSchema);
 const ruleModel = model("Rules", ruleSchema);
 const lockHistoryModel = model("lockHistory", lockHistorySchema, "History");
+const activityModel = model("activity", activitySchema, "activity");
 
 module.exports = {
 	lockModel,
@@ -68,4 +78,5 @@ module.exports = {
 	taskModel,
 	ruleModel,
 	lockHistoryModel,
+	activityModel,
 };

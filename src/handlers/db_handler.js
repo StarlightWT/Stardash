@@ -4,14 +4,8 @@ const { DATABASE_URI } = require("../../secrets.json");
 connect(DATABASE_URI);
 
 var actions = 0,
-	limit = 30;
-
-module.exports = {
-	tasks,
-	get,
-	create,
-	lock,
-};
+	limit = 30,
+	profile;
 
 const {
 	assignTask,
@@ -39,7 +33,7 @@ async function tasks(action, options) {
 }
 
 const { toggleModule, lockModel } = require("./database/db_modules");
-async function module(action, lockId, module) {
+async function moduleAction(action, lockId, module) {
 	switch (action) {
 		case "toggle":
 			var response = await toggleModule(lockId, module);
@@ -53,13 +47,19 @@ async function module(action, lockId, module) {
 	return 2;
 }
 
-const { createNewUser, createLock } = require("./database/db_create");
+const {
+	createNewUser,
+	createLock,
+	createActivity,
+} = require("./database/db_create");
 async function create(what, option, option2) {
 	switch (what) {
 		case "user":
 			return await createNewUser(option, option2);
 		case "lock":
 			return await createLock(option);
+		case "activity":
+			return await createActivity(activity);
 	}
 	return 2;
 }
@@ -74,7 +74,7 @@ const {
 async function get(what, option) {
 	switch (what) {
 		case "user":
-			return await getUser(option);
+			return (await getUser(option)) ?? DBProfile();
 		case "lock":
 			return await getLock(option);
 		case "history":
@@ -88,6 +88,7 @@ async function get(what, option) {
 }
 
 const { modifyTime, timerVisibility } = require("./database/db_action");
+const { userModel } = require("../schemas");
 
 async function lock(id, what, option) {
 	switch (what) {
@@ -136,3 +137,21 @@ async function removeDuplicates() {
 		await Promise.all(deletionPromises);
 	} catch (error) {}
 }
+
+var lock = 0;
+async function DBProfile(action) {
+	if (lock == 0) {
+		profile = await userModel.findOne({ id: action }).lean();
+		lock = 1;
+	}
+	return profile;
+}
+
+module.exports = {
+	tasks,
+	get,
+	create,
+	lock,
+	DBProfile,
+	moduleAction,
+};

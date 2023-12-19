@@ -1,14 +1,15 @@
 module.exports = {
 	createNewUser,
 	createLock,
+	createActivity,
 };
-
-const { lockHistoryModel } = require("../../schemas");
+const { lockHistoryModel, activityModel } = require("../../schemas");
 const { userModel, lockModel, taskModel, ruleModel } = require("../../schemas");
 const { getLock, getUser } = require("./db_get");
 /**
  *
  * @param {String} username User's username
+ * @param {String} id User's id
  * @returns new user record
  */
 async function createNewUser(username, id) {
@@ -76,4 +77,20 @@ async function createLock(id) {
 	});
 	lockHistory.save();
 	return lock;
+}
+
+async function createActivity(activity) {
+	const title = activity.title;
+	switch (activity) {
+		case "newLock":
+			const icon = activity.icon;
+			break;
+	}
+	const record = new activityModel({
+		title: title,
+		icon: icon,
+		date: Date.now(),
+		interactions: [],
+	});
+	return await record.save();
 }

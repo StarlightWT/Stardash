@@ -15,7 +15,7 @@ var userCache, lockCache, historyCache, khLocksCache;
  * @returns user
  */
 async function getUser(id) {
-	if (userCache.id == id) return userCache;
+	if (userCache && userCache.id == id) return userCache;
 	userCache = await userModel.findOne({ id: id }).lean();
 	return userCache;
 }
@@ -26,7 +26,8 @@ async function getUser(id) {
  * @returns lock, 3=Multiple found, 1=No lock found
  */
 async function getLock(id) {
-	if (lockCache.id == id || lockCache.user.id == id) return lockCache;
+	if (lockCache && (lockCache.id == id || lockCache.user.id == id))
+		return lockCache;
 	lockCache = await lockModel
 		.find({ $or: [{ id: id }, { "user.id": id }] })
 		.lean();

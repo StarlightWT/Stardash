@@ -38,10 +38,11 @@ function createWindow() {
 		backgroundColor: "#000",
 		webPreferences: {
 			preload: path.join(__dirname, "/src/preload.js"),
+			webgl: false, // adjust as needed
+			offscreen: false, // adjust as needed
 		},
 	});
 }
-
 app.whenReady().then(async () => {
 	await updater.check();
 	win = createWindow();
