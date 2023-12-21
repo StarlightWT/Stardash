@@ -6,7 +6,7 @@ section:not(.visible) {
 
 section {
 	text-align: center;
-	margin-top: 5rem;
+	margin-top: 2rem;
 }
 
 h2,
@@ -73,6 +73,11 @@ h1 {
 	width: 150px;
 }
 
+.single_counter > i:hover,
+.single_counter > div:hover {
+	cursor: pointer;
+}
+
 .single_counter > h6 {
 	margin: 0;
 }
@@ -96,14 +101,15 @@ h1 {
 }
 
 .modules {
+	z-index: 2;
 	padding-top: 1rem;
 	padding-left: 1rem;
 	width: min-content;
+	--ul-width: 200px;
+	--body-width: 0px;
 }
 
 .modules > .titles {
-	--ul-width: 200px;
-	--body-width: 00px;
 	display: flex;
 	text-align: center;
 	background-color: var(--background-colour);
@@ -158,8 +164,84 @@ h1 {
 
 .modules > .body > #moduleBody {
 	height: 100%;
+	position: relative;
+	width: var(--body-width);
+	overflow: hidden;
+	transition-duration: 1s;
 }
 
 .open {
 	border-left: 2px solid white;
+}
+
+#toggleButton {
+	position: absolute;
+	right: 10px;
+	background-color: var(--secondary-bg-colour);
+	padding-inline: 1rem;
+	padding-block: 0.5rem;
+	border-radius: 0.5rem;
+}
+
+#toggleButton:hover {
+	cursor: pointer;
+}
+
+.toggleButton {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	height: 50px;
+	border-radius: 0.5rem;
+	background-color: var(--secondary-bg-colour);
+}
+
+.toggleButton:hover {
+	cursor: pointer;
+}
+
+#ruleList {
+	background-color: var(--secondary-bg-colour);
+	list-style: none;
+	padding: 0.5rem;
+	margin-top: 1rem;
+	width: 70%;
+	height: 100px;
+	margin-left: 1rem;
+	border-radius: 0.5rem;
+}
+
+#moduleCount {
+	position: absolute;
+	left: 40%;
+	top: 15%;
+	font-size: 200px;
+	color: var(--background-colour);
+}
+
+.combo {
+	display: flex;
+	width: min-content;
+	margin-inline: auto;
+	font-size: x-large;
+}
+
+.combo > i {
+	scale: 0.9;
+	margin-inline: 0.4rem;
+}
+
+#finish {
+	padding: 1rem;
+	width: 50%;
+	margin-block: 1rem;
+	margin-inline: auto;
+	border-radius: 1rem;
+	background-color: var(--accent-colour);
+}
+
+#finish:hover {
+	cursor: pointer;
 }

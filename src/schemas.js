@@ -14,7 +14,7 @@ const userSchema = new Schema({
 	tier: { type: String, default: "Basic" },
 	role: { type: String, default: "switch" },
 	achievements: [],
-	avatar: { type: Schema.Types.ObjectId, ref: "FileModel" },
+	// avatar: { type: Schema.Types.ObjectId, ref: "FileModel" },
 });
 const moduleSchema = new Schema(
 	{
@@ -22,7 +22,6 @@ const moduleSchema = new Schema(
 		enabled: Boolean,
 		locked: Boolean,
 		premium: Boolean,
-		commonField: String,
 	},
 	{ discriminatorKey: "type" }
 );
@@ -32,6 +31,7 @@ const taskSchema = new Schema({
 	assignedTasks: [],
 	taskLog: [],
 	giveTasks: { type: Number, default: 0 },
+	selfAssign: { type: Boolean, default: false },
 });
 
 const ruleSchema = new Schema({

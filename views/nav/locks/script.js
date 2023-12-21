@@ -1,8 +1,7 @@
+let user, lock;
 async function initialize() {
-	const profile = await window.electronAPI.get("profile");
-	const lock = await window.electronAPI.get("lock", profile.id);
-
-	// if (lock == 1) loadNewLock(profile, lock); //No lock page
+	user = await window.electronAPI.get("user");
+	lock = await window.electronAPI.get("lock", user.id);
 }
 
 var error = 0;
@@ -150,27 +149,197 @@ function counterTotal(counter) {
 		counterValues[2] * MINUTE);
 }
 
-let opened = 0;
+let opened = 0,
+	lastModule;
+var modules = [];
+
 function selectModule(module) {
-	switch (module.innerText) {
-		case "Tasks":
-			break;
-		case "Rules":
-			break;
-	}
 	const moduleTitles = document.getElementById("moduleTitles");
 	const moduleBody = document.getElementById("moduleBody");
 	if (opened == 0) {
 		opened = 1;
-		moduleTitles.style.setProperty("--body-width", "500px");
+		moduleTitles.parentElement.style.setProperty("--body-width", "500px");
 		moduleTitles.children[1].innerText = module.innerText;
 		moduleTitles.children[1].className = "open";
 		moduleBody.className = "open";
-	} else if (opened == 1) {
-		moduleTitles.style.setProperty("--body-width", "00px");
-		setTimeout(() => {
-			moduleTitles.style.setProperty("--body-width", "500px");
-			moduleTitles.children[1].innerText = module.innerText;
-		}, 1000);
+		lastModule = module.innerText;
+		loadModule(module);
+		return;
 	}
+
+	if (opened == 1 && module.innerText == lastModule) {
+		opened = 0;
+		moduleTitles.parentElement.style.setProperty("--body-width", "000px");
+		setTimeout(() => {
+			moduleTitles.children[1].className = "";
+			moduleBody.className = "moduleBody";
+		}, 800);
+		return;
+	}
+
+	lastModule = module.innerText;
+
+	moduleTitles.parentElement.style.setProperty("--body-width", "00px");
+	setTimeout(() => {
+		moduleTitles.parentElement.style.setProperty("--body-width", "500px");
+		moduleTitles.children[1].innerText = module.innerText;
+		loadModule(module);
+	}, 1000);
+}
+
+function loadModule(module) {
+	moduleBody.innerHTML =
+		"<h3 id='toggleButton' onclick='toggle(this)'>Enable</h3>";
+	const toggleButton = document.getElementById("toggleButton");
+	const search = modules.find((obj) => obj.name == module.innerText);
+	if (search?.enabled) toggleButton.innerText = "Disable";
+	else toggleButton.innerText = "Enable";
+
+	switch (module.innerText) {
+		case "Tasks":
+			break;
+		case "Rules":
+			const ruleModule = moduleFromArray("Rules");
+			const ruleList = document.createElement("ul");
+			ruleList.id = "ruleList";
+
+			const publicToggle = document.createElement("h3");
+			if (ruleModule?.public) publicToggle.innerText = "Public";
+			else publicToggle.innerText = "Private";
+			publicToggle.className = "toggleButton";
+
+			publicToggle.onclick = (e) => {
+				if (!ruleModule) return;
+
+				ruleModule.public = !ruleModule.public;
+				loadModule(module);
+			};
+
+			moduleBody.append(ruleList, publicToggle);
+			break;
+	}
+}
+
+function toggle(module) {
+	if (!isPremium(user) && modules.length >= 3) return;
+	const state = module.innerText;
+	const moduleName =
+		module.parentElement.parentElement.parentElement.children[0].children[1]
+			.innerText;
+
+	if (state == "Enable") {
+		switch (moduleName) {
+			case "Tasks":
+				modules.push({
+					name: "Tasks",
+					enabled: true,
+					locked: true,
+					premium: false,
+					taskList: [],
+					assignedTasks: [],
+					taskLog: [],
+					giveTasks: 0,
+					selfAssign: false,
+				});
+				break;
+			case "Rules":
+				modules.push({
+					name: "Rules",
+					enabled: true,
+					locked: true,
+					premium: false,
+					public: false,
+					rules: [],
+				});
+				break;
+		}
+		module.innerText = "Disable";
+	} else {
+		let newModules = [];
+		modules.forEach((module) => {
+			if (module.name != moduleName) newModules.push(module);
+		});
+		modules = newModules;
+		module.innerText = "Enable";
+	}
+	const moduleElm = document.getElementById("moduleTitles").children[1];
+	loadModule(moduleElm);
+
+	const counter = document.getElementById("moduleCount");
+	let limit = 5;
+	if (isPremium(user)) limit = `20`;
+	counter.innerHTML = `${modules.length}/${limit}`;
+	console.table(modules);
+}
+
+function isPremium(user) {
+	if (user.tier == "Basic") return 0;
+	return 1;
+}
+
+function moduleFromArray(name) {
+	return modules.find((obj) => obj.name == name);
+}
+
+function adddigit(element) {
+	var digitCount = Array.from(
+		element.parentElement.children[1].innerText
+	).length;
+	if (digitCount == 10)
+		return (element.parentElement.children[1].innerText = comboGen(digitCount));
+	element.parentElement.children[1].innerText = comboGen(++digitCount);
+}
+function remdigit(element) {
+	var digitCount = Array.from(
+		element.parentElement.children[1].innerText
+	).length;
+	if (digitCount == 0)
+		return (element.parentElement.children[1].innerText = comboGen(digitCount));
+	element.parentElement.children[1].innerText = comboGen(--digitCount);
+}
+
+function comboGen(digits) {
+	let multiply = "1"; //0 digits
+	for (i = 0; i < digits; i++) {
+		multiply += "0";
+	}
+	return Math.floor(Math.random() * parseInt(multiply));
+}
+
+const combo = document.getElementById("combo");
+combo.innerText = comboGen(4);
+
+async function done() {
+	const combination = combo.innerText;
+
+	const min = document.getElementById("Minimum");
+	const max = document.getElementById("Maximum");
+
+	if (validateCounters() != 0) return; //Add error message
+
+	const startTime =
+		Math.floor(Math.random() * (counterTotal(max) - counterTotal(min))) +
+		counterTotal(min);
+
+	const endTime = Math.floor(Date.now() + startTime);
+
+	const userID = user.id;
+
+	const limit = document.getElementById("Limit");
+	let timeLimit = counterTotal(limit);
+	if (timeLimit == "0") timeLimit = null;
+	console.log(`UserID: ${userID}`);
+	console.log(`Limit: ${timeLimit}`);
+	console.log(`EndsAt: ${endTime}`);
+	console.log(`Combo: ${combination}`);
+	console.log(`Modules: ${modules}`);
+
+	await window.electronAPI.create("lock", {
+		id: userID,
+		endsAt: endTime,
+		limit: timeLimit,
+		comboType: "gen",
+		comboObj: { code: combination },
+		modules: modules,
+	});
 }

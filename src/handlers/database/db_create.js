@@ -43,6 +43,13 @@ async function checkUniqueToken(token) {
 	return checkUniqueToken(token);
 }
 
+async function checkUniqueID(id) {
+	let search = await lockModel.find({ id: id });
+	if (search.length == 0) return id;
+	else id = makeid(32);
+	return checkUniqueID(id);
+}
+
 function makeid(length) {
 	let result = "";
 	const characters =
@@ -57,25 +64,31 @@ function makeid(length) {
 }
 /**
  *
- * @param {String} id User's ID
+ * @param {Object} options Data
  * @returns a new lock database record, 1 = User already has a lock
  */
-async function createLock(id) {
-	if ((await getLock(id)) != 1) return 1;
-	const user = await getUser(id);
-	let lockID = makeid(32);
+async function createLock(options) {
+	if ((await getLock(options.id)) != 1) return 1;
+	const user = await getUser(options.id);
+	let lockID = await checkUniqueID(32);
 	const lock = new lockModel({
 		id: lockID,
 		user: user,
-		modules: [new taskModel(), new ruleModel()],
+		endsAt: options.endsAt,
+		timeLimit: options.limit,
+		combination: {
+			type: options.comboType,
+			combination: options.comboObj,
+		},
+		modules: [], // Array of modules
 	});
-	lock.save();
+	await lock.save();
 
 	const lockHistory = new lockHistoryModel({
 		id: lockID,
 		history: [],
 	});
-	lockHistory.save();
+	await lockHistory.save();
 	return lock;
 }
 

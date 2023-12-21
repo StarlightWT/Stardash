@@ -9,14 +9,14 @@
 	</head>
 	<body>
 		<nav id="replace_nav"></nav>
-		<section id="noLock">
+		<section id="noLock" class="visible">
 			<h1>You're free... or are you?</h1>
 			<div class="buttons">
 				<h2 onclick="showNew()">Create a new lock</h2>
 				<h2 class="disabled">Use a template</h2>
 			</div>
 		</section>
-		<section id="newLock" class="visible">
+		<section id="newLock">
 			<h1>A new lock it is...</h1>
 			<div class="setting">
 				<h1 class="title">What time to start at?</h1>
@@ -163,7 +163,8 @@
 					The session has no limit!
 				</div>
 			</div>
-			<div class="setting">
+			<div class="setting" id="modules">
+				<div id="moduleCount">0/5</div>
 				<div class="modules">
 					<div class="titles" id="moduleTitles">
 						<h1>Modules</h1>
@@ -174,8 +175,23 @@
 							<li onclick="selectModule(this)">Tasks</li>
 							<li onclick="selectModule(this)">Rules</li>
 						</ul>
-						<div class="moduleBody" id="moduleBody"></div>
+						<div class="moduleBody" id="moduleBody">
+							<h3 id="toggleButton" onclick="toggle(this)">Enable</h3>
+						</div>
 					</div>
+				</div>
+			</div>
+			<div class="setting">
+				<h1 class="title">Combination</h1>
+				<div class="combo">
+					<i class="fa-regular fa-square-plus" onclick="adddigit(this)"></i>
+					<div id="combo">0000</div>
+					<i class="fa-regular fa-square-minus" onclick="remdigit(this)"></i>
+				</div>
+			</div>
+			<div class="finish">
+				<div id="finish" onclick="done()">
+					<i class="fa-solid fa-lock"></i> Start session
 				</div>
 			</div>
 		</section>

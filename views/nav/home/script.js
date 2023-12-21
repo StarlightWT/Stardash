@@ -67,12 +67,12 @@ function updateLockTimer(lock) {
 		return (timer.innerHTML = "Timer is hidden!");
 
 	let timestamp = lock.endsAt - Date.now();
-
+	console.log(lock);
 	if (timestamp <= 0) return (timer.innerHTML = "Lock is ready to unlock!");
 
 	if (lock.frozenAt) timestamp = lock.endsAt - lock.frozenAt;
 
-	if (timestamp > lock.timeLimit)
+	if (timestamp > lock.timeLimit && lock.timeLimit > 0)
 		return (timer.innerHTML = "Lock is ready to unlock!");
 
 	let timerString = convertTimestamp(timestamp);

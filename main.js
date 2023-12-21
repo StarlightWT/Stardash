@@ -26,6 +26,8 @@ function createWindow() {
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 	temp.get("size") ?? temp.set("size", [0, 0]);
 	return new BrowserWindow({
+		maxWidth: temp.get("size")[0] ?? Math.floor(width / 1.3),
+		maxHeight: temp.get("size")[1] ?? Math.floor(height / 1.2),
 		width: temp.get("size")[0] ?? Math.floor(width / 1.3),
 		height: temp.get("size")[1] ?? Math.floor(height / 1.2),
 		minHeight: Math.floor(height / 1.4),
