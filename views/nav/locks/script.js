@@ -19,7 +19,6 @@ function increase(counter) {
 	let newCounterValue = parseInt(counter.innerText) + 1;
 	if (newCounterValue < 10) newCounterValue = `0${newCounterValue}`;
 	counter.innerText = newCounterValue;
-	console.log(validateCounters());
 	if (validateCounters() == 1)
 		document.getElementById("warning").className = "";
 	else document.getElementById("warning").className = "hidden";
@@ -36,6 +35,23 @@ function decrease(counter) {
 	else document.getElementById("warning").className = "hidden";
 }
 
+function increaseLimit(counter) {
+	counter = counter.parentElement.children[1];
+	let newCounterValue = parseInt(counter.innerText) + 1;
+	if (newCounterValue < 10) newCounterValue = `0${newCounterValue}`;
+	counter.innerText = newCounterValue;
+	limitCheck();
+}
+
+function decreaseLimit(counter) {
+	counter = counter.parentElement.children[1];
+	let newCounterValue = parseInt(counter.innerText) - 1;
+	if (newCounterValue < 0) newCounterValue = "00";
+	else if (newCounterValue < 10) newCounterValue = `0${newCounterValue}`;
+	counter.innerText = newCounterValue;
+	limitCheck();
+}
+
 function edit(element) {
 	element.contentEditable = true;
 	element.focus();
@@ -47,8 +63,16 @@ function edit(element) {
 	};
 }
 
+function editLimit(element) {
+	element.contentEditable = true;
+	element.focus();
+	element.onblur = (e) => {
+		limitCheck();
+		element.contentEditable = false;
+	};
+}
+
 function validate(event) {
-	console.log(event);
 	var keyCode = event.which || event.keyCode;
 	var isValid = (keyCode >= 48 && keyCode <= 57) || keyCode === 8; // Allow numbers (48-57) and backspace (8)
 
@@ -63,6 +87,33 @@ function validateCounters() {
 
 	if (counterTotal(min) > counterTotal(max)) return (error = 1);
 	return (error = 0);
+}
+
+function limitCheck() {
+	if (limitCounterTotal(document.getElementById("Limit")) == 0)
+		document.getElementById("warningLimit").className = "";
+	else document.getElementById("warningLimit").className = "hidden";
+}
+
+function limitCounterTotal(counter) {
+	let counterValues = [];
+	Array.from(counter.children).forEach((singleCounter) => {
+		counterValues.push(singleCounter.children[1].innerText);
+	});
+	let i = 0;
+	Array.from(counter.children).forEach((singleCounter) => {
+		let newValue = counterValues[i];
+		newValue = newValue.toString();
+		if (newValue < 10 && !newValue.startsWith("0")) newValue = `0${newValue}`;
+		if (newValue == 0) newValue = "00";
+		singleCounter.children[1].innerText = newValue;
+		i++;
+	});
+	const WEEK = 86400000 * 7;
+	const DAY = 86400000;
+	const HOUR = 3600000;
+	return (total =
+		counterValues[0] * WEEK + counterValues[1] * DAY + counterValues[2] * HOUR);
 }
 
 function counterTotal(counter) {

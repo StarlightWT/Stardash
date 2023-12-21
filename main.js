@@ -24,10 +24,10 @@ app.setLoginItemSettings({
 //Create window for everything to be inside of
 function createWindow() {
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
+	temp.get("size") ?? temp.set("size", [0, 0]);
 	return new BrowserWindow({
-		width: temp.get("size")[0] ?? width / 1.3,
-		height: temp.get("size")[1] ?? height / 1.2,
+		width: temp.get("size")[0] ?? Math.floor(width / 1.3),
+		height: temp.get("size")[1] ?? Math.floor(height / 1.2),
 		minHeight: Math.floor(height / 1.4),
 		minWidth: Math.floor(width / 1.8),
 		x: temp.get("x") ?? 0,
@@ -51,7 +51,7 @@ app.whenReady().then(async () => {
 
 	if ((await checkToken(temp)) == 0) redirects.redirect(win, "home");
 	else redirects.redirect(win, "login");
-	//Create initial window(?)
+	//Create initial window
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
 	});
