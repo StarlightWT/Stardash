@@ -40,6 +40,7 @@ h1 {
 }
 
 .setting {
+	position: relative;
 	background-color: var(--secondary-bg-colour);
 	width: 70vw;
 	margin-inline: auto;
@@ -92,4 +93,73 @@ h1 {
 
 .hidden {
 	display: none;
+}
+
+.modules {
+	padding-top: 1rem;
+	padding-left: 1rem;
+	width: min-content;
+}
+
+.modules > .titles {
+	--ul-width: 200px;
+	--body-width: 00px;
+	display: flex;
+	text-align: center;
+	background-color: var(--background-colour);
+	border-top-left-radius: 0.5rem;
+	border-top-right-radius: 0.5rem;
+	border-bottom: 2px solid white;
+}
+
+.modules > .titles > h1:first-child {
+	width: var(--ul-width);
+}
+
+.modules > .titles > h1:last-child {
+	width: var(--body-width);
+	overflow: hidden;
+	transition-duration: 1s;
+}
+
+.modules > .body > #moduleList {
+	width: 200px;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	background-color: var(--background-colour);
+	height: 100%;
+	overflow-y: scroll;
+	border-bottom-left-radius: 0.5rem;
+	border-bottom-right-radius: 0.5rem;
+}
+
+.modules > .body > #moduleList > li {
+	height: 25px;
+	transition-duration: 250ms;
+	border-radius: 0.25rem;
+	text-align: center;
+	width: 90%;
+	margin-inline: auto;
+}
+
+.modules > .body > #moduleList > li:hover {
+	background-color: var(--accent-colour);
+	cursor: pointer;
+}
+
+.modules > .body {
+	display: flex;
+	height: 300px;
+	background-color: var(--background-colour);
+	border-bottom-right-radius: 0.5rem;
+	border-bottom-left-radius: 0.5rem;
+}
+
+.modules > .body > #moduleBody {
+	height: 100%;
+}
+
+.open {
+	border-left: 2px solid white;
 }

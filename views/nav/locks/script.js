@@ -149,3 +149,28 @@ function counterTotal(counter) {
 		counterValues[1] * HOUR +
 		counterValues[2] * MINUTE);
 }
+
+let opened = 0;
+function selectModule(module) {
+	switch (module.innerText) {
+		case "Tasks":
+			break;
+		case "Rules":
+			break;
+	}
+	const moduleTitles = document.getElementById("moduleTitles");
+	const moduleBody = document.getElementById("moduleBody");
+	if (opened == 0) {
+		opened = 1;
+		moduleTitles.style.setProperty("--body-width", "500px");
+		moduleTitles.children[1].innerText = module.innerText;
+		moduleTitles.children[1].className = "open";
+		moduleBody.className = "open";
+	} else if (opened == 1) {
+		moduleTitles.style.setProperty("--body-width", "00px");
+		setTimeout(() => {
+			moduleTitles.style.setProperty("--body-width", "500px");
+			moduleTitles.children[1].innerText = module.innerText;
+		}, 1000);
+	}
+}

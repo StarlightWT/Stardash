@@ -9,14 +9,14 @@
 	</head>
 	<body>
 		<nav id="replace_nav"></nav>
-		<section id="noLock" class="visible">
+		<section id="noLock">
 			<h1>You're free... or are you?</h1>
 			<div class="buttons">
 				<h2 onclick="showNew()">Create a new lock</h2>
 				<h2 class="disabled">Use a template</h2>
 			</div>
 		</section>
-		<section id="newLock">
+		<section id="newLock" class="visible">
 			<h1>A new lock it is...</h1>
 			<div class="setting">
 				<h1 class="title">What time to start at?</h1>
@@ -164,7 +164,19 @@
 				</div>
 			</div>
 			<div class="setting">
-				<h1 class="title"></h1>
+				<div class="modules">
+					<div class="titles" id="moduleTitles">
+						<h1>Modules</h1>
+						<h1 id="moduleTitle">[TITLE]</h1>
+					</div>
+					<div class="body">
+						<ul id="moduleList">
+							<li onclick="selectModule(this)">Tasks</li>
+							<li onclick="selectModule(this)">Rules</li>
+						</ul>
+						<div class="moduleBody" id="moduleBody"></div>
+					</div>
+				</div>
 			</div>
 		</section>
 	</body>

@@ -1,6 +1,7 @@
 @import url(../../general.css);
 
 nav {
+	z-index: 999999;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
