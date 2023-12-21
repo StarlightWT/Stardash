@@ -16,12 +16,18 @@ const userSchema = new Schema({
 	achievements: [],
 	avatar: { type: Schema.Types.ObjectId, ref: "FileModel" },
 });
+const moduleSchema = new Schema(
+	{
+		name: String,
+		enabled: Boolean,
+		locked: Boolean,
+		premium: Boolean,
+		commonField: String,
+	},
+	{ discriminatorKey: "type" }
+);
 
 const taskSchema = new Schema({
-	name: { type: String, default: "Tasks" },
-	enabled: { type: Boolean, default: false },
-	locked: { type: Boolean, default: false },
-	premium: { type: Boolean, default: false },
 	taskList: [],
 	assignedTasks: [],
 	taskLog: [],
@@ -29,11 +35,7 @@ const taskSchema = new Schema({
 });
 
 const ruleSchema = new Schema({
-	name: { type: String, default: "Rules" },
-	enabled: { type: Boolean, default: false },
-	locked: { type: Boolean, default: false },
-	premium: { type: Boolean, default: true },
-	public: { type: Boolean, default: false },
+	public: Boolean,
 	rules: [],
 });
 
@@ -74,16 +76,17 @@ const activitySchema = new Schema({
 
 const userModel = model("User", userSchema, "users");
 const lockModel = model("Lock", lockSchema, "locks");
-const taskModel = model("Tasks", taskSchema);
-const ruleModel = model("Rules", ruleSchema);
 const lockHistoryModel = model("lockHistory", lockHistorySchema, "History");
 const activityModel = model("activity", activitySchema, "activity");
+const Modules = model("Module", moduleSchema, "modules");
+const TaskModule = Modules.discriminator("TaskModule", taskSchema);
+const RuleModule = Modules.discriminator("RuleModule", ruleSchema);
 
 module.exports = {
 	lockModel,
 	userModel,
-	taskModel,
-	ruleModel,
+	TaskModule,
+	RuleModule,
 	lockHistoryModel,
 	activityModel,
 };

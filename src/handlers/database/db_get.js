@@ -46,6 +46,7 @@ async function getLock(id) {
 		return lockCache;
 	lockCache = await lockModel
 		.find({ $or: [{ id: id }, { "user.id": id }] })
+		.populate("modules")
 		.lean();
 	if (lockCache.length == 1) return (lockCache = lockCache[0]);
 	if (lockCache.length > 1) return 3;
