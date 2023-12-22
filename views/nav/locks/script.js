@@ -2,11 +2,18 @@ let user, lock;
 async function initialize() {
 	user = await window.electronAPI.get("user");
 	lock = await window.electronAPI.get("lock", user.id);
+
+	if (lock != 1) showOverview();
 }
 
 var error = 0;
 
 initialize();
+
+function showOverview() {
+	document.getElementById("noLock").className = "";
+	document.getElementById("overview").className = "visible";
+}
 
 function showNew() {
 	document.getElementById("noLock").className = "";
