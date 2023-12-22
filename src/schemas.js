@@ -9,7 +9,7 @@ const userSchema = new Schema({
 	subscribed: Boolean,
 	stats: {
 		totalLockedTime: String,
-		longesLockedTime: String,
+		longestLockedTime: String,
 	},
 	tier: { type: String, default: "Basic" },
 	role: { type: String, default: "switch" },

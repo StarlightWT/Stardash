@@ -90,10 +90,14 @@ async function get(what, option) {
 	return 2;
 }
 
-const { modifyTime, timerVisibility } = require("./database/db_action");
+const {
+	modifyTime,
+	timerVisibility,
+	unlockLock,
+} = require("./database/db_action");
 const { userModel } = require("../schemas");
 
-async function lock(id, what, option) {
+async function lockAction(id, what, option) {
 	switch (what) {
 		case "time":
 			return await modifyTime(id, option);
@@ -105,6 +109,8 @@ async function lock(id, what, option) {
 			return await setFreeze(id, option);
 		case "history":
 			return await history(id, option);
+		case "unlock":
+			return await unlockLock(id);
 	}
 	return 2;
 }
@@ -154,7 +160,7 @@ module.exports = {
 	tasks,
 	get,
 	create,
-	lock,
+	lockAction,
 	DBProfile,
 	moduleAction,
 };

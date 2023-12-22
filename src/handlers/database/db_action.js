@@ -4,10 +4,11 @@ module.exports = {
 	timeLogVisibility,
 	setFreeze,
 	history,
+	unlockLock,
 };
 
 const { lockModel, lockHistoryModel } = require("../../schemas");
-const { getLock, getLockHistory } = require("./db_get");
+const { getLock, getLockHistory, getUser, clearCache } = require("./db_get");
 
 /**
  *
@@ -86,4 +87,22 @@ async function history(id, log) {
 		{ $set: { history: newLogs } },
 		{ new: true }
 	);
+}
+
+async function unlockLock(id) {
+	const lock = await getLock(id);
+	if (!lock) return 1;
+	const lockHistory = await getLockHistory(id);
+	const user = await getUser(lock.user.id);
+
+	const lockedTime = Date.now() - lock.createdAt;
+
+	user.stats.totalLockedTime = user.stats.totalLockedTime + lockedTime;
+	if (user.stats.longestLockedTime < lockedTime)
+		user.stats.longestLockedTime = lockedTime;
+
+	await lockModel.findOneAndDelete({ id: id });
+	await lockHistoryModel.findOneAndDelete({ lockID: id });
+	clearCache();
+	return 0;
 }

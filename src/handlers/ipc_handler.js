@@ -8,7 +8,7 @@ const {
 	logout,
 } = require("./login/login_handler.js");
 
-const { get, lock, tasks, create } = require("./db_handler.js");
+const { get, lockAction, tasks, create } = require("./db_handler.js");
 
 module.exports = (ipcMain, temp, win) => {
 	ipcMain.handle("updateSettings", async () => {
@@ -42,8 +42,8 @@ module.exports = (ipcMain, temp, win) => {
 		return await get(what, option);
 	});
 
-	ipcMain.handle("lock", async (event, what, option) => {
-		return await lock(what, option);
+	ipcMain.handle("lock", async (event, id, what, option) => {
+		return await lockAction(id, what, option);
 	});
 
 	ipcMain.handle("create", async (event, what, option, option2) => {

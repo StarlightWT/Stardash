@@ -17,8 +17,8 @@
 						<img src="" alt="" id="profilePicture" />
 						<h1 id="username"></h1>
 					</div>
-					<h2 id="timer"></h2>
-					<div class="buttons">
+					<h2 id="timer" class="lockInfo"></h2>
+					<div class="buttons lockInfo">
 						<div class="disabled" id="unlockBtn" onclick="unlock()">
 							<i class="fa-solid fa-unlock"></i> Unlock
 						</div>
@@ -30,7 +30,7 @@
 						class="fa-solid fa-gear settings"
 						onclick="redirect('settings')"></i>
 				</div>
-				<ul id="moduleList" style="height: 15px">
+				<ul id="moduleList" style="height: 15px" class="lockInfo">
 					<li class="list_title" onclick="toggleList(this)">
 						<span>Modules</span>
 						<i class="fa-solid fa-caret-down"></i>

@@ -34,21 +34,11 @@ async function redirect(win, location, modal) {
 
 	console.log(`[Redirects] Trying to redirect to ${location}...`);
 	switch (location) {
-		case "addtime":
+		case "combo":
 			modal = true;
 			frame = false;
 			modalHeight = 200;
-			modalWidth = 800;
-			break;
-		case "addtask":
-			modal = true;
-			frame = false;
-			modalHeight = 100;
-			modalWidth = 800;
-			break;
-		case "history":
-			modal = true;
-			frame = false;
+			modalWidth = 500;
 			break;
 	}
 
@@ -64,7 +54,7 @@ async function redirect(win, location, modal) {
 		const child = new BrowserWindow({
 			transparent: true,
 			frame: frame,
-			autoHideMenuBar: true,
+			// autoHideMenuBar: true,
 			x: x,
 			y: y,
 			hasShadow: true,

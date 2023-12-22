@@ -66,7 +66,7 @@ async function getLock(id) {
 async function getLockHistory(id) {
 	if (historyCache && historyCache.id == id) return historyCache;
 	historyCache = await lockHistoryModel.findOne({ lockId: id }).lean();
-	return (historyCache = historyCache[0]);
+	return historyCache;
 }
 
 /**

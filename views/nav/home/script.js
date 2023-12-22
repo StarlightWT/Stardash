@@ -1,3 +1,4 @@
+let lockID;
 async function initialize() {
 	const activities = await window.electronAPI.get("activities", {
 		amount: 10,
@@ -5,10 +6,10 @@ async function initialize() {
 	});
 	const profile = await window.electronAPI.get("user");
 	const lock = await window.electronAPI.get("lock", profile.id);
-
-	setProfileInfo(profile, lock);
+	lockID = lock.id;
+	if (lock == 1 || !lock) hideLockInfo();
 	appendActivities(activities);
-	loadLockModules(lock);
+	setProfileInfo(profile, lock);
 }
 
 initialize();
@@ -50,15 +51,26 @@ function appendActivities(activities) {
 	if (activities.length == 10) activityFeed.append(loadMoreButton);
 }
 
+function hideLockInfo() {
+	const elements = Array.from(document.getElementsByClassName("lockInfo"));
+	elements.forEach((element) => {
+		element.style = "display: none;";
+	});
+}
+
 function setProfileInfo(profile, lock) {
 	const profilePictureElm = document.getElementById("profilePicture");
 	const usernameElm = document.getElementById("username");
 	usernameElm.innerText = profile.username;
 	profilePictureElm.src = "../../../photos/blank.png";
-	updateLockTimer(lock);
-	setInterval(() => {
+	if (lock != 1) {
+		console.log(lock);
 		updateLockTimer(lock);
-	}, 1000);
+		setInterval(() => {
+			updateLockTimer(lock);
+		}, 1000);
+		loadLockModules(lock);
+	}
 }
 
 function updateLockTimer(lock) {
@@ -120,7 +132,10 @@ function convertTimestamp(timestamp) {
 	return `${days}:${hours}:${minutes}:${seconds}`;
 }
 
-function unlock() {}
+function unlock() {
+	blurPage(true);
+	window.electronAPI.redirect("combo");
+}
 
 function unlockable(newState) {
 	const unlockButton = document.getElementById("unlockBtn");
@@ -161,4 +176,33 @@ function toggleList(title) {
 	}
 	list.style.height = "15px";
 	title.children[1].classList.remove("openList");
+}
+
+function blurPage(option) {
+	const page = document.getElementById("body");
+	if (option == true) {
+		page.style = "filter: blur(5px);";
+		disableScroll();
+	}
+	if (option == false) {
+		page.style = "";
+		enableScroll();
+	}
+}
+
+window.addEventListener("focus", () => {
+	blurPage(false);
+	window.location.reload();
+});
+
+function disableScroll() {
+	let x = window.scrollX;
+	let y = window.scrollY;
+	window.onscroll = () => {
+		window.scrollTo(x, y);
+	};
+}
+
+function enableScroll() {
+	window.onscroll = null;
 }
