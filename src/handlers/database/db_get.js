@@ -12,6 +12,7 @@ module.exports = {
 	getKHLocks,
 	getCombination,
 	activities,
+	clearCache,
 };
 
 const cacheLifespan = 60;
@@ -19,11 +20,15 @@ const cacheLifespan = 60;
 var userCache, lockCache, historyCache, khLocksCache;
 
 setInterval(() => {
+	clearCache();
+}, cacheLifespan * 1000);
+
+function clearCache() {
 	userCache = null;
 	lockCache = null;
 	historyCache = null;
 	khLocksCache = null;
-}, cacheLifespan * 1000);
+}
 
 /**
  *

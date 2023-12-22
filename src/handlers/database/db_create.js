@@ -5,7 +5,7 @@ module.exports = {
 };
 const { lockHistoryModel, activityModel } = require("../../schemas");
 const { userModel, lockModel, taskModel, ruleModel } = require("../../schemas");
-const { getLock, getUser } = require("./db_get");
+const { getLock, getUser, clearCache } = require("./db_get");
 /**
  *
  * @param {String} username User's username
@@ -70,7 +70,7 @@ function makeid(length) {
 async function createLock(options) {
 	if ((await getLock(options.id)) != 1) return 1;
 	const user = await getUser(options.id);
-	let lockID = await checkUniqueID(32);
+	let lockID = await checkUniqueID(makeid(32));
 	const lock = new lockModel({
 		id: lockID,
 		user: user,
@@ -80,16 +80,16 @@ async function createLock(options) {
 			type: options.comboType,
 			combination: options.comboObj,
 		},
-		modules: [], // Array of modules
+		modules: options.modules, // Array of modules
 	});
 	await lock.save();
-
 	const lockHistory = new lockHistoryModel({
-		id: lockID,
+		lockID: lockID,
 		history: [],
 	});
 	await lockHistory.save();
-	return lock;
+	clearCache();
+	return lock.id;
 }
 
 async function createActivity(activity) {

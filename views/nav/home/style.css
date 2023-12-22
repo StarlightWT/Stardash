@@ -80,6 +80,7 @@ main {
 }
 
 #profile > #timer {
+	margin-block: 0.75rem;
 	text-align: center;
 	background-color: var(--background-colour);
 	padding-block: 0.5rem;
@@ -119,6 +120,8 @@ main {
 	background-color: var(--secondary-bg-colour);
 	padding: 0.5rem;
 	border-radius: 0.5rem;
+	overflow: hidden;
+	transition-duration: 250ms;
 }
 
 #moduleList > li:first-child {
@@ -132,8 +135,50 @@ main {
 	cursor: pointer;
 }
 
+#moduleList > li:not(:first-child) {
+	width: 95%;
+	margin-inline: auto;
+	text-align: center;
+	background-color: var(--background-colour);
+	margin-top: 0.5rem;
+	padding-block: 0.25rem;
+	border-radius: 0.5rem;
+}
+
+#moduleList > li:first-child > i {
+	transition-duration: 250ms;
+}
+
+.openList {
+	transform: rotateZ(-180deg);
+}
+
 .sidebar {
 	width: var(--sidebar-width);
 	position: absolute;
 	right: 10vw;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-evenly;
+	margin-top: 0.5rem;
+}
+
+.buttons > div {
+	background-color: var(--background-colour);
+	padding: 0.5rem;
+	padding-inline: 1.5rem;
+	border-radius: 0.5rem;
+	font-weight: bold;
+	transition-duration: 250ms;
+}
+
+.buttons > div:hover:not(.disabled) {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+}
+
+.disabled {
+	opacity: 0.8;
 }

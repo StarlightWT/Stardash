@@ -8,6 +8,7 @@ async function initialize() {
 
 	setProfileInfo(profile, lock);
 	appendActivities(activities);
+	loadLockModules(lock);
 }
 
 initialize();
@@ -68,16 +69,19 @@ function updateLockTimer(lock) {
 
 	let timestamp = lock.endsAt - Date.now();
 	console.log(lock);
-	if (timestamp <= 0) return (timer.innerHTML = "Lock is ready to unlock!");
-
+	if (timestamp <= 0) {
+		unlockable(true);
+		return (timer.innerHTML = "Lock is ready to unlock!");
+	}
 	if (lock.frozenAt) timestamp = lock.endsAt - lock.frozenAt;
 
-	if (timestamp > lock.timeLimit && lock.timeLimit > 0)
+	if (timestamp > lock.timeLimit && lock.timeLimit > 0) {
+		unlockable(true);
 		return (timer.innerHTML = "Lock is ready to unlock!");
+	}
 
 	let timerString = convertTimestamp(timestamp);
-	timer.innerHTML =
-		`<i class="fa-solid fa-lock" style="color: #ffffff;"></i>` + timerString;
+	timer.innerHTML = timerString;
 }
 
 function convertTimestamp(timestamp) {
@@ -114,4 +118,47 @@ function convertTimestamp(timestamp) {
 	if (minutes < 10) minutes = `0${minutes}`;
 	if (seconds < 10) seconds = `0${seconds}`;
 	return `${days}:${hours}:${minutes}:${seconds}`;
+}
+
+function unlock() {}
+
+function unlockable(newState) {
+	const unlockButton = document.getElementById("unlockBtn");
+	if (newState) return (unlockButton.className = "");
+	return (unlockButton.className = "disabled");
+}
+
+function loadLockModules(lock) {
+	const modules = lock.modules;
+	const list = document.getElementById("moduleList");
+	modules.forEach((module) => {
+		const moduleLi = document.createElement("li");
+		moduleLi.innerHTML = `${module.name}`;
+
+		moduleLi.className = "disabled";
+
+		moduleLi.onclick = (e) => {
+			openModule(module.name);
+		};
+		list.append(moduleLi);
+	});
+}
+
+function openModule(module) {
+	//Redirect to module's standard page
+}
+
+function toggleList(title) {
+	const list = title.parentElement;
+	let height = 15;
+	Array.from(list.children).forEach((child) => {
+		height += child.getBoundingClientRect().height;
+	});
+	if (list.style.height == "15px") {
+		list.style.height = `${height}px`;
+		title.children[1].classList.add("openList");
+		return;
+	}
+	list.style.height = "15px";
+	title.children[1].classList.remove("openList");
 }
