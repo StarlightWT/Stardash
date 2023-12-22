@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-// const request = require("./api_handler");
 const { BrowserWindow, screen } = require("electron");
 
 function getPaths(dirPath, arrayOfFiles) {

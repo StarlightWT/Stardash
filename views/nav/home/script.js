@@ -1,4 +1,4 @@
-let lockID;
+let lockID, unlockable;
 async function initialize() {
 	const activities = await window.electronAPI.get("activities", {
 		amount: 10,
@@ -134,12 +134,15 @@ function convertTimestamp(timestamp) {
 
 function unlock() {
 	blurPage(true);
-	window.electronAPI.redirect("combo");
+	if (unlockable) window.electronAPI.redirect("combo");
 }
 
 function unlockable(newState) {
 	const unlockButton = document.getElementById("unlockBtn");
-	if (newState) return (unlockButton.className = "");
+	if (newState) {
+		unlockable = true;
+		return (unlockButton.className = "");
+	}
 	return (unlockButton.className = "disabled");
 }
 
@@ -191,8 +194,9 @@ function blurPage(option) {
 }
 
 window.addEventListener("focus", () => {
-	blurPage(false);
-	window.location.reload();
+	setTimeout(() => {
+		window.location.reload();
+	}, 100);
 });
 
 function disableScroll() {

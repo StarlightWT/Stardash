@@ -21,10 +21,15 @@ async function createNewUser(username, id) {
 		username: username,
 		id: id,
 		token: token,
+		stats: {
+			totalLockedTime: 0,
+			longestLockedTime: 0,
+		},
 		discordId: null,
 		subscribed: false,
 		tier: "Basic",
 		role: "switch",
+		achievements: [],
 	});
 
 	user.save();

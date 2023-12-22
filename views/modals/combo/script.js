@@ -10,6 +10,7 @@ async function initialize() {
 initialize();
 
 async function finish() {
-	await window.electronAPI.lock(lock.id, "unlock");
-	window.close();
+	await window.electronAPI.lock(lock.id, "unlock").then(() => {
+		window.close();
+	});
 }

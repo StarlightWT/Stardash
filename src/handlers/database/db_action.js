@@ -92,7 +92,6 @@ async function history(id, log) {
 async function unlockLock(id) {
 	const lock = await getLock(id);
 	if (!lock) return 1;
-	const lockHistory = await getLockHistory(id);
 	const user = await getUser(lock.user.id);
 
 	const lockedTime = Date.now() - lock.createdAt;

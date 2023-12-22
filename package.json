@@ -1,7 +1,7 @@
 {
 	"name": "stardash",
-	"version": "1.0.8",
-	"description": "Chaster dashboard",
+	"version": "2.0.0",
+	"description": "StarDash",
 	"main": "./main.js",
 	"scripts": {
 		"start": "npx electronmon .",
