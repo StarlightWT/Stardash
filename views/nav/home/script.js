@@ -7,7 +7,7 @@ async function initialize() {
 	const profile = await window.electronAPI.get("user");
 	const lock = await window.electronAPI.get("lock", profile.id);
 	lockID = lock.id;
-	if (lock == 1 || !lock) hideLockInfo();
+	if (!(lock == 1 || !lock)) showLockInfo();
 	appendActivities(activities);
 	setProfileInfo(profile, lock);
 }
@@ -51,10 +51,10 @@ function appendActivities(activities) {
 	if (activities.length == 10) activityFeed.append(loadMoreButton);
 }
 
-function hideLockInfo() {
+function showLockInfo() {
 	const elements = Array.from(document.getElementsByClassName("lockInfo"));
 	elements.forEach((element) => {
-		element.style = "display: none;";
+		element.classList.remove("lockInfo");
 	});
 }
 
@@ -82,13 +82,13 @@ function updateLockTimer(lock) {
 	let timestamp = lock.endsAt - Date.now();
 	console.log(lock);
 	if (timestamp <= 0) {
-		unlockable(true);
+		unlockState(true);
 		return (timer.innerHTML = "Lock is ready to unlock!");
 	}
 	if (lock.frozenAt) timestamp = lock.endsAt - lock.frozenAt;
 
 	if (timestamp > lock.timeLimit && lock.timeLimit > 0) {
-		unlockable(true);
+		unlockState(true);
 		return (timer.innerHTML = "Lock is ready to unlock!");
 	}
 
@@ -137,7 +137,7 @@ function unlock() {
 	if (unlockable) window.electronAPI.redirect("combo");
 }
 
-function unlockable(newState) {
+function unlockState(newState) {
 	const unlockButton = document.getElementById("unlockBtn");
 	if (newState) {
 		unlockable = true;

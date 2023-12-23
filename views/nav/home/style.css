@@ -182,3 +182,7 @@ main {
 .disabled {
 	opacity: 0.8;
 }
+
+.lockInfo {
+	display: none;
+}

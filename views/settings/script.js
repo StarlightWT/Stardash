@@ -12,15 +12,12 @@ const startOnBootSelect = document.getElementById("startOnBoot");
 var devMode = false;
 var change = false;
 async function loadsettings() {
-	//Get token
-	const profile = await window.electronAPI.get("profile");
-	const dbprofileObject = await window.electronAPI.get("dbprofile");
-	const dbprofile = dbprofileObject[0]._doc;
+	const user = await window.electronAPI.get("user");
 
-	tokenCopy.value = dbprofile.token; //Set token into field
+	tokenCopy.value = user.token; //Set token into field
 	//Check for dev mode
-	console.log(dbprofile.tier);
-	if (dbprofile.tier.toLowerCase() == "developer")
+	console.log(user.tier);
+	if (user.tier.toLowerCase() == "developer")
 		devTrigger.style = "display: flex";
 
 	//Get verison
@@ -43,7 +40,7 @@ async function loadsettings() {
 		devTools.style = "display: none";
 	}
 
-	roleSelect.value = dbprofile.role;
+	roleSelect.value = user.role;
 }
 
 loadsettings();
