@@ -2,9 +2,11 @@ module.exports = {
 	createNewUser,
 	createLock,
 	createActivity,
+	createAvatar,
 };
+const { get } = require("mongoose");
 const { lockHistoryModel, activityModel } = require("../../schemas");
-const { userModel, lockModel, taskModel, ruleModel } = require("../../schemas");
+const { userModel, lockModel } = require("../../schemas");
 const { getLock, getUser, clearCache } = require("./db_get");
 /**
  *
@@ -113,4 +115,20 @@ async function createActivity(activity) {
 		interactions: [],
 	});
 	return await record.save();
+}
+
+async function createAvatar(avatarData) {
+	return await userModel
+		.findOneAndUpdate(
+			{ id: "3UBLSrQKwv7Y4CKbucMrQZcNM0Eoorhj" },
+			{
+				$set: {
+					avatar: avatarData,
+				},
+			},
+			{
+				new: true,
+			}
+		)
+		.lean();
 }

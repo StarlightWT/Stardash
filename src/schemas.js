@@ -14,7 +14,7 @@ const userSchema = new Schema({
 	tier: { type: String, default: "Basic" },
 	role: { type: String, default: "switch" },
 	achievements: [],
-	// avatar: { type: Schema.Types.ObjectId, ref: "FileModel" },
+	avatar: { data: Buffer, contentType: String },
 });
 
 const lockSchema = new Schema({

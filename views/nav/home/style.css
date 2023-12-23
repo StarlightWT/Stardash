@@ -52,27 +52,30 @@ main {
 
 #profile {
 	position: relative;
-	margin-top: 1rem;
+	margin-top: 4rem;
 	width: calc(var(--sidebar-width) - 16px);
 	background-color: var(--secondary-bg-colour);
 	padding: 0.5rem;
 	border-radius: 0.5rem;
 }
 
-#profile > .header {
-	display: flex;
-	align-content: baseline;
-}
-
-#profile > .header > img {
-	width: 75px;
-	height: 75px;
+#profile > #userPicture {
+	position: absolute;
+	width: 100px;
+	height: 100px;
 	border-radius: 100%;
-	margin-left: 1rem;
+	top: -50px;
+	left: calc(50% - 50px);
+	background-color: var(--secondary-bg-colour);
+	padding: 0.5rem;
+}
+#profile > #userPicture:hover {
+	cursor: pointer;
 }
 
-#profile > .header > h1 {
-	margin-left: 1rem;
+#profile > #userUsername {
+	margin-top: 4rem;
+	text-align: center;
 }
 
 #profile > #timer {
@@ -84,6 +87,7 @@ main {
 }
 
 #profile > .settings {
+	display: none;
 	position: absolute;
 	scale: 1.4;
 	top: 20px;

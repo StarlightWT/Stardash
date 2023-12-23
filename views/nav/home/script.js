@@ -1,4 +1,6 @@
-let lockID, unlockable;
+let lockID,
+	unlockable,
+	redirected = false;
 async function initialize() {
 	const activities = await window.electronAPI.get("activities", {
 		amount: 10,
@@ -7,7 +9,7 @@ async function initialize() {
 	const profile = await window.electronAPI.get("user");
 	const lock = await window.electronAPI.get("lock", profile.id);
 	lockID = lock.id;
-	if (!(lock == 1 || !lock)) showLockInfo();
+	if (!(lock == 1 || !lock)) showLockInfo(lock);
 	appendActivities(activities);
 	setProfileInfo(profile, lock);
 }
@@ -51,18 +53,26 @@ function appendActivities(activities) {
 	if (activities.length == 10) activityFeed.append(loadMoreButton);
 }
 
-function showLockInfo() {
+function showLockInfo(lock) {
 	const elements = Array.from(document.getElementsByClassName("lockInfo"));
 	elements.forEach((element) => {
 		element.classList.remove("lockInfo");
 	});
+
+	const modulesElm = document.getElementById("moduleList");
+	if (lock.modules.length == 0) modulesElm.classList.add("lockInfo");
+	else modulesElm.children[0].click();
 }
 
 function setProfileInfo(profile, lock) {
-	const profilePictureElm = document.getElementById("profilePicture");
-	const usernameElm = document.getElementById("username");
-	usernameElm.innerText = profile.username;
-	profilePictureElm.src = "../../../photos/blank.png";
+	const userAvatar = document.getElementById("userPicture");
+	const userUsername = document.getElementById("userUsername");
+	const userStats = document.getElementById("stats");
+	const lockStats = document.getElementById("currentLockStats");
+
+	if (profile.avatar.length > 5) userAvatar.src = profile.avatar;
+	userUsername.innerText = profile.username;
+
 	if (lock != 1) {
 		console.log(lock);
 		updateLockTimer(lock);
@@ -132,8 +142,10 @@ function convertTimestamp(timestamp) {
 }
 
 function unlock() {
+	if (!unlockable) return;
 	blurPage(true);
-	if (unlockable) window.electronAPI.redirect("combo");
+	redirected = true;
+	window.electronAPI.redirect("combo");
 }
 
 function unlockState(newState) {
@@ -185,14 +197,18 @@ function blurPage(option) {
 	if (option == true) {
 		page.style = "filter: blur(5px);";
 		disableScroll();
+		redirected = true;
 	}
 	if (option == false) {
 		page.style = "";
 		enableScroll();
+		redirected = false;
 	}
 }
 
 window.addEventListener("focus", () => {
+	if (!redirected) return;
+	redirected = false;
 	setTimeout(() => {
 		window.location.reload();
 	}, 100);
@@ -208,4 +224,27 @@ function disableScroll() {
 
 function enableScroll() {
 	window.onscroll = null;
+}
+
+//New avatar
+document.getElementById("imgupload").addEventListener("change", handleFile);
+
+function handleFile(event) {
+	const file = event.target.files[0];
+
+	if (file) {
+		const reader = new FileReader();
+
+		// The onload event is triggered when the file reading is complete
+		reader.onload = async function (e) {
+			// Save the base64-encoded image data to MongoDB
+			await window.electronAPI.create("avatar", e.target.result);
+
+			// Display the image using the base64 string
+			const imgElement = document.getElementById("userPicture");
+			imgElement.src = e.target.result;
+		};
+
+		reader.readAsDataURL(file);
+	}
 }

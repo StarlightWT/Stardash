@@ -13,10 +13,14 @@
 			<ul id="activity"></ul>
 			<div class="sidebar">
 				<div id="profile">
-					<div class="header">
-						<img src="" alt="" id="profilePicture" />
-						<h1 id="username"></h1>
-					</div>
+					<input type="file" name="" id="imgupload" style="display: none" />
+					<img
+						src="../../../photos/blank.png"
+						alt=""
+						id="userPicture"
+						onclick="document.getElementById('imgupload').click();" />
+					<h1 id="userUsername"></h1>
+					<div id="userBadges"></div>
 					<h2 id="timer" class="lockInfo"></h2>
 					<div class="buttons lockInfo">
 						<div class="disabled" id="unlockBtn" onclick="unlock()">

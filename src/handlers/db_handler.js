@@ -51,6 +51,7 @@ const {
 	createNewUser,
 	createLock,
 	createActivity,
+	createAvatar,
 } = require("./database/db_create");
 async function create(what, option, option2) {
 	switch (what) {
@@ -59,7 +60,9 @@ async function create(what, option, option2) {
 		case "lock":
 			return await createLock(option);
 		case "activity":
-			return await createActivity(activity);
+			return await createActivity(option);
+		case "avatar":
+			return await createAvatar(option);
 	}
 	return 2;
 }
