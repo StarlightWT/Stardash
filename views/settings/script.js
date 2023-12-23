@@ -80,8 +80,7 @@ async function saveAndExitSettings() {
 	if (!change) window.electronAPI.redirect("home");
 	const updatingInfoElement = document.getElementById("updatingInfo");
 	updatingInfoElement.classList.add("show");
-	if ((await window.electronAPI.updateSettings()) == 1)
-		window.electronAPI.redirect("home");
+	window.electronAPI.redirect("home");
 }
 
 function copy(what) {

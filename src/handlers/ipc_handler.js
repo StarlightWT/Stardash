@@ -11,10 +11,6 @@ const {
 const { get, lockAction, tasks, create } = require("./db_handler.js");
 
 module.exports = (ipcMain, temp, win) => {
-	// ipcMain.handle("updateSettings", async () => {
-	// 	return await updateInfo(null, null, temp.network);
-	// });
-
 	ipcMain.handle("action", async (event, what, option) => {
 		return await action(what, option);
 	});

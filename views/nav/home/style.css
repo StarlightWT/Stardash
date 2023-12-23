@@ -20,12 +20,8 @@ main {
 	background-color: var(--secondary-bg-colour);
 	height: 175px;
 	padding: 0.5rem;
-	margin-block: 0.75rem;
 	border-radius: 0.5rem;
-}
-
-#activity > li:first-child {
-	margin-top: 0;
+	margin-bottom: 0.75rem;
 }
 
 #activity > li:not(#loadMoreBtn) > h1 {

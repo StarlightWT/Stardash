@@ -86,8 +86,7 @@ function updateLockTimer(lock) {
 		return (timer.innerHTML = "Lock is ready to unlock!");
 	}
 	if (lock.frozenAt) timestamp = lock.endsAt - lock.frozenAt;
-
-	if (timestamp > lock.timeLimit && lock.timeLimit > 0) {
+	if (lock.timeLimit > 0 && Date.now() >= lock.timeLimit) {
 		unlockState(true);
 		return (timer.innerHTML = "Lock is ready to unlock!");
 	}

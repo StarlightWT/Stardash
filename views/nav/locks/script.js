@@ -91,6 +91,7 @@ function validateCounters() {
 	const min = document.getElementById("Minimum");
 	const max = document.getElementById("Maximum");
 
+	limitCheck();
 	if (counterTotal(min) > counterTotal(max)) return (error = 1);
 	return (error = 0);
 }
@@ -99,6 +100,14 @@ function limitCheck() {
 	if (limitCounterTotal(document.getElementById("Limit")) == 0)
 		document.getElementById("warningLimit").className = "";
 	else document.getElementById("warningLimit").className = "hidden";
+	const min = document.getElementById("Minimum");
+	const max = document.getElementById("Maximum");
+	if (
+		limitCounterTotal(document.getElementById("Limit")) < counterTotal(max) &&
+		limitCounterTotal(document.getElementById("Limit")) != 0
+	)
+		document.getElementById("invalidLimit").className = "";
+	else document.getElementById("invalidLimit").className = "hidden";
 }
 
 function limitCounterTotal(counter) {
@@ -334,6 +343,7 @@ async function done() {
 
 	const limit = document.getElementById("Limit");
 	let timeLimit = counterTotal(limit);
+	if (timeLimit != 0 && timeLimit < endTime) return;
 	if (timeLimit == "0") timeLimit = null;
 	else timeLimit += Date.now();
 	console.log(`UserID: ${userID}`);
@@ -350,4 +360,6 @@ async function done() {
 		comboObj: { code: combination },
 		modules: modules,
 	});
+
+	window.electronAPI.redirect("home");
 }
