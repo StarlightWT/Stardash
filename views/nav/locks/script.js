@@ -35,8 +35,20 @@ function showNew() {
 	document.getElementById("newLock").className = "visible";
 }
 
-function showKHOverview(user) {
-	console.log(user);
+async function showKHOverview(user) {
+	const list = document.getElementById("KHoverview");
+	const locks = await window.electronAPI.get("locks", user.id);
+	console.log(locks);
+
+	const addLock = document.createElement("div");
+	addLock.id = "addLock";
+	addLock.innerHTML = `<i class="fa-solid fa-plus"></i><br>Add new`;
+	addLock.onclick = (e) => {
+		console.log("Add lock...");
+	};
+
+	list.append(addLock);
+	list.className = "visible";
 }
 
 function increase(counter) {

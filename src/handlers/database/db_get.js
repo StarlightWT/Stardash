@@ -17,7 +17,10 @@ module.exports = {
 
 const cacheLifespan = 60;
 
-var userCache, lockCache, historyCache, khLocksCache;
+var userCache,
+	lockCache,
+	historyCache,
+	khLocksCache = {};
 
 setInterval(() => {
 	clearCache();
@@ -27,7 +30,7 @@ function clearCache() {
 	userCache = null;
 	lockCache = null;
 	historyCache = null;
-	khLocksCache = null;
+	khLocksCache = {};
 	console.log(`[GET] Cleared cache!`);
 	console.log(userCache + lockCache + historyCache + khLocksCache);
 }

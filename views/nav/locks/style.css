@@ -252,3 +252,41 @@ h1 {
 #finish:hover {
 	cursor: pointer;
 }
+
+#KHoverview {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	margin-top: 1rem;
+	width: 90%;
+	margin-inline: auto;
+}
+
+#KHoverview > div {
+	width: 30vw;
+	height: 30vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 16px;
+	font-weight: bold;
+	border-radius: 0.5rem;
+}
+
+#addLock {
+	background-color: var(--secondary-bg-colour);
+}
+
+#addLock > i {
+	background-color: var(--background-colour);
+	padding: 1rem;
+	border-radius: 100%;
+	margin-top: 0.25rem;
+	transition-duration: 250ms;
+}
+
+#addLock > i:hover {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+}
