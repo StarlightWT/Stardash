@@ -11,8 +11,9 @@ const roleSelect = document.getElementById("role");
 const startOnBootSelect = document.getElementById("startOnBoot");
 var devMode = false;
 var change = false;
+let user;
 async function loadsettings() {
-	const user = await window.electronAPI.get("user");
+	user = await window.electronAPI.get("user");
 
 	tokenCopy.value = user.token; //Set token into field
 	//Check for dev mode
@@ -51,7 +52,7 @@ function checkUpdate() {
 
 function select(selection) {
 	change = true;
-	window.electronAPI.setUserRole(tokenCopy.value, selection);
+	window.electronAPI.DBset(user.id, "role", selection);
 }
 
 logoutBtn.addEventListener("click", () => {

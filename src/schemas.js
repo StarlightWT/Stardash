@@ -52,14 +52,21 @@ const activitySchema = new Schema({
 	interactions: [],
 });
 
+const khRequestSchema = new Schema({
+	lockID: { type: String, required: true },
+	token: { type: String, required: true },
+});
+
 const userModel = model("User", userSchema, "users");
 const lockModel = model("Lock", lockSchema, "locks");
-const lockHistoryModel = model("lockHistory", lockHistorySchema, "History");
-const activityModel = model("activity", activitySchema, "activity");
+const lockHistoryModel = model("lockHistory", lockHistorySchema, "histories");
+const activityModel = model("activity", activitySchema, "activities");
+const requestModel = model("khRequest", khRequestSchema, "requests");
 
 module.exports = {
 	lockModel,
 	userModel,
 	lockHistoryModel,
 	activityModel,
+	requestModel,
 };

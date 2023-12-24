@@ -2,7 +2,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
 	loaded: () => ipcRenderer.invoke("loadStatus"),
-	setUserRole: (id, role) => ipcRenderer.invoke("setUserRole", id, role),
+	DBset: (id, what, role) => ipcRenderer.invoke("DBset", id, what, role),
 	network: (status) => ipcRenderer.send("network", status),
 	redirect: (page, modal) => ipcRenderer.send("redirect", page, modal),
 	checkUpdate: () => ipcRenderer.send("updateCheck"),

@@ -62,6 +62,9 @@ function showLockInfo(lock) {
 	const modulesElm = document.getElementById("moduleList");
 	if (lock.modules.length == 0) modulesElm.classList.add("lockInfo");
 	else modulesElm.children[0].click();
+
+	if (lock.khId == null)
+		document.getElementById("khReq").classList.remove("disabled");
 }
 
 function setProfileInfo(profile, lock) {
@@ -74,7 +77,6 @@ function setProfileInfo(profile, lock) {
 	userUsername.innerText = profile.username;
 
 	if (lock != 1) {
-		console.log(lock);
 		updateLockTimer(lock);
 		setInterval(() => {
 			updateLockTimer(lock);
@@ -93,7 +95,7 @@ function updateLockTimer(lock) {
 	console.log(lock);
 	if (timestamp <= 0) {
 		unlockState(true);
-		return (timer.innerHTML = "Lock is ready to unlock!");
+		return (timer.innerHTML = "Ready to unlock!");
 	}
 	if (lock.frozenAt) timestamp = lock.endsAt - lock.frozenAt;
 	if (lock.timeLimit > 0 && Date.now() >= lock.timeLimit) {
@@ -247,4 +249,9 @@ function handleFile(event) {
 
 		reader.readAsDataURL(file);
 	}
+}
+
+async function request() {
+	if (!lockID) return;
+	lock = await window.electronAPI.create("khRequest", lockID);
 }

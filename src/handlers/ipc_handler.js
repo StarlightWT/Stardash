@@ -8,7 +8,7 @@ const {
 	logout,
 } = require("./login/login_handler.js");
 
-const { get, lockAction, tasks, create } = require("./db_handler.js");
+const { get, lockAction, tasks, create, set } = require("./db_handler.js");
 
 module.exports = (ipcMain, temp, win) => {
 	ipcMain.handle("action", async (event, what, option) => {
@@ -66,5 +66,9 @@ module.exports = (ipcMain, temp, win) => {
 
 	ipcMain.on("updateCheck", () => {
 		updater.check();
+	});
+
+	ipcMain.handle("DBset", async (e, id, what, role) => {
+		return await set(id, what, role);
 	});
 };

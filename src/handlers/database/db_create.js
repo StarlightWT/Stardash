@@ -5,7 +5,11 @@ module.exports = {
 	createAvatar,
 };
 const { get } = require("mongoose");
-const { lockHistoryModel, activityModel } = require("../../schemas");
+const {
+	lockHistoryModel,
+	activityModel,
+	requestModel,
+} = require("../../schemas");
 const { userModel, lockModel } = require("../../schemas");
 const { getLock, getUser, clearCache } = require("./db_get");
 /**
@@ -131,4 +135,26 @@ async function createAvatar(avatarData) {
 			}
 		)
 		.lean();
+}
+
+async function createKhRequest(lockID) {
+	if (!lockID) return;
+	const search = await requestModel.findOne({ lockID: lockID });
+
+	if (search) return search;
+
+	const request = new requestModel({
+		lockID: lockID,
+		token: await uniqueToken(makeid(32)),
+	});
+
+	await request.save();
+	return request;
+}
+
+async function uniqueToken(token) {
+	let search = await requestModel.find({ token: token });
+	if (search.length == 0) return token;
+	else token = makeid(32);
+	return uniqueToken(token);
 }

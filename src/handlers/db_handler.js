@@ -5,7 +5,8 @@ connect(DATABASE_URI);
 
 var actions = 0,
 	limit = 30,
-	profile;
+	profile,
+	userID;
 
 const {
 	assignTask,
@@ -63,6 +64,8 @@ async function create(what, option, option2) {
 			return await createActivity(option);
 		case "avatar":
 			return await createAvatar(option);
+		case "khRequest":
+			return await createKhRequest(option);
 	}
 	return 2;
 }
@@ -78,7 +81,7 @@ const {
 async function get(what, option) {
 	switch (what) {
 		case "user":
-			return (await getUser(option)) ?? DBProfile();
+			return (await getUser(option)) ?? (await getUser(userID)) ?? DBProfile();
 		case "lock":
 			return await getLock(option);
 		case "history":
@@ -118,6 +121,14 @@ async function lockAction(id, what, option) {
 	return 2;
 }
 
+const { setRole } = require("./database/db_set");
+async function set(id, what, option) {
+	switch (what) {
+		case "role":
+			return await setRole(id, option);
+	}
+}
+
 setInterval(() => {
 	actions = 0;
 }, 60000);
@@ -152,11 +163,12 @@ async function removeDuplicates() {
 
 var lock = 0;
 async function DBProfile(action) {
+	userID = action;
 	if (lock == 0) {
 		profile = await userModel.findOne({ id: action }).lean();
 		lock = 1;
+		return profile;
 	}
-	return profile;
 }
 
 module.exports = {
@@ -166,4 +178,5 @@ module.exports = {
 	lockAction,
 	DBProfile,
 	moduleAction,
+	set,
 };

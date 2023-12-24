@@ -28,6 +28,8 @@ function clearCache() {
 	lockCache = null;
 	historyCache = null;
 	khLocksCache = null;
+	console.log(`[GET] Cleared cache!`);
+	console.log(userCache + lockCache + historyCache + khLocksCache);
 }
 
 /**
@@ -36,7 +38,7 @@ function clearCache() {
  * @returns user
  */
 async function getUser(id) {
-	if (userCache && userCache.id == id) return userCache;
+	if (userCache && userCache.id === id) return userCache;
 	userCache = await userModel.findOne({ id: id }).lean();
 	return userCache;
 }

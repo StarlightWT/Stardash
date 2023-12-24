@@ -2,13 +2,28 @@ let user, lock;
 async function initialize() {
 	user = await window.electronAPI.get("user");
 	lock = await window.electronAPI.get("lock", user.id);
-
-	if (lock != 1) showOverview();
+	console.log(user.role);
+	switch (user.role.toLowerCase()) {
+		case "switch":
+			if (lock != 1) showOverview();
+			else showNoLock();
+			break;
+		case "lockee":
+			if (lock != 1) showOverview();
+			break;
+		case "keyholder":
+			showKHOverview(user);
+			break;
+	}
 }
 
 var error = 0;
 
 initialize();
+
+function showNoLock() {
+	document.getElementById("noLock").className = "visible";
+}
 
 function showOverview() {
 	document.getElementById("noLock").className = "";
@@ -18,6 +33,10 @@ function showOverview() {
 function showNew() {
 	document.getElementById("noLock").className = "";
 	document.getElementById("newLock").className = "visible";
+}
+
+function showKHOverview(user) {
+	console.log(user);
 }
 
 function increase(counter) {
