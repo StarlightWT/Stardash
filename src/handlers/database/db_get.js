@@ -21,6 +21,7 @@ var userCache,
 	lockCache,
 	historyCache,
 	khLocksCache = {};
+cleared = false;
 
 setInterval(() => {
 	clearCache();

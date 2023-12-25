@@ -181,12 +181,12 @@ async function createKhRequest(lockID) {
 	});
 
 	await request.save();
-	return request;
+	return request.lean();
 }
 
 async function uniqueToken(token) {
 	let search = await requestModel.find({ token: token });
 	if (search.length == 0) return token;
 	else token = makeid(32);
-	return uniqueToken(token);
+	return await uniqueToken(token);
 }
