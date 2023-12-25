@@ -125,7 +125,7 @@ async function lockAction(id, what, option) {
 		case "unlock":
 			return await unlockLock(id);
 		case "setKH":
-			return await setKH(id, option);
+			return await setKH(option, userID);
 	}
 	return 2;
 }

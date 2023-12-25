@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div class="input">
+			<h2>Token:</h2>
+			<input type="text" name="" id="input" />
+		</div>
+		<div class="errors" id="errors">
+			<div id="invalidToken">
+				<i class="fa-solid fa-circle-exclamation"></i> Invalid token!
+			</div>
+			<div id="selfKH">
+				<i class="fa-solid fa-circle-exclamation"></i> You can not be your own
+				KH!
+			</div>
+			<div id="alreadyused">
+				<i class="fa-solid fa-circle-exclamation"></i> Token used!
+			</div>
+		</div>
+		<div class="buttons">
+			<h3 onclick="addLock()">Add lock</h3>
+			<h3 onclick="window.close()">Cancel</h3>
+		</div>
+	</body>
+	<script src="script.js"></script>
+</html>

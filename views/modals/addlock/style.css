@@ -1,0 +1,55 @@
+@import url("../../general.css");
+
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.input {
+	display: flex;
+	align-items: baseline;
+}
+
+.input > h2 {
+	font-size: 18px;
+	font-weight: normal;
+	margin-right: 1rem;
+}
+
+.input > input {
+	height: 20px;
+	width: 250px;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-evenly;
+	width: 50%;
+}
+
+h3 {
+	margin: 0;
+	background-color: var(--secondary-bg-colour);
+	width: 40%;
+	text-align: center;
+	padding-block: 0.5rem;
+	border-radius: 0.5rem;
+	transition-duration: 250ms;
+}
+
+.buttons > h3:hover {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+}
+
+.errors > div:not(.show) {
+	display: none;
+}
+
+.show {
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+	color: red;
+}
