@@ -383,10 +383,10 @@ async function done() {
 	const userID = user.id;
 
 	const limit = document.getElementById("Limit");
-	let timeLimit = counterTotal(limit);
-	if (timeLimit != 0 && timeLimit < endTime) return;
+	let timeLimit = limitCounterTotal(limit);
 	if (timeLimit == "0") timeLimit = null;
 	else timeLimit += Date.now();
+	if (timeLimit != 0 && timeLimit < endTime) return;
 	console.log(`UserID: ${userID}`);
 	console.log(`Limit: ${timeLimit}`);
 	console.log(`EndsAt: ${endTime}`);
