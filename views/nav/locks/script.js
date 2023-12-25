@@ -7,6 +7,7 @@ async function initialize() {
 		case "switch":
 			if (lock != 1) showOverview();
 			else showNoLock();
+			showKHOverview(user);
 			break;
 		case "lockee":
 			if (lock != 1) showOverview();
@@ -44,7 +45,7 @@ async function showKHOverview(user) {
 	addLock.id = "addLock";
 	addLock.innerHTML = `<i class="fa-solid fa-plus"></i><br>Add new`;
 	addLock.onclick = (e) => {
-		console.log("Add lock...");
+		window.electronAPI.redirect("addlock");
 	};
 
 	list.append(addLock);

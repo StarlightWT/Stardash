@@ -272,6 +272,12 @@ h1 {
 	font-size: 16px;
 	font-weight: bold;
 	border-radius: 0.5rem;
+	transition-duration: 250ms;
+}
+
+#KHoverview > div:hover {
+	cursor: pointer;
+	scale: 1.1;
 }
 
 #addLock {
@@ -286,7 +292,6 @@ h1 {
 	transition-duration: 250ms;
 }
 
-#addLock > i:hover {
-	cursor: pointer;
+#addLock:hover > i {
 	background-color: var(--accent-colour);
 }
