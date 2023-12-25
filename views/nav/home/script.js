@@ -253,5 +253,14 @@ function handleFile(event) {
 
 async function request() {
 	if (!lockID) return;
-	lock = await window.electronAPI.create("khRequest", lockID);
+	const requestBtn = document.getElementById("khReq");
+	if (requestBtn.className.includes("disabled")) return;
+	const response = await window.electronAPI.create("khRequest", lockID);
+	console.log(response._doc);
+	await window.electronAPI.setClipboard(response._doc.token);
+
+	requestBtn.innerText = "Copied!";
+	setTimeout(() => {
+		requestBtn.innerHTML = `<i class="fa-solid fa-key"></i> Request`;
+	}, 500);
 }

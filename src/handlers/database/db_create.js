@@ -3,8 +3,8 @@ module.exports = {
 	createLock,
 	createActivity,
 	createAvatar,
+	createKhRequest,
 };
-const { get } = require("mongoose");
 const {
 	lockHistoryModel,
 	activityModel,

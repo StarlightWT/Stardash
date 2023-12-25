@@ -5,9 +5,10 @@ module.exports = {
 	setFreeze,
 	history,
 	unlockLock,
+	setKH,
 };
 
-const { lockModel, lockHistoryModel } = require("../../schemas");
+const { lockModel, lockHistoryModel, requestModel } = require("../../schemas");
 const { getLock, getLockHistory, getUser, clearCache } = require("./db_get");
 
 /**
@@ -104,4 +105,26 @@ async function unlockLock(id) {
 	await lockHistoryModel.findOneAndDelete({ lockID: id });
 	clearCache();
 	return 0;
+}
+
+async function setKH(token, khID) {
+	const search = await requestModel.findOne({ token: token });
+	if (!search) return 1; //Not found
+	const lockSearch = await lockModel.findOne({ id: search.lockID });
+
+	if (lockSearch.user.id === khID) return 2; //Can't be your own KH
+	if (lockSearch.khId != null) return 3; //Already Taken
+	const result = await lockModel.findOneAndUpdate(
+		{ id: search.lockID },
+		{
+			$set: {
+				khId: khID,
+			},
+		},
+		{ new: true }
+	);
+
+	await requestModel.findOneAndDelete({ lockID: search.lockID });
+
+	return result;
 }

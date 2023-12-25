@@ -14,6 +14,11 @@ const {
 	addTask,
 	giveTask,
 } = require("./database/db_tasks");
+
+setInterval(() => {
+	actions = 0;
+}, 60000);
+
 async function tasks(action, options) {
 	if (actions > limit) return 2; //Error 2 -> Too many requests
 	actions++;
@@ -53,6 +58,7 @@ const {
 	createLock,
 	createActivity,
 	createAvatar,
+	createKhRequest,
 } = require("./database/db_create");
 async function create(what, option, option2) {
 	switch (what) {
@@ -100,6 +106,7 @@ const {
 	modifyTime,
 	timerVisibility,
 	unlockLock,
+	setKH,
 } = require("./database/db_action");
 const { userModel } = require("../schemas");
 
@@ -117,6 +124,8 @@ async function lockAction(id, what, option) {
 			return await history(id, option);
 		case "unlock":
 			return await unlockLock(id);
+		case "setKH":
+			return await setKH(id, option);
 	}
 	return 2;
 }
@@ -128,10 +137,6 @@ async function set(id, what, option) {
 			return await setRole(id, option);
 	}
 }
-
-setInterval(() => {
-	actions = 0;
-}, 60000);
 
 async function removeDuplicates() {
 	try {
