@@ -152,6 +152,7 @@ async function unlockLock(id) {
 
 	await lockModel.findOneAndDelete({ id: id });
 	await lockHistoryModel.findOneAndDelete({ lockID: id });
+	await requestModel.findOneAndDelete({ lockID: id });
 	clearCache();
 
 	return 0;
@@ -176,5 +177,5 @@ async function setKH(token, khID) {
 
 	await requestModel.findOneAndDelete({ lockID: search.lockID });
 
-	return result;
+	return result.lean();
 }

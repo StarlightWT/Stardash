@@ -36,6 +36,7 @@ async function createNewUser(username, id) {
 		tier: "Basic",
 		role: "switch",
 		achievements: [],
+		avtar: "",
 	});
 
 	user.save();

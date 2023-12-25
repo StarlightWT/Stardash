@@ -7,8 +7,6 @@ async function addLock() {
 	});
 
 	const inputValue = input.value.replace(" ", "");
-	if (inputValue != 32)
-		return (document.getElementById("invalidToken").className = "show");
 	const response = await window.electronAPI.lock("", "setKH", inputValue);
 
 	let error;
