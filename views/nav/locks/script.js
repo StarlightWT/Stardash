@@ -39,7 +39,15 @@ function showNew() {
 async function showKHOverview(user) {
 	const list = document.getElementById("KHoverview");
 	const locks = await window.electronAPI.get("locks", user.id);
-	console.log(locks);
+
+	locks.forEach((lock) => {
+		const lockDIV = document.createElement("div");
+		lockDIV.className = "lock";
+
+		lockDIV.innerHTML = `<h2>${lock?.user?.username ?? "error"}</h2>`;
+
+		list.append(lockDIV);
+	});
 
 	const addLock = document.createElement("div");
 	addLock.id = "addLock";

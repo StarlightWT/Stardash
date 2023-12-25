@@ -273,17 +273,14 @@ h1 {
 	font-weight: bold;
 	border-radius: 0.5rem;
 	transition-duration: 250ms;
+	margin-right: 1rem;
+	background-color: var(--secondary-bg-colour);
 }
 
 #KHoverview > div:hover {
 	cursor: pointer;
 	scale: 1.1;
 }
-
-#addLock {
-	background-color: var(--secondary-bg-colour);
-}
-
 #addLock > i {
 	background-color: var(--background-colour);
 	padding: 1rem;
