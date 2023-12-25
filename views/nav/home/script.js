@@ -38,10 +38,16 @@ function appendActivities(activities) {
 		const dateElement = document.createElement("h3");
 
 		const date = new Date(parseInt(activity.Date));
-		const hours = date.getHours();
-		const minutes = date.getMinutes();
-		const day = date.getDate();
-		const month = date.getMonth();
+		let hours = date.getHours();
+		if (hours < 10) hours = `0${hours}`;
+		if (hours == 0) hours = `00`;
+		let minutes = date.getMinutes();
+		if (minutes < 10) minutes = `0${minutes}`;
+		if (minutes == 0) minutes = `00`;
+		let day = date.getDate();
+		if (day < 10) day = `0${day}`;
+		let month = date.getMonth();
+		if (month < 10) month = `0${month}`;
 
 		dateElement.innerText = `${hours}:${minutes} ${day}/${month}`;
 		activityLi.append(title, description, icon, dateElement);
