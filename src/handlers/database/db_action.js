@@ -9,6 +9,7 @@ module.exports = {
 };
 
 const { lockModel, lockHistoryModel, requestModel } = require("../../schemas");
+const { createActivity } = require("./db_create");
 const { getLock, getLockHistory, getUser, clearCache } = require("./db_get");
 
 /**
@@ -95,15 +96,64 @@ async function unlockLock(id) {
 	if (!lock) return 1;
 	const user = await getUser(lock.user.id);
 
-	const lockedTime = Date.now() - lock.createdAt;
+	let lockedTime = Date.now() - lock.createdAt;
 
 	user.stats.totalLockedTime = user.stats.totalLockedTime + lockedTime;
 	if (user.stats.longestLockedTime < lockedTime)
 		user.stats.longestLockedTime = lockedTime;
 
+	var months = 0,
+		weeks = 0,
+		days = 0,
+		hours = 0,
+		minutes = 0;
+
+	const MONTH = 2629800000;
+	const WEEK = 604800000;
+	const DAY = 86400000;
+	const HOUR = 3600000;
+	const MINUTE = 60000;
+
+	while (lockedTime >= MONTH) {
+		months++;
+		lockedTime -= MONTH;
+	}
+	while (lockedTime >= WEEK) {
+		weeks++;
+		lockedTime -= WEEK;
+	}
+	while (lockedTime >= DAY) {
+		days++;
+		lockedTime -= DAY;
+	}
+	while (lockedTime >= HOUR) {
+		hours++;
+		lockedTime -= HOUR;
+	}
+	while (lockedTime >= MINUTE) {
+		minutes++;
+		lockedTime -= MINUTE;
+	}
+
+	let resultString = "";
+	if (months > 0) resultString += `${months} months, `;
+	if (weeks > 0) resultString += `${weeks} weeks, `;
+	if (days > 0) resultString += `${days} days, `;
+	if (hours > 0) resultString += `${hours} hours, `;
+	if (minutes > 0) resultString += `${minutes} minutes`;
+	if (resultString == "") resultString = "error";
+	await createActivity({
+		title: `${user.username} unlocked!`,
+		icon: `<i class="fa-solid fa-unlock"></i>`,
+		description: `Total locked time:<br>${resultString}`,
+		userID: user.id,
+		lockID: lock.id,
+	});
+
 	await lockModel.findOneAndDelete({ id: id });
 	await lockHistoryModel.findOneAndDelete({ lockID: id });
 	clearCache();
+
 	return 0;
 }
 

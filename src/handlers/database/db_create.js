@@ -100,19 +100,51 @@ async function createLock(options) {
 	});
 	await lockHistory.save();
 	clearCache();
+
+	let endTimestamp = lock.endsAt - Date.now();
+	let endTime = 0,
+		type = "days";
+	const DAY = 86400000;
+	const HOUR = 3600000;
+	const MINUTE = 60000;
+
+	while (endTimestamp >= DAY) {
+		endTime++;
+		endTimestamp -= DAY;
+	}
+	if (endTime == 0) {
+		while (endTimestamp >= HOUR) {
+			endTime++;
+			endTimestamp -= HOUR;
+		}
+		type = "hours";
+	}
+	if (endTime == 0) {
+		while (endTimestamp >= MINUTE) {
+			endTime++;
+			endTimestamp -= MINUTE;
+		}
+		type = "minutes";
+	}
+
+	await createActivity({
+		title: `${user.username} started a lock!`,
+		icon: `<i class="fa-solid fa-user-lock"></i>`,
+		description: `Starting duration:<br>${endTime} ${type}...`,
+		userID: user.id,
+		lockID: lock.id,
+	});
+
 	return lock.id;
 }
 
 async function createActivity(activity) {
 	const title = activity.title;
 	const icon = activity.icon;
-	switch (activity) {
-		case "newLock":
-			break;
-	}
 	const record = new activityModel({
 		title: title,
 		icon: icon,
+		description: activity.description ?? null,
 		userID: activity.userID,
 		lockID: activity.lockID,
 		Date: Date.now(),

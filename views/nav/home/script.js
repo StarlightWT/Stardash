@@ -26,17 +26,25 @@ function appendActivities(activities) {
 		const activityLi = document.createElement("li");
 
 		const title = document.createElement("h1");
-		title.innerHTML = activity.title;
+		if (activity.icon) title.innerHTML = activity.icon;
+		title.innerHTML += ` ` + activity.title;
 
 		const description = document.createElement("h2");
-		description.innerHTML =
-			activity.description + activity.description + activity.description;
+		description.innerHTML = activity.description;
 
 		const icon = document.createElement("i");
 		icon.className = activity.icon;
 
-		const Date = document.createElement("h3");
-		activityLi.append(title, description, icon, Date);
+		const dateElement = document.createElement("h3");
+
+		const date = new Date(parseInt(activity.Date));
+		const hours = date.getHours();
+		const minutes = date.getMinutes();
+		const day = date.getDate();
+		const month = date.getMonth();
+
+		dateElement.innerText = `${hours}:${minutes} ${day}/${month}`;
+		activityLi.append(title, description, icon, dateElement);
 		activityFeed.append(activityLi);
 	});
 	const loadMoreButton = document.createElement("li");

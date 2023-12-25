@@ -109,7 +109,12 @@ async function getCombination(id) {
 let skip = 0;
 async function activities(amount, reset) {
 	if (reset) skip = 0;
-	const response = await activityModel.find().skip(skip).limit(amount).lean();
+	const response = await activityModel
+		.find()
+		.skip(skip)
+		.limit(amount)
+		.sort({ _id: -1 })
+		.lean();
 	skip += amount;
 	return response;
 }

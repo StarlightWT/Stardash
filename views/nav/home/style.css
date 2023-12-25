@@ -18,6 +18,8 @@ main {
 
 #activity > li:not(#loadMoreBtn) {
 	background-color: var(--secondary-bg-colour);
+
+	position: relative;
 	height: 175px;
 	padding: 0.5rem;
 	border-radius: 0.5rem;
@@ -29,7 +31,7 @@ main {
 }
 
 #activity > li:not(#loadMoreBtn) > h2 {
-	text-align: justify;
+	text-align: left;
 	width: 90%;
 	margin-inline: auto;
 	font-weight: normal;
@@ -48,6 +50,12 @@ main {
 	cursor: pointer;
 	background-color: rgba(var(--sec-bg-rgb-colour), 0.8);
 	transition-duration: 150ms;
+}
+
+#activity > li > h3 {
+	position: absolute;
+	bottom: 0;
+	right: 1rem;
 }
 
 #profile {

@@ -34,6 +34,7 @@ function showOverview() {
 function showNew() {
 	document.getElementById("noLock").className = "";
 	document.getElementById("newLock").className = "visible";
+	document.getElementById("KHoverview").className = "";
 }
 
 async function showKHOverview(user) {

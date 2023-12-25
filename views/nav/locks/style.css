@@ -253,7 +253,7 @@ h1 {
 	cursor: pointer;
 }
 
-#KHoverview {
+#KHoverview:has(.visible) {
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0;
