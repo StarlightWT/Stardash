@@ -23,4 +23,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	logout: () => ipcRenderer.invoke("logout"),
 	lock: (id, what, option) => ipcRenderer.invoke("lock", id, what, option),
 	tasks: (action, option) => ipcRenderer.invoke("tasks", action, option),
+	set: (what, value) => ipcRenderer.send("set", what, value),
 });

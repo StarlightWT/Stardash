@@ -490,6 +490,7 @@ function blurPage(option) {
 		page.style = "";
 		enableScroll();
 		redirected = false;
+		location.reload();
 	}
 }
 
@@ -524,4 +525,10 @@ async function request() {
 	setTimeout(() => {
 		requestBtn.innerHTML = `<i class="fa-solid fa-key"></i> Request`;
 	}, 500);
+}
+
+function addTime() {
+	blurPage(true);
+	window.electronAPI.set("actionLockID", lock.id);
+	window.electronAPI.redirect("addtime");
 }

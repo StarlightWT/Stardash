@@ -20,14 +20,15 @@ const { getLock, getLockHistory, getUser, clearCache } = require("./db_get");
  */
 async function modifyTime(id, time) {
 	const lock = await getLock(id);
-	let newLockTime = lock.endsAt;
+	let newLockTime = parseInt(lock.endsAt);
 	if (!time) return 1;
-	lock.endsAt += time;
-	return await lockModel.findOneAndUpdate(
-		{ id: id },
-		{ endsAt: newLockTime },
-		{ new: true }
-	);
+	newLockTime += time;
+	const response = await lockModel
+		.findOneAndUpdate({ id: id }, { endsAt: newLockTime }, { new: true })
+		.lean();
+
+	clearCache();
+	return await response;
 }
 
 /**
@@ -37,11 +38,13 @@ async function modifyTime(id, time) {
  * @returns updated lock record
  */
 async function timerVisibility(id, state) {
-	return await lockModel.findOneAndUpdate(
-		{ id: id },
-		{ $set: { "settings.timerVisible": state } },
-		{ new: true }
-	);
+	return await lockModel
+		.findOneAndUpdate(
+			{ id: id },
+			{ $set: { "settings.timerVisible": state } },
+			{ new: true }
+		)
+		.lean();
 }
 
 /**

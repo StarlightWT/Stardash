@@ -1,0 +1,61 @@
+@import url("../../general.css");
+
+.wrapper {
+	width: 70%;
+	margin-inline: auto;
+}
+
+.input {
+	margin-top: 1rem;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	background-color: var(--secondary-bg-colour);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.counter {
+	display: flex;
+	justify-content: space-evenly;
+	width: 150px;
+	font-size: 22px;
+}
+
+.single_counter {
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.single_counter > i:hover,
+.single_counter > div:hover {
+	cursor: pointer;
+}
+
+.single_counter > h6 {
+	margin: 0;
+}
+
+.buttons {
+	margin-block: 1rem;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.buttons > div {
+	background-color: var(--secondary-bg-colour);
+	width: 40%;
+	text-align: center;
+	padding-block: 0.5rem;
+	border-radius: 0.5rem;
+	transition-duration: 250ms;
+}
+
+.buttons > div:hover:not(.disabled) {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+}

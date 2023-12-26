@@ -278,3 +278,9 @@ async function request() {
 		requestBtn.innerHTML = `<i class="fa-solid fa-key"></i> Request`;
 	}, 500);
 }
+
+function addTime() {
+	blurPage(true);
+	window.electronAPI.set("actionLockID", lockID);
+	window.electronAPI.redirect("addtime");
+}

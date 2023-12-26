@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="style.css" />
 		<link rel="stylesheet" href="../../nav/navBar/nav.css" />
 	</head>
-	<body>
+	<body id="body">
 		<nav id="replace_nav"></nav>
 		<section id="noLock">
 			<h1>You're free... or are you?</h1>
@@ -48,7 +48,7 @@
 					<div id="unlock" onclick="unlock()" class="disabled">
 						<i class="fa-solid fa-unlock"></i> Unlock
 					</div>
-					<div id="addtime">
+					<div id="addtime" onclick="addTime()">
 						<i class="fa-solid fa-circle-plus"></i> Add time
 					</div>
 					<div id="request" onclick="request()" class="disabled">

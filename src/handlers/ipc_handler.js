@@ -39,6 +39,7 @@ module.exports = (ipcMain, temp, win) => {
 	});
 
 	ipcMain.handle("lock", async (event, id, what, option) => {
+		if (!id) id = temp.get("actionLockID");
 		return await lockAction(id, what, option);
 	});
 
@@ -70,5 +71,11 @@ module.exports = (ipcMain, temp, win) => {
 
 	ipcMain.handle("DBset", async (e, id, what, role) => {
 		return await set(id, what, role);
+	});
+
+	ipcMain.on("set", (e, what, newValue) => {
+		console.log(what);
+		console.log(newValue);
+		temp.set(what, newValue);
 	});
 };
