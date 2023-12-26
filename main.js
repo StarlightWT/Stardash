@@ -1,12 +1,4 @@
-const {
-	app,
-	BrowserWindow,
-	ipcMain,
-	session,
-	Tray,
-	Menu,
-	screen,
-} = require("electron");
+const { app, BrowserWindow, ipcMain, Tray, Menu, screen } = require("electron");
 const path = require("node:path");
 const redirects = require("./src/handlers/redirects.js");
 const updater = require("./src/handlers/updater.js");

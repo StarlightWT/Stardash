@@ -29,6 +29,10 @@ function showNoLock() {
 function showOverview() {
 	document.getElementById("noLock").className = "";
 	document.getElementById("overview").className = "visible";
+	updateTimer();
+	setInterval(() => {
+		updateTimer();
+	}, 1000);
 }
 
 function showNew() {
@@ -403,4 +407,60 @@ async function done() {
 	});
 
 	window.electronAPI.redirect("home");
+}
+
+function updateTimer() {
+	const weeks = document.getElementById("weeks");
+	const days = document.getElementById("days");
+	const hours = document.getElementById("hours");
+	const minutes = document.getElementById("minutes");
+	const seconds = document.getElementById("seconds");
+
+	let timestamp = lock.endsAt - Date.now();
+
+	const SECOND = 1000;
+	const MINUTE = SECOND * 60;
+	const HOUR = MINUTE * 60;
+	const DAY = HOUR * 24;
+	const WEEK = DAY * 7;
+
+	let countWeeks = 0;
+	let countDays = 0;
+	let countHours = 0;
+	let countMinutes = 0;
+	let countSeconds = 0;
+
+	while (timestamp >= WEEK) {
+		countWeeks++;
+		timestamp -= WEEK;
+	}
+	while (timestamp >= DAY) {
+		countDays++;
+		timestamp -= DAY;
+	}
+	while (timestamp >= HOUR) {
+		countHours++;
+		timestamp -= HOUR;
+	}
+	while (timestamp >= MINUTE) {
+		countMinutes++;
+		timestamp -= MINUTE;
+	}
+	while (timestamp >= SECOND) {
+		countSeconds++;
+		timestamp -= SECOND;
+	}
+
+	weeks.innerText = format(countWeeks);
+	days.innerText = format(countDays);
+	hours.innerText = format(countHours);
+	minutes.innerText = format(countMinutes);
+	seconds.innerText = format(countSeconds);
+}
+
+function format(string) {
+	console.log(string < 10);
+	if (string < 10) return `0${string}`;
+	if (string == 0) return `00`;
+	return string;
 }

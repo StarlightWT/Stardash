@@ -292,3 +292,72 @@ h1 {
 #addLock:hover > i {
 	background-color: var(--accent-colour);
 }
+
+.timer {
+	display: flex;
+	justify-content: center;
+	align-items: last baseline;
+	font-size: 30px;
+	font-weight: bold;
+	background-color: var(--secondary-bg-colour);
+	width: 50%;
+	margin-inline: auto;
+	padding-block: 1rem;
+	border-radius: 0.5rem;
+}
+
+.timer > div {
+	position: relative;
+}
+
+.timer > div > h3 {
+	position: absolute;
+	bottom: -12px;
+	width: 66px;
+	left: calc(50% - 33px);
+	text-align: center;
+	font-weight: normal;
+	font-size: 13.5px;
+}
+
+.timer > div > h2 {
+	margin: 0;
+	margin-inline: 0.5rem;
+	background-color: var(--background-colour);
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+}
+
+.quickactions {
+	width: max-content;
+	display: flex;
+	margin-top: 1rem;
+	margin-inline: auto;
+	background-color: var(--secondary-bg-colour);
+	padding-top: 0.5rem;
+	border-radius: 0.5rem;
+	overflow-y: hidden;
+	overflow-x: scroll;
+}
+
+.content {
+	display: flex;
+}
+
+.quickactions > .content > div {
+	width: 150px;
+	background-color: var(--background-colour);
+	padding-block: 0.25rem;
+	border-radius: 0.5rem;
+	margin-left: 0.5rem;
+	transition-duration: 250ms;
+}
+
+.quickactions > .content > div:last-child {
+	margin-right: 0.5rem;
+}
+
+.quickactions > .content > div:hover {
+	background-color: var(--accent-colour);
+	cursor: pointer;
+}
