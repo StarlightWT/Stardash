@@ -1,8 +1,11 @@
-let user, lock;
+let user,
+	lock,
+	redirected = false,
+	unlockable = false;
 async function initialize() {
 	user = await window.electronAPI.get("user");
 	lock = await window.electronAPI.get("lock", user.id);
-	console.log(user.role);
+
 	switch (user.role.toLowerCase()) {
 		case "switch":
 			if (lock != 1) showOverview();
@@ -30,6 +33,8 @@ function showOverview() {
 	document.getElementById("noLock").className = "";
 	document.getElementById("overview").className = "visible";
 	updateTimer();
+	if (lock.khId == null)
+		document.getElementById("request").classList.remove("disabled");
 	setInterval(() => {
 		updateTimer();
 	}, 1000);
@@ -330,7 +335,6 @@ function toggle(module) {
 	let limit = 5;
 	if (isPremium(user)) limit = `20`;
 	counter.innerHTML = `${modules.length}/${limit}`;
-	console.table(modules);
 }
 
 function isPremium(user) {
@@ -391,11 +395,6 @@ async function done() {
 	if (timeLimit == "0") timeLimit = null;
 	else timeLimit += Date.now();
 	if (timeLimit != 0 && timeLimit < endTime) return;
-	console.log(`UserID: ${userID}`);
-	console.log(`Limit: ${timeLimit}`);
-	console.log(`EndsAt: ${endTime}`);
-	console.log(`Combo: ${combination}`);
-	console.log(`Modules: ${modules}`);
 
 	await window.electronAPI.create("lock", {
 		id: userID,
@@ -459,8 +458,70 @@ function updateTimer() {
 }
 
 function format(string) {
-	console.log(string < 10);
 	if (string < 10) return `0${string}`;
 	if (string == 0) return `00`;
 	return string;
+}
+
+function unlock() {
+	if (!unlockable) return;
+	blurPage(true);
+	redirected = true;
+	window.electronAPI.redirect("combo");
+}
+
+function unlockState(newState) {
+	const unlockButton = document.getElementById("unlock");
+	if (newState) {
+		unlockable = true;
+		return (unlockButton.className = "");
+	}
+	return (unlockButton.className = "disabled");
+}
+
+function blurPage(option) {
+	const page = document.getElementById("body");
+	if (option == true) {
+		page.style = "filter: blur(5px);";
+		disableScroll();
+		redirected = true;
+	}
+	if (option == false) {
+		page.style = "";
+		enableScroll();
+		redirected = false;
+	}
+}
+
+window.addEventListener("focus", () => {
+	if (!redirected) return;
+	redirected = false;
+	setTimeout(() => {
+		window.location.reload();
+	}, 100);
+});
+
+function disableScroll() {
+	let x = window.scrollX;
+	let y = window.scrollY;
+	window.onscroll = () => {
+		window.scrollTo(x, y);
+	};
+}
+
+function enableScroll() {
+	window.onscroll = null;
+}
+
+async function request() {
+	if (!lock.id) return;
+	const requestBtn = document.getElementById("request");
+	if (requestBtn.className.includes("disabled")) return;
+	const response = await window.electronAPI.create("khRequest", lock.id);
+	await window.electronAPI.setClipboard(response._doc.token);
+
+	requestBtn.innerText = "Copied!";
+	setTimeout(() => {
+		requestBtn.innerHTML = `<i class="fa-solid fa-key"></i> Request`;
+	}, 500);
 }

@@ -182,7 +182,8 @@ async function createKhRequest(lockID) {
 	});
 
 	await request.save();
-	return request.lean();
+
+	return await requestModel.findOne({ lockID: lockID });
 }
 
 async function uniqueToken(token) {

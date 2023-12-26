@@ -357,7 +357,10 @@ h1 {
 	margin-right: 0.5rem;
 }
 
-.quickactions > .content > div:hover {
+.quickactions > .content > div:hover:not(.disabled) {
 	background-color: var(--accent-colour);
 	cursor: pointer;
+}
+.disabled {
+	opacity: 0.8;
 }
