@@ -53,8 +53,15 @@ async function showKHOverview(user) {
 	locks.forEach((lock) => {
 		const lockDIV = document.createElement("div");
 		lockDIV.className = "lock";
-
+		lockDIV.id = lock.id;
 		lockDIV.innerHTML = `<h2>${lock?.user?.username ?? "error"}</h2>`;
+
+		lockDIV.onclick = (e) => {
+			console.log(lockDIV.id);
+			blurPage(true);
+			window.electronAPI.set("actionLockID", lock.id);
+			window.electronAPI.redirect("khview");
+		};
 
 		list.append(lockDIV);
 	});

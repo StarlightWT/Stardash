@@ -180,5 +180,5 @@ async function setKH(token, khID) {
 
 	await requestModel.findOneAndDelete({ lockID: search.lockID });
 
-	return result.lean();
+	return await result.lean();
 }

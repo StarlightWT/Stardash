@@ -50,6 +50,11 @@ async function redirect(win, location, modal) {
 			frame = false;
 			modalHeight = 225;
 			modalWidth = 400;
+			break;
+		case "khview":
+			modal = true;
+			frame = false;
+			break;
 	}
 
 	if (location.startsWith("http") || modal) {
@@ -63,7 +68,7 @@ async function redirect(win, location, modal) {
 
 		const child = new BrowserWindow({
 			transparent: true,
-			frame: frame,
+			// frame: frame,
 			// autoHideMenuBar: true,
 			x: x,
 			y: y,

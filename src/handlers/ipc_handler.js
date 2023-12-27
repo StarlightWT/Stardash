@@ -74,8 +74,10 @@ module.exports = (ipcMain, temp, win) => {
 	});
 
 	ipcMain.on("set", (e, what, newValue) => {
-		console.log(what);
-		console.log(newValue);
 		temp.set(what, newValue);
+	});
+
+	ipcMain.handle("tempGet", (e, what) => {
+		return temp.get(what);
 	});
 };

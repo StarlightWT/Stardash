@@ -87,7 +87,7 @@ function setProfileInfo(profile, lock) {
 	const userStats = document.getElementById("stats");
 	const lockStats = document.getElementById("currentLockStats");
 
-	if (profile.avatar.length > 5) userAvatar.src = profile.avatar;
+	if (profile?.avatar?.length > 5) userAvatar.src = profile.avatar;
 	userUsername.innerText = profile.username;
 
 	if (lock != 1) {
