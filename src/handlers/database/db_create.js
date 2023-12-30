@@ -36,7 +36,7 @@ async function createNewUser(username, id) {
 		tier: "Basic",
 		role: "switch",
 		achievements: [],
-		avtar: null,
+		avatar: "",
 	});
 
 	user.save();
@@ -154,10 +154,10 @@ async function createActivity(activity) {
 	return await record.save();
 }
 
-async function createAvatar(avatarData) {
+async function createAvatar(id, avatarData) {
 	return await userModel
 		.findOneAndUpdate(
-			{ id: "3UBLSrQKwv7Y4CKbucMrQZcNM0Eoorhj" },
+			{ id: id },
 			{
 				$set: {
 					avatar: avatarData,

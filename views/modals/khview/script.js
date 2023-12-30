@@ -21,6 +21,7 @@ async function initialize() {
 	});
 
 	setInfo();
+	openModule("General");
 	setInterval(() => {
 		setInfo();
 	}, 1000);
@@ -28,6 +29,7 @@ async function initialize() {
 
 async function setInfo() {
 	const profilePicture = document.getElementById("profilePicture");
+	console.log(lock.user);
 	if (lock.user.avatar) profilePicture.src = lock.user.avatar;
 	else profilePicture.src = "../../../photos/blank.png";
 
@@ -35,6 +37,7 @@ async function setInfo() {
 	username.innerText = lock.user.username;
 	let endDate = lock.endsAt;
 	let timeRemaining = endDate - Date.now();
+	if (lock.frozenAt != null) timeRemaining = endDate - lock.frozenAt;
 	const timeLeft = document.getElementById("timeRemaining");
 	timeLeft.innerHTML =
 		`<i class="fa-regular fa-clock"></i> ` + timestampConvert(timeRemaining);
@@ -48,7 +51,7 @@ async function setInfo() {
 	const timeFrozen = document.getElementById("timeFrozen");
 	if (lock.frozenAt)
 		timeFrozen.innerHTML =
-			`<i class="fa-regular fa-snowflake"></i>` +
+			`<i class="fa-regular fa-snowflake"></i> ` +
 			timestampConvert(Date.now() - lock.frozenAt);
 	else
 		timeFrozen.innerHTML =
@@ -149,7 +152,7 @@ function openModule(module) {
 			quickActions.style.marginInline = "auto";
 
 			const addTime = document.createElement("li");
-			addTime.innerHTML = "Add time";
+			addTime.innerHTML = `<i class="fa-solid fa-circle-plus"></i> Add time`;
 			addTime.onclick = async (e) => {
 				await window.electronAPI.set("actionLockID", lock.id);
 				window.electronAPI.redirect("addtime");
@@ -157,7 +160,7 @@ function openModule(module) {
 			};
 			addTime.className = "buttonInput";
 			const remTime = document.createElement("li");
-			remTime.innerHTML = "Remove time";
+			remTime.innerHTML = `<i class="fa-solid fa-circle-minus"></i> Remove time`;
 			remTime.onclick = async (e) => {
 				await window.electronAPI.set("actionLockID", lock.id);
 				window.electronAPI.redirect("remtime");
@@ -165,14 +168,43 @@ function openModule(module) {
 			};
 			remTime.className = "buttonInput";
 
-			quickActions.append(addTime, remTime);
+			const freezeTime = document.createElement("li");
+			freezeTime.className = "buttonInput";
+			if (lock.frozenAt == null) {
+				freezeTime.innerHTML = `<i class="fa-solid fa-snowflake"></i> Freeze`;
+				freezeTime.onclick = async (e) => {
+					freezeTime.innerHTML = `<i class="fa-solid fa-snowflake"></i> Un-Freeze`;
+					await window.electronAPI
+						.lock(lock.id, "freeze", {
+							state: true,
+						})
+						.then((data) => {
+							lock = data;
+							openModule("General");
+						});
+				};
+			} else {
+				freezeTime.innerHTML = `<i class="fa-solid fa-snowflake"></i> Un-Freeze`;
+				freezeTime.onclick = async (e) => {
+					freezeTime.innerHTML = `<i class="fa-solid fa-snowflake"></i> Freeze`;
+					await window.electronAPI
+						.lock(lock.id, "freeze", {
+							state: false,
+							endsAt: lock.endsAt,
+							frozenAt: lock.frozenAt,
+						})
+						.then((data) => {
+							lock = data;
+							openModule("General");
+						});
+				};
+			}
+			quickActions.append(addTime, remTime, freezeTime);
 
 			moduleCase.append(quickActions);
 			break;
 	}
 }
-
-openModule("General");
 
 async function selectTask(elem) {
 	const task = elem.parentElement.innerText;

@@ -250,6 +250,7 @@ ul {
 	margin-top: 0.5rem;
 	background-color: var(--background-colour);
 	padding: 0.5rem 1rem;
+	width: 200px;
 	border-radius: 0.5rem;
 	transition-duration: 250ms;
 }

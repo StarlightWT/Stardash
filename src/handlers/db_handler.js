@@ -69,7 +69,7 @@ async function create(what, option, option2) {
 		case "activity":
 			return await createActivity(option);
 		case "avatar":
-			return await createAvatar(option);
+			return await createAvatar(option, option2);
 		case "khRequest":
 			return await createKhRequest(option);
 	}
@@ -107,6 +107,7 @@ const {
 	timerVisibility,
 	unlockLock,
 	setKH,
+	setFreeze,
 } = require("./database/db_action");
 const { userModel } = require("../schemas");
 

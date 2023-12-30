@@ -1,4 +1,5 @@
 let lockID,
+	userID,
 	unlockable,
 	redirected = false;
 async function initialize() {
@@ -9,6 +10,7 @@ async function initialize() {
 	const profile = await window.electronAPI.get("user");
 	const lock = await window.electronAPI.get("lock", profile.id);
 	lockID = lock.id;
+	userID = profile.id;
 	if (!(lock == 1 || !lock)) showLockInfo(lock);
 	appendActivities(activities);
 	setProfileInfo(profile, lock);
@@ -103,23 +105,25 @@ function setProfileInfo(profile, lock) {
 
 function updateLockTimer(lock) {
 	const timer = document.getElementById("timer");
-
+	let timerString = "";
 	if (!lock.settings?.timerVisible)
 		return (timer.innerHTML = "Timer is hidden!");
 
 	let timestamp = lock.endsAt - Date.now();
-	console.log(lock);
 	if (timestamp <= 0) {
 		unlockState(true);
 		return (timer.innerHTML = "Ready to unlock!");
 	}
-	if (lock.frozenAt) timestamp = lock.endsAt - lock.frozenAt;
+	if (lock.frozenAt) {
+		timestamp = lock.endsAt - lock.frozenAt;
+		timerString = `<i class="fa-solid fa-snowflake"></i> `;
+	}
 	if (lock.timeLimit > 0 && Date.now() >= lock.timeLimit) {
 		unlockState(true);
 		return (timer.innerHTML = "Lock is ready to unlock!");
 	}
 
-	let timerString = convertTimestamp(timestamp);
+	timerString += convertTimestamp(timestamp);
 	timer.innerHTML = timerString;
 }
 
@@ -256,7 +260,7 @@ function handleFile(event) {
 		// The onload event is triggered when the file reading is complete
 		reader.onload = async function (e) {
 			// Save the base64-encoded image data to MongoDB
-			await window.electronAPI.create("avatar", e.target.result);
+			await window.electronAPI.create("avatar", userID, e.target.result);
 
 			// Display the image using the base64 string
 			const imgElement = document.getElementById("userPicture");

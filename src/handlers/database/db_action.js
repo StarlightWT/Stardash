@@ -67,13 +67,24 @@ async function timeLogVisibility(id, state) {
  * @param {Boolean} state New lock's frozen state (true = frozen)
  * @returns updated lock record
  */
-async function setFreeze(id, state) {
-	if (state == "false") state = null;
-	else state = Date.now();
-	return await lockModel.findOneAndUpdate(
-		{ id: id },
-		{ $set: { frozenAt: state } }
-	);
+async function setFreeze(id, option) {
+	if (option.state == false) {
+		let newEnd = Date.now() + (option.endsAt - option.frozenAt);
+		return await lockModel
+			.findOneAndUpdate(
+				{ id: id },
+				{ $set: { frozenAt: null, endsAt: newEnd.toString() } },
+				{ new: true }
+			)
+			.lean();
+	} else
+		return await lockModel
+			.findOneAndUpdate(
+				{ id: id },
+				{ $set: { frozenAt: Date.now().toString() } },
+				{ new: true }
+			)
+			.lean();
 }
 
 /**
