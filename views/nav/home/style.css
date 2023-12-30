@@ -84,6 +84,11 @@ main {
 #profile > #userUsername {
 	margin-top: 4rem;
 	text-align: center;
+	height: 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 #profile > #timer {

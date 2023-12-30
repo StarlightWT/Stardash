@@ -90,6 +90,10 @@ function setProfileInfo(profile, lock) {
 	if (profile?.avatar?.length > 5) userAvatar.src = profile.avatar;
 	userUsername.innerText = profile.username;
 
+	if (userUsername.innerText.length > 10)
+		userUsername.style.fontSize =
+			userUsername.offsetWidth / (userUsername.innerText.length - 2) + "px";
+
 	if (lock != 1) {
 		updateLockTimer(lock);
 		setInterval(() => {
