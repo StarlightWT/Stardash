@@ -3,17 +3,28 @@ let lockID,
 	unlockable,
 	redirected = false;
 async function initialize() {
-	const activities = await window.electronAPI.get("activities", {
+	let activities = await window.electronAPI.get("activities", {
 		amount: 10,
 		reset: true,
 	});
-	const profile = await window.electronAPI.get("user");
-	const lock = await window.electronAPI.get("lock", profile.id);
+	let profile = await window.electronAPI.get("user");
+	let lock = await window.electronAPI.get("lock", profile.id);
 	lockID = lock.id;
 	userID = profile.id;
 	if (!(lock == 1 || !lock)) showLockInfo(lock);
 	appendActivities(activities);
 	setProfileInfo(profile, lock);
+
+	setInterval(async () => {
+		activities = await window.electronAPI.get("activities", {
+			amount: 10,
+			reset: true,
+		});
+		appendActivities(activities);
+		setProfileInfo(profile, lock);
+		profile = await window.electronAPI.get("user");
+		lock = await window.electronAPI.get("lock", profile.id);
+	}, 1000 * 60 * 10);
 }
 
 initialize();
