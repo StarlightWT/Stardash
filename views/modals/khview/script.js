@@ -1,6 +1,7 @@
-let lock;
-let DBLock;
-let lockeeProfile;
+let lock,
+	redirected = false,
+	lockeeProfile,
+	activeModule;
 
 async function initialize() {
 	lockID = await window.electronAPI.tempGet("actionLockID");
@@ -78,7 +79,9 @@ function timestampConvert(timestamp) {
 function openModule(module) {
 	const moduleCase = document.getElementById("moduleCase");
 	const moduleTitle = document.getElementById("title");
-	const moduleDB = DBLock.modules.find((obj) => obj.name == module);
+	let moduleDB;
+	if (module != "General")
+		moduleDB = lock.modules.find((obj) => obj.name == module);
 	moduleTitle.innerHTML = `Module - ${module}`;
 	moduleCase.innerHTML = "";
 	switch (module) {
@@ -138,8 +141,38 @@ function openModule(module) {
 			moduleCase.append(taskLog);
 
 			break;
+		case "General":
+			activeModule = "General";
+			const quickActions = document.createElement("ul");
+			quickActions.style.display = "flex";
+			quickActions.style.width = "90%";
+			quickActions.style.marginInline = "auto";
+
+			const addTime = document.createElement("li");
+			addTime.innerHTML = "Add time";
+			addTime.onclick = async (e) => {
+				await window.electronAPI.set("actionLockID", lock.id);
+				window.electronAPI.redirect("addtime");
+				redirected = true;
+			};
+			addTime.className = "buttonInput";
+			const remTime = document.createElement("li");
+			remTime.innerHTML = "Remove time";
+			remTime.onclick = async (e) => {
+				await window.electronAPI.set("actionLockID", lock.id);
+				window.electronAPI.redirect("remtime");
+				redirected = true;
+			};
+			remTime.className = "buttonInput";
+
+			quickActions.append(addTime, remTime);
+
+			moduleCase.append(quickActions);
+			break;
 	}
 }
+
+openModule("General");
 
 async function selectTask(elem) {
 	const task = elem.parentElement.innerText;
@@ -162,3 +195,11 @@ function sendError() {
 		window.close();
 	}, 1500);
 }
+
+window.onfocus = (e) => {
+	if (!redirected) return;
+	console.log("RELOADING");
+	location.reload().then(() => {
+		openModule(activeModule);
+	});
+};

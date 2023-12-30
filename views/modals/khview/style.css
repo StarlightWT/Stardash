@@ -241,3 +241,20 @@ ul {
 	text-align: center;
 	background-color: var(--background-colour);
 }
+
+.buttonInput:not(:last-child) {
+	margin-right: 1rem;
+}
+
+.buttonInput {
+	margin-top: 0.5rem;
+	background-color: var(--background-colour);
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+	transition-duration: 250ms;
+}
+
+.buttonInput:hover {
+	background-color: var(--accent-colour);
+	cursor: pointer;
+}

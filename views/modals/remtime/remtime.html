@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="input">
+				<div class="counter" id="Minimum">
+					<div class="single_counter">
+						<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+						<div
+							class="single_counter_output"
+							ondblclick="edit(this)"
+							onkeypress="validate(event)">
+							00
+						</div>
+						<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+						<h6>weeks</h6>
+					</div>
+					<div class="single_counter">
+						<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+						<div
+							class="single_counter_output"
+							ondblclick="edit(this)"
+							onkeypress="validate(event)">
+							00
+						</div>
+						<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+						<h6>days</h6>
+					</div>
+					<div class="single_counter">
+						<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+						<div
+							class="single_counter_output"
+							ondblclick="edit(this)"
+							onkeypress="validate(event)">
+							00
+						</div>
+						<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+						<h6>hours</h6>
+					</div>
+					<div class="single_counter">
+						<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+						<div
+							class="single_counter_output"
+							ondblclick="edit(this)"
+							onkeypress="validate(event)">
+							00
+						</div>
+						<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+						<h6>mins</h6>
+					</div>
+				</div>
+			</div>
+			<div class="buttons">
+				<!-- <div onclick="addTime()">Add time</div> -->
+				<div onclick="remTime()">Remove time</div>
+			</div>
+		</div>
+	</body>
+	<script src="script.js"></script>
+</html>
