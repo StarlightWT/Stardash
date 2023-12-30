@@ -399,7 +399,7 @@ async function done() {
 
 	const limit = document.getElementById("Limit");
 	let timeLimit = limitCounterTotal(limit);
-	if (timeLimit == "0") timeLimit = null;
+	if (timeLimit == 0) timeLimit = null;
 	else timeLimit += Date.now();
 	if (timeLimit != 0 && timeLimit < endTime) return;
 
