@@ -116,6 +116,7 @@ ipcMain.on("redirect", (event, page, modal) => {
 function LimitedSlowingTimer(startingTime, increment, limit) {
 	setTimeout(() => {
 		console.log(`[Main] Updating window position...`);
+		if (!win) return;
 		const pos = win.getPosition();
 		temp.set("x", pos[0]);
 		temp.set("y", pos[1]);

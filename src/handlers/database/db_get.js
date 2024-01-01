@@ -15,7 +15,7 @@ module.exports = {
 	clearCache,
 };
 
-const cacheLifespan = 60;
+const cacheLifespan = 30;
 
 var userCache,
 	lockCache,
