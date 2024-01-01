@@ -264,8 +264,8 @@ document.getElementById("imgupload").addEventListener("change", handleFile);
 
 function handleFile(event) {
 	const file = event.target.files[0];
-
-	if (file) {
+	if (file && file.size / 1024 / 1024 < 2) {
+		//Max file size == 2MB
 		const reader = new FileReader();
 
 		// The onload event is triggered when the file reading is complete
