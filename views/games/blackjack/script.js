@@ -3,16 +3,13 @@ const setupDiv = document.getElementById("setup");
 const playerTotalTitle = document.getElementById("player_total");
 const dealerTotalTitle = document.getElementById("dealer_total");
 const winnerTitle = document.getElementById("winner");
-const betInput = document.getElementById("betInput");
+const betInput = document.getElementById("bet");
 const hitBtn = document.getElementById("hit_button");
 const staBtn = document.getElementById("start_button");
 const refBtn = document.getElementById("refresh_button");
 const standBtn = document.getElementById("stand_button");
-const title = document.getElementById("title");
 const backbtn = document.getElementById("back");
 
-const lostClr = "ee111a";
-const wonClr = "1fe044";
 var deck = [
 	{ key: "2", amount: 4 },
 	{ key: "3", amount: 4 },
@@ -74,26 +71,21 @@ function updatePlayerTotal() {
 	if (playerStand) playerTotalTitle.innerHTML += `<br>(standing)`;
 }
 
-function playerWin(time, bj) {
+async function playerWin(time, bj) {
 	if (bj) time *= 1.5;
 	else time *= 1.8;
-	window.electronAPI.action("remtime", time);
-	window.electronAPI.action("log", {
-		role: "extension",
-		colour: wonClr,
-		title: "BlackJack removed time",
-		description: "Removed time for winning at BJ",
-	});
+	console.log(time);
+
+	window.electronAPI.set("actionLockID", "no");
+	let response = await window.electronAPI.lock(undefined, "time", -time);
+	console.log(response);
 }
 
-function playerLose(time) {
-	window.electronAPI.action("addtime", time);
-	window.electronAPI.action("log", {
-		role: "extension",
-		colour: lostClr,
-		title: "BlackJack added time",
-		description: "Time added for losing at BJ",
-	});
+async function playerLose(time) {
+	console.log(time);
+	window.electronAPI.set("actionLockID", "no");
+	let response = await window.electronAPI.lock(undefined, "time", time);
+	console.log(response);
 }
 
 function endGame() {
@@ -131,7 +123,7 @@ function endGame() {
 	}
 	if (playerTotal == dealerTotal) {
 		winnerTitle.innerHTML = "draw";
-		//player gets bet back
+		gameEnd = true;
 		return;
 	}
 	if (playerTotal > dealerTotal) {
@@ -151,9 +143,6 @@ var dealerTotal = 0,
 	bet = 0;
 
 function startGame() {
-	title.classList.add("hidden");
-	backbtn.classList.add("hidden");
-
 	(dealerTotal = 0),
 		(secretDealerTotal = dealerTotal),
 		(playerTotal = 0),
@@ -191,10 +180,7 @@ standBtn.addEventListener("click", () => {
 staBtn.addEventListener("click", async () => {
 	console.log(`Trying to start game!\nActive: ${gameActive}\nEnd ${!gameEnd}`);
 	if (gameActive && !gameEnd) return;
-	var value = betInput.value;
-
-	var inputArr = value.split(":");
-	bet = inputArr[0] * 60 * 60 + inputArr[1] * 60;
+	bet = counterTotal(betInput);
 	if (bet <= 0) return;
 
 	startGame();
@@ -212,4 +198,81 @@ refBtn.addEventListener("click", () => {
 
 function back() {
 	window.electronAPI.redirect("games");
+}
+
+function increase(counter) {
+	counter = counter.parentElement.children[1];
+	let newCounterValue = parseInt(counter.innerText) + 1;
+	if (newCounterValue < 10) newCounterValue = `0${newCounterValue}`;
+	counter.innerText = newCounterValue;
+	startButtonEnable();
+}
+
+function decrease(counter) {
+	counter = counter.parentElement.children[1];
+	let newCounterValue = parseInt(counter.innerText) - 1;
+	if (newCounterValue < 0) newCounterValue = "00";
+	else if (newCounterValue < 10) newCounterValue = `0${newCounterValue}`;
+	counter.innerText = newCounterValue;
+	startButtonEnable();
+}
+
+function edit(element) {
+	element.contentEditable = true;
+	element.focus();
+	element.onblur = (e) => {
+		element.contentEditable = false;
+		startButtonEnable();
+	};
+}
+
+function validate(event) {
+	var keyCode = event.which || event.keyCode;
+	var isValid = (keyCode >= 48 && keyCode <= 57) || keyCode === 8; // Allow numbers (48-57) and backspace (8)
+
+	if (!isValid) {
+		event.preventDefault();
+	}
+	startButtonEnable();
+}
+
+function counterTotal(counter) {
+	let counterValues = [];
+	Array.from(counter.children).forEach((singleCounter) => {
+		counterValues.push(singleCounter.children[1].innerText);
+	});
+	while (counterValues[2] >= 60) {
+		counterValues[2] -= 60;
+		counterValues[1]++;
+	}
+	while (counterValues[1] >= 24) {
+		counterValues[1] -= 24;
+		counterValues[0]++;
+	}
+	let i = 0;
+	Array.from(counter.children).forEach((singleCounter) => {
+		let newValue = counterValues[i];
+		newValue = newValue.toString();
+		if (newValue < 10 && !newValue.startsWith("0")) newValue = `0${newValue}`;
+		if (newValue == 0) newValue = "00";
+		singleCounter.children[1].innerText = newValue;
+		i++;
+	});
+	//CounterValues [0] => Days
+	//CounterValues [1] => Hours
+	//CounterValues [2] => Minutes
+	const DAY = 86400000;
+	const HOUR = 3600000;
+	const MINUTE = 60000;
+	const WEEK = DAY * 7;
+	return (total =
+		counterValues[0] * WEEK +
+		counterValues[1] * DAY +
+		counterValues[2] * HOUR +
+		counterValues[3] * MINUTE);
+}
+
+function startButtonEnable() {
+	if (counterTotal(betInput) > 0) staBtn.disabled = false;
+	else staBtn.disabled = true;
 }

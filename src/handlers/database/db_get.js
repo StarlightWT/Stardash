@@ -56,8 +56,7 @@ async function getUser(id) {
  * @returns lock, 3=Multiple found, 1=No lock found
  */
 async function getLock(id) {
-	if (lockCache && (lockCache.id == id || lockCache?.user?.id == id))
-		return lockCache;
+	if (lockCache && lockCache.id == id) return lockCache;
 	cleared = false;
 	lockCache = await lockModel
 		.find({ $or: [{ id: id }, { "user.id": id }] })

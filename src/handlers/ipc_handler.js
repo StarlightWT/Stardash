@@ -40,6 +40,7 @@ module.exports = (ipcMain, temp, win) => {
 
 	ipcMain.handle("lock", async (event, id, what, option) => {
 		if (!id) id = temp.get("actionLockID");
+		if (id == "no") id = undefined;
 		return await lockAction(id, what, option);
 	});
 

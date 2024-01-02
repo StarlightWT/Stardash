@@ -7,7 +7,7 @@ body {
 	text-align: center;
 }
 
-i {
+#back:not(.hidden) {
 	color: white;
 	position: absolute;
 	left: 2rem;
@@ -16,7 +16,7 @@ i {
 	border-radius: 50%;
 }
 
-i:hover {
+#back:hover:not(.hidden) {
 	cursor: pointer;
 }
 
@@ -107,4 +107,50 @@ i:hover {
 	padding: 1rem;
 	border-radius: 0.5rem;
 	text-align: justify;
+}
+
+.counter {
+	display: flex;
+	justify-content: space-evenly;
+	width: 150px;
+	font-size: 22px;
+}
+
+.single_counter {
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.single_counter > i:hover,
+.single_counter > div:hover {
+	cursor: pointer;
+}
+
+.single_counter > h6 {
+	margin: 0;
+}
+
+.counter {
+	margin-block: 1rem;
+}
+
+#start_button {
+	width: 100px;
+	height: 50px;
+	border-radius: 0.5rem;
+}
+
+.hidden {
+	display: none;
+}
+
+#setup {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }

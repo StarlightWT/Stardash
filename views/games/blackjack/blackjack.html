@@ -7,27 +7,56 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 	</head>
 	<body>
-		<h1 id="title" class="title">BlackJack</h1>
-		<i class="fa-solid fa-arrow-left" id="back" onclick="back();"></i>
-		<div id="play">
-			<h1 id="winner"></h1>
-			<div class="totals">
-				<div>
-					<h1>Dealer total<br /><span id="dealer_total"></span></h1>
-				</div>
-				<div>
-					<h1>Player total<br /><span id="player_total"></span></h1>
-				</div>
-			</div>
-			<div class="player">
-				<button id="hit_button">Hit</button>
-				<button id="stand_button">Stand</button>
-				<br />
-				<button id="refresh_button">refresh</button>
-			</div>
-		</div>
 		<div id="setup">
-			<button id="start_button">Start game</button>
+			<h1 id="title" class="title">BlackJack</h1>
+			<i class="fa-solid fa-arrow-left" id="back" onclick="back();"></i>
+			<div class="counter" id="bet">
+				<div class="single_counter">
+					<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+					<div
+						class="single_counter_output"
+						ondblclick="edit(this)"
+						onkeypress="validate(event)">
+						00
+					</div>
+					<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+					<h6>weeks</h6>
+				</div>
+				<div class="single_counter">
+					<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+					<div
+						class="single_counter_output"
+						ondblclick="edit(this)"
+						onkeypress="validate(event)">
+						00
+					</div>
+					<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+					<h6>days</h6>
+				</div>
+				<div class="single_counter">
+					<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+					<div
+						class="single_counter_output"
+						ondblclick="edit(this)"
+						onkeypress="validate(event)">
+						00
+					</div>
+					<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+					<h6>hours</h6>
+				</div>
+				<div class="single_counter">
+					<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+					<div
+						class="single_counter_output"
+						ondblclick="edit(this)"
+						onkeypress="validate(event)">
+						00
+					</div>
+					<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+					<h6>mins</h6>
+				</div>
+			</div>
+			<button id="start_button" disabled>Start</button>
 			<div class="howToPlay">
 				<h2>How to play</h2>
 				<p>
@@ -46,6 +75,23 @@
 					means you win 1.5x your bet. Otherwise winning results in winning
 					double your bet.
 				</p>
+			</div>
+		</div>
+		<div id="play">
+			<h1 id="winner"></h1>
+			<div class="totals">
+				<div>
+					<h1>Dealer total<br /><span id="dealer_total"></span></h1>
+				</div>
+				<div>
+					<h1>Player total<br /><span id="player_total"></span></h1>
+				</div>
+			</div>
+			<div class="player">
+				<button id="hit_button">Hit</button>
+				<button id="stand_button">Stand</button>
+				<br />
+				<button id="refresh_button">refresh</button>
 			</div>
 		</div>
 	</body>

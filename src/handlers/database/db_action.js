@@ -24,7 +24,7 @@ async function modifyTime(id, time) {
 	if (!time) return 1;
 	newLockTime += time;
 	const response = await lockModel
-		.findOneAndUpdate({ id: id }, { endsAt: newLockTime }, { new: true })
+		.findOneAndUpdate({ id: lock.id }, { endsAt: newLockTime }, { new: true })
 		.lean();
 
 	clearCache();

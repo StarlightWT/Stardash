@@ -114,7 +114,7 @@ const { userModel } = require("../schemas");
 async function lockAction(id, what, option) {
 	switch (what) {
 		case "time":
-			return await modifyTime(id, option);
+			return await modifyTime(id ?? profile.id, option);
 		case "timer":
 			return await timerVisibility(id, option);
 		case "timeLog":
