@@ -85,3 +85,26 @@ i:hover {
 	height: 60px;
 	font-size: 50;
 }
+
+.howToPlay {
+	width: 90%;
+	margin-inline: auto;
+	background-color: var(--secondary-bg-colour);
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	margin-top: 1rem;
+}
+
+.howToPlay > h2 {
+	margin: 0;
+}
+
+.howToPlay > p {
+	width: 90%;
+	margin-top: 0.5rem;
+	margin-inline: auto;
+	background-color: var(--background-colour);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	text-align: justify;
+}
