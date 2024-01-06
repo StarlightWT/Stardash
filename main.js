@@ -18,7 +18,6 @@ function createWindow() {
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 	temp.get("size") ?? temp.set("size", [0, 0]);
 	return new BrowserWindow({
-		// autoHideMenuBar: true,
 		maxWidth: temp.get("size")[0] ?? Math.floor(width / 1.3),
 		maxHeight: temp.get("size")[1] ?? Math.floor(height / 1.2),
 		width: temp.get("size")[0] ?? Math.floor(width / 1.3),
@@ -33,17 +32,21 @@ function createWindow() {
 		backgroundColor: "#000",
 		webPreferences: {
 			preload: path.join(__dirname, "/src/preload.js"),
-			webgl: false, // adjust as needed
-			offscreen: false, // adjust as needed
+			webgl: false,
+			offscreen: false,
+			devTools: !app.isPackaged,
 		},
 	});
 }
+
 app.whenReady().then(async () => {
 	await updater.check();
 	win = createWindow();
-
 	require("./src/handlers/ipc_handler.js")(ipcMain, temp, win);
-
+	if (app.isPackaged) {
+		win.removeMenu;
+		win.menuBarVisible = false;
+	}
 	if ((await checkToken(temp)) == 0) redirects.redirect(win, "home");
 	else redirects.redirect(win, "login");
 	//Create initial window
@@ -52,42 +55,43 @@ app.whenReady().then(async () => {
 	});
 
 	win.on("close", (e) => {
-		if (!closing) e.preventDefault();
+		if (!closing && app.isPackaged) e.preventDefault();
 		const pos = win.getPosition();
 		temp.set("x", pos[0]);
 		temp.set("y", pos[1]);
 		temp.set("size", win.getSize());
 		win.hide();
 	});
-
-	tray = new Tray(path.join(__dirname, "icon.ico"));
-	const contextMenu = Menu.buildFromTemplate([
-		{
-			label: "Show app",
-			type: "normal",
-			click: (e) => {
-				win.show();
+	if (app.isPackaged) {
+		tray = new Tray(path.join(__dirname, "icon.ico"));
+		const contextMenu = Menu.buildFromTemplate([
+			{
+				label: "Show app",
+				type: "normal",
+				click: (e) => {
+					win.show();
+				},
 			},
-		},
-		{
-			label: "Quit app",
-			type: "normal",
-			click: (e) => {
-				closing = true;
-				const pos = win.getPosition();
-				temp.set("x", pos[0]);
-				temp.set("y", pos[1]);
-				temp.set("size", win.getSize());
+			{
+				label: "Quit app",
+				type: "normal",
+				click: (e) => {
+					closing = true;
+					const pos = win.getPosition();
+					temp.set("x", pos[0]);
+					temp.set("y", pos[1]);
+					temp.set("size", win.getSize());
 
-				app.quit();
+					app.quit();
+				},
 			},
-		},
-	]);
+		]);
 
-	tray.on("click", (e) => {
-		win.show();
-	});
-	tray.setContextMenu(contextMenu);
+		tray.on("click", (e) => {
+			win.show();
+		});
+		tray.setContextMenu(contextMenu);
+	}
 });
 
 var loadStatus = 0;

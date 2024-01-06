@@ -288,6 +288,52 @@ function loadModule(module) {
 				loadModule(module);
 			};
 
+			const newRule = document.createElement("li");
+			newRule.classList = "newRule";
+			newRule.innerHTML = "New rule...";
+
+			newRule.ondblclick = (e) => edit(e.target);
+
+			function edit(element) {
+				if (!ruleModule) return;
+				element.contentEditable = true;
+				element.focus();
+				if (element.innerHTML == "New rule...") element.innerHTML = "";
+				element.onkeypress = (e) => validate(e);
+				element.onblur = (e) => {
+					element.contentEditable = false;
+					if (element.innerHTML != "") {
+						const addedRule = document.createElement("li");
+						console.log(ruleModule);
+						addedRule.id = ruleModule.rules.length + 1;
+						addedRule.innerHTML = element.innerHTML;
+						addRule(addedRule.id, addedRule.innerHTML);
+						addedRule.onclick = (e) => {
+							e.target.contentEditable = true;
+							e.target.focus();
+							e.target.onkeypress = (e) => validate(e);
+							e.target.onblur = (e) => {
+								if (e.target.innerHTML == "") {
+									remRule(e.target.id);
+									e.target.remove();
+								}
+							};
+						};
+						ruleList.append(addedRule);
+					}
+					element.innerHTML = "New rule...";
+				};
+			}
+
+			function validate(keypress) {
+				if (keypress.code == "Enter") {
+					keypress.preventDefault();
+					keypress.target.blur();
+				}
+			}
+
+			ruleList.append(newRule);
+
 			moduleBody.append(ruleList, publicToggle);
 			break;
 	}
@@ -353,6 +399,20 @@ function moduleFromArray(name) {
 	return modules.find((obj) => obj.name == name);
 }
 
+function addRule(ruleID, rule) {
+	const ruleModule = modules.find((obj) => obj.name == "Rules");
+	ruleModule.rules.push({ ruleID: ruleID, rule: rule });
+}
+
+function remRule(ruleID) {
+	const ruleModule = modules.find((obj) => obj.name == "Rules");
+	let newRules = [];
+	ruleModule.rules.forEach((rule) => {
+		if (rule.ruleID != ruleID) newRules.push(rule);
+	});
+	ruleModule.rules = newRules;
+}
+
 function adddigit(element) {
 	var digitCount = Array.from(
 		element.parentElement.children[1].innerText
@@ -399,10 +459,10 @@ async function done() {
 
 	const limit = document.getElementById("Limit");
 	let timeLimit = limitCounterTotal(limit);
-	if (timeLimit == 0) timeLimit = null;
-	else timeLimit += Date.now();
+	if (timeLimit != 0) timeLimit += Date.now();
 	if (timeLimit != 0 && timeLimit < endTime) return;
 
+	console.log(modules);
 	await window.electronAPI.create("lock", {
 		id: userID,
 		endsAt: endTime,

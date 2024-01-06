@@ -133,7 +133,7 @@ h1 {
 .modules > .titles > h1:last-child {
 	width: var(--body-width);
 	overflow: hidden;
-	transition-duration: 1s;
+	transition: all 0.5s linear;
 }
 
 .modules > .body > #moduleList {
@@ -175,7 +175,7 @@ h1 {
 	position: relative;
 	width: var(--body-width);
 	overflow: hidden;
-	transition-duration: 1s;
+	transition-duration: 0.5s;
 }
 
 .open {
@@ -202,6 +202,7 @@ h1 {
 	align-items: center;
 	width: 100px;
 	height: 50px;
+	margin-left: 1rem;
 	border-radius: 0.5rem;
 	background-color: var(--secondary-bg-colour);
 }
@@ -212,6 +213,7 @@ h1 {
 
 #ruleList {
 	background-color: var(--secondary-bg-colour);
+	text-align: left;
 	list-style: none;
 	padding: 0.5rem;
 	margin-top: 1rem;
@@ -219,6 +221,14 @@ h1 {
 	height: 100px;
 	margin-left: 1rem;
 	border-radius: 0.5rem;
+	overflow-y: scroll;
+}
+
+#ruleList > li {
+	font-size: 16px;
+	height: 16px;
+	text-overflow: ellipsis;
+	border-bottom: 2px dashed white;
 }
 
 #moduleCount {
@@ -364,4 +374,9 @@ h1 {
 }
 .disabled {
 	opacity: 0.8;
+}
+
+.newRule {
+	border-bottom: 2px white dashed;
+	height: 14px;
 }

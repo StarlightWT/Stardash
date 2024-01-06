@@ -74,18 +74,12 @@ function updatePlayerTotal() {
 async function playerWin(time, bj) {
 	if (bj) time *= 1.5;
 	else time *= 1.8;
-	console.log(time);
 
 	window.electronAPI.set("actionLockID", "no");
-	let response = await window.electronAPI.lock(undefined, "time", -time);
-	console.log(response);
 }
 
 async function playerLose(time) {
-	console.log(time);
 	window.electronAPI.set("actionLockID", "no");
-	let response = await window.electronAPI.lock(undefined, "time", time);
-	console.log(response);
 }
 
 function endGame() {
