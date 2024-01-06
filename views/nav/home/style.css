@@ -200,6 +200,7 @@ main {
 
 .lockInfo {
 	display: none;
+	height: 15px;
 }
 
 .transparent {

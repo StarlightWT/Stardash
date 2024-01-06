@@ -24,7 +24,7 @@ async function initialize() {
 		setProfileInfo(profile, lock);
 		profile = await window.electronAPI.get("user");
 		lock = await window.electronAPI.get("lock", profile.id);
-	}, 1000 * 60 * 10);
+	}, 1000 * 5);
 }
 
 initialize();
@@ -88,12 +88,12 @@ function showLockInfo(lock) {
 
 	const modulesElm = document.getElementById("moduleList");
 	if (lock.modules.length == 0) modulesElm.classList.add("lockInfo");
-	else modulesElm.children[0].click();
 
 	if (lock.khId == null)
 		document.getElementById("khReq").classList.remove("disabled");
 }
 
+let timerInterval;
 function setProfileInfo(profile, lock) {
 	const userAvatar = document.getElementById("userPicture");
 	const userUsername = document.getElementById("userUsername");
@@ -107,7 +107,8 @@ function setProfileInfo(profile, lock) {
 
 	if (lock != 1) {
 		updateLockTimer(lock);
-		setInterval(() => {
+		if (timerInterval) clearInterval(timerInterval);
+		timerInterval = setInterval(() => {
 			updateLockTimer(lock);
 		}, 1000);
 		loadLockModules(lock);
@@ -126,6 +127,7 @@ function updateLockTimer(lock) {
 		return (timer.innerHTML = "Ready to unlock!");
 	}
 	if (lock.frozenAt) {
+		console.log(lock.frozenAt);
 		timestamp = lock.endsAt - lock.frozenAt;
 		timerString = `<i class="fa-solid fa-snowflake"></i> `;
 	}

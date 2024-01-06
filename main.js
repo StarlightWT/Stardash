@@ -32,6 +32,8 @@ function createWindow() {
 		backgroundColor: "#000",
 		webPreferences: {
 			preload: path.join(__dirname, "/src/preload.js"),
+			nodeIntegration: false,
+			contextIsolation: true,
 			webgl: false,
 			offscreen: false,
 			devTools: !app.isPackaged,
