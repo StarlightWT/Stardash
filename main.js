@@ -8,10 +8,11 @@ let win, closing;
 
 const temp = new Store();
 
-app.setLoginItemSettings({
-	openAtLogin: temp.get("bootOnStart") ?? temp.set("bottOnStart", true),
-	openAsHidden: true, // Optional: Hide the app window on startup
-});
+if (app.isPackaged)
+	app.setLoginItemSettings({
+		openAtLogin: temp.get("bootOnStart") ?? temp.set("bottOnStart", true),
+		openAsHidden: true, // Optional: Hide the app window on startup
+	});
 
 //Create window for everything to be inside of
 function createWindow() {
