@@ -5,19 +5,21 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="../../general.css" />
 		<link rel="stylesheet" href="style.css" />
+		<title>StarDash</title>
 	</head>
 	<body id="body">
 		<i class="fa-solid fa-arrow-left" onclick="back();" id="back"></i>
 		<h1 class="title">Manage lock</h1>
 		<div class="container">
 			<div class="lockee">
-				<img src="" alt="" id="profilePicture" />
+				<img src="../../../photos/blank.png" alt="" id="profilePicture" />
 				<h1 id="username"></h1>
 				<h2>Lock information</h2>
 				<ul id="lockInfo">
+					<li id="timeUnlocked"></li>
+					<li id="timeFrozen"></li>
 					<li id="timeRemaining"></li>
 					<li id="timeLocked"></li>
-					<li id="timeFrozen"></li>
 				</ul>
 				<h2>Modules</h2>
 				<ul id="moduleList">
@@ -26,10 +28,9 @@
 			</div>
 			<div class="moduleCase">
 				<h1 id="title">Module view</h1>
-				<div id="moduleCase" class="tasks">
-				</div>
+				<div id="moduleCase" class="tasks"></div>
 			</div>
 		</div>
 		<script src="script.js"></script>
 	</body>
-</ht`1ml>
+</html>

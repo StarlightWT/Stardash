@@ -53,9 +53,13 @@ async function setInfo() {
 		timeFrozen.innerHTML =
 			`<i class="fa-regular fa-snowflake"></i> ` +
 			timestampConvert(Date.now() - lock.frozenAt);
-	else
-		timeFrozen.innerHTML =
-			`<i class="fa-regular fa-snowflake"></i>` + ` 00:00:00:00`;
+	else timeFrozen.innerHTML = ``;
+
+	const timeUnlocked = document.getElementById("timeUnlocked");
+	if (lock.unlockedAt)
+		timeUnlocked.innerHTML = `<i class="fa-solid fa-unlock"></i> ${timestampConvert(
+			Date.now() - lock.unlockedAt
+		)}`;
 }
 
 function back() {
@@ -199,7 +203,14 @@ function openModule(module) {
 						});
 				};
 			}
-			quickActions.append(addTime, remTime, freezeTime);
+
+			const tempUnlock = document.createElement("li");
+			tempUnlock.className = "buttonInput";
+			if (lock.unlockedAt) tempUnlock.className = "disabled buttonInput";
+			tempUnlock.onclick = (e) => tempUnlockFunc(e.target);
+			tempUnlock.innerHTML = `<i class="fa-solid fa-clock"></i> Tem. unlock`;
+
+			quickActions.append(addTime, remTime, freezeTime, tempUnlock);
 
 			moduleCase.append(quickActions);
 			break;
@@ -235,3 +246,11 @@ window.onfocus = (e) => {
 		openModule(activeModule);
 	});
 };
+
+async function tempUnlockFunc(element) {
+	if (element.className == "disabled buttonInput") return;
+	element.className = "disabled buttonInput";
+	element.innerHTML = `<i class="fa-solid fa-clock"></i> Unlocking...`;
+	lock = await window.electronAPI.lock(lock.id, "tempUnlock");
+	element.innerHTML = `<i class="fa-solid fa-clock"></i> Tem. unlock`;
+}

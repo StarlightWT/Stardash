@@ -255,7 +255,11 @@ ul {
 	transition-duration: 250ms;
 }
 
-.buttonInput:hover {
+.buttonInput:hover:not(.disabled) {
 	background-color: var(--accent-colour);
 	cursor: pointer;
+}
+
+.disabled {
+	opacity: 0.8;
 }
