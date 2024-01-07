@@ -35,6 +35,11 @@ function showOverview() {
 	updateTimer();
 	if (lock.khId == null)
 		document.getElementById("request").classList.remove("disabled");
+
+	const modules = document.getElementById("modules");
+	lock.modules.forEach((obj) => {
+		console.log(obj);
+	});
 	setInterval(() => {
 		updateTimer();
 	}, 1000);
@@ -44,7 +49,19 @@ function showNew() {
 	document.getElementById("noLock").className = "";
 	document.getElementById("newLock").className = "visible";
 	document.getElementById("KHoverview").className = "";
+
+	moduleTitles.parentElement.style.setProperty(
+		"--ul-width",
+		`${modulesElement.clientWidth - 550}px`
+	);
 }
+
+window.onresize = (e) => {
+	moduleTitles.parentElement.style.setProperty(
+		"--ul-width",
+		`${modulesElement.clientWidth - 550}px`
+	);
+};
 
 async function showKHOverview(user) {
 	const overview = document.getElementById("KHoverview");
@@ -227,9 +244,11 @@ let opened = 0,
 	lastModule;
 var modules = [];
 
+const modulesElement = document.getElementById("modules");
+const moduleTitles = document.getElementById("moduleTitles");
+const moduleBody = document.getElementById("moduleBody");
+
 function selectModule(module) {
-	const moduleTitles = document.getElementById("moduleTitles");
-	const moduleBody = document.getElementById("moduleBody");
 	if (opened == 0) {
 		opened = 1;
 		moduleTitles.parentElement.style.setProperty("--body-width", "500px");
