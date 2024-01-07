@@ -58,7 +58,10 @@ async function redirect(win, location, modal) {
 			frame = false;
 			break;
 		case "relock":
-			modal = false;
+			modal = true;
+			frame = false;
+			modalHeight = 200;
+			modalWidth = 500;
 	}
 
 	if (location.startsWith("http") || modal) {

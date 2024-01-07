@@ -214,8 +214,7 @@ async function relock(id, newCombo) {
 	if (!lock) return 2;
 	if (!lock.unlockedAt) return;
 	let newEndsAt =
-		parseInt(lock.endsAt) - parseInt(lock.unlockedAt) + parseInt(lock.endsAt);
-	console.log(newEndsAt);
+		Date.now() - parseInt(lock.unlockedAt) + parseInt(lock.endsAt);
 	let response = await lockModel
 		.findOneAndUpdate(
 			{ id: id },
@@ -229,6 +228,5 @@ async function relock(id, newCombo) {
 			{ new: true }
 		)
 		.lean();
-	console.log(response);
 	return response;
 }
