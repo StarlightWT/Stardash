@@ -324,7 +324,6 @@ function loadModule(module) {
 					element.contentEditable = false;
 					if (element.innerHTML != "") {
 						const addedRule = document.createElement("li");
-						console.log(ruleModule);
 						addedRule.id = ruleModule.rules.length + 1;
 						addedRule.innerHTML = element.innerHTML;
 						addRule(addedRule.id, addedRule.innerHTML);
@@ -353,6 +352,27 @@ function loadModule(module) {
 			}
 
 			ruleList.append(newRule);
+
+			console.log(ruleModule);
+			if (ruleModule)
+				ruleModule.rules.forEach((rule) => {
+					console.log(rule);
+					const existingRule = document.createElement("li");
+					existingRule.id = rule.ruleID;
+					existingRule.innerHTML = rule.rule;
+					existingRule.onclick = (e) => {
+						e.target.contentEditable = true;
+						e.target.focus();
+						e.target.onkeypress = (e) => validate(e);
+						e.target.onblur = (e) => {
+							if (e.target.innerHTML == "") {
+								remRule(e.target.id);
+								e.target.remove();
+							} else updateRule(e.target.id, e.target.innerHTML);
+						};
+					};
+					ruleList.append(existingRule);
+				});
 
 			moduleBody.append(ruleList, publicToggle);
 			break;
@@ -429,6 +449,18 @@ function remRule(ruleID) {
 	let newRules = [];
 	ruleModule.rules.forEach((rule) => {
 		if (rule.ruleID != ruleID) newRules.push(rule);
+	});
+	ruleModule.rules = newRules;
+}
+
+function updateRule(ruleID, newRule) {
+	console.log(ruleID);
+	console.log(newRule);
+	const ruleModule = modules.find((obj) => obj.name == "Rules");
+	let newRules = [];
+	ruleModule.rules.forEach((rule) => {
+		if (rule.ruleID != ruleID) newRules.push(rule);
+		else newRules.push({ ruleID: ruleID, rule: newRule });
 	});
 	ruleModule.rules = newRules;
 }
