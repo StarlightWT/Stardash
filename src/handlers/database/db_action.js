@@ -6,6 +6,8 @@ module.exports = {
 	history,
 	unlockLock,
 	setKH,
+	tempUnlock,
+	relock,
 };
 
 const { lockModel, lockHistoryModel, requestModel } = require("../../schemas");
@@ -192,4 +194,41 @@ async function setKH(token, khID) {
 	await requestModel.findOneAndDelete({ lockID: search.lockID });
 
 	return await result.lean();
+}
+
+async function tempUnlock(id) {
+	const lock = await getLock(id);
+	if (!lock) return 2;
+	let response = await lockModel
+		.findOneAndUpdate(
+			{ id: id },
+			{ $set: { unlockedAt: Date.now() } },
+			{ new: true }
+		)
+		.lean();
+	return response;
+}
+
+async function relock(id, newCombo) {
+	const lock = await getLock(id);
+	if (!lock) return 2;
+	if (!lock.unlockedAt) return;
+	let newEndsAt =
+		parseInt(lock.endsAt) - parseInt(lock.unlockedAt) + parseInt(lock.endsAt);
+	console.log(newEndsAt);
+	let response = await lockModel
+		.findOneAndUpdate(
+			{ id: id },
+			{
+				$set: {
+					unlockedAt: null,
+					endsAt: newEndsAt,
+					combination: { type: "gen", combination: { code: newCombo } },
+				},
+			},
+			{ new: true }
+		)
+		.lean();
+	console.log(response);
+	return response;
 }

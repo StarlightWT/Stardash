@@ -1,0 +1,47 @@
+@import url("../../general.css");
+
+.newCombo {
+	text-align: center;
+	background-color: var(--secondary-bg-colour);
+	width: 200px;
+	margin-inline: auto;
+	padding: 1rem;
+	border-radius: 0.5rem;
+}
+
+.newCombo > h1 {
+	font-size: 18px;
+	margin: 0;
+}
+
+.combo {
+	display: flex;
+	width: max-content;
+	margin-inline: auto;
+	font-size: x-large;
+}
+
+.combo > div {
+	margin-inline: 1rem;
+}
+
+.combo > i:hover {
+	cursor: pointer;
+}
+
+#relock {
+	background-color: var(--secondary-bg-colour);
+	transition-duration: 250ms;
+	width: max-content;
+	margin-inline: auto;
+	width: 200px;
+	padding-block: 0.5rem;
+	padding-inline: 1rem;
+	border-radius: 0.5rem;
+	text-align: center;
+}
+
+#relock:hover {
+	cursor: pointer;
+	background-color: var(--accent-colour);
+}

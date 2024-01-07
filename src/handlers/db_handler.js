@@ -108,6 +108,8 @@ const {
 	unlockLock,
 	setKH,
 	setFreeze,
+	tempUnlock,
+	relock,
 } = require("./database/db_action");
 const { userModel } = require("../schemas");
 
@@ -127,6 +129,10 @@ async function lockAction(id, what, option) {
 			return await unlockLock(id);
 		case "setKH":
 			return await setKH(option, userID);
+		case "tempUnlock":
+			return await tempUnlock(id);
+		case "relock":
+			return await relock(id, option);
 	}
 	return 2;
 }

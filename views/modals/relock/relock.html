@@ -1,7 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
 		<title>StarDash</title>
 	</head>
-	<body></body>
+	<body>
+		<div class="newCombo">
+			<h1 class="title">Combination</h1>
+			<div class="combo">
+				<i class="fa-regular fa-square-plus" onclick="adddigit(this)"></i>
+				<div id="combo">0000</div>
+				<i class="fa-regular fa-square-minus" onclick="remdigit(this)"></i>
+			</div>
+		</div>
+		<h3 id="relock" onclick="relock()">
+			<i class="fa-solid fa-lock"></i> Relock
+		</h3>
+	</body>
+	<script src="script.js"></script>
 </html>

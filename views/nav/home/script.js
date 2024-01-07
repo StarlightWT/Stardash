@@ -1,7 +1,9 @@
 let lockID,
 	userID,
 	unlockable,
-	redirected = false;
+	redirected = false,
+	newLock;
+
 async function initialize() {
 	let activities = await window.electronAPI.get("activities", {
 		amount: 10,
@@ -9,6 +11,7 @@ async function initialize() {
 	});
 	let profile = await window.electronAPI.get("user");
 	let lock = await window.electronAPI.get("lock", profile.id);
+
 	lockID = lock.id;
 	userID = profile.id;
 	if (!(lock == 1 || !lock)) showLockInfo(lock);
@@ -25,6 +28,11 @@ async function initialize() {
 		profile = await window.electronAPI.get("user");
 		lock = await window.electronAPI.get("lock", profile.id);
 	}, 1000 * 5);
+	setInterval(() => {
+		if (!newLock) return;
+		lock = newLock;
+		newLock = null;
+	}, 1000);
 }
 
 initialize();
@@ -94,7 +102,7 @@ function showLockInfo(lock) {
 }
 
 let timerInterval;
-function setProfileInfo(profile, lock) {
+function setProfileInfo(profile, lock, setLock) {
 	const userAvatar = document.getElementById("userPicture");
 	const userUsername = document.getElementById("userUsername");
 
@@ -106,12 +114,14 @@ function setProfileInfo(profile, lock) {
 			userUsername.offsetWidth / (userUsername.innerText.length - 2) + "px";
 
 	if (lock != 1) {
-		updateLockTimer(lock);
 		if (timerInterval) clearInterval(timerInterval);
-		timerInterval = setInterval(() => {
+		if (!lock.unlockedAt) {
 			updateLockTimer(lock);
-		}, 1000);
-		if (lock.unlockedAt) showRelock(lock);
+			timerInterval = setInterval(() => {
+				updateLockTimer(lock);
+			}, 1000);
+		}
+		if (lock.unlockedAt) showRelock(lock, null, setLock);
 		loadLockModules(lock);
 	}
 }
@@ -119,6 +129,7 @@ function setProfileInfo(profile, lock) {
 function updateLockTimer(lock) {
 	const timer = document.getElementById("timer");
 	let timerString = "";
+	if (!lock.unlockedAt) hideRelock();
 	if (!lock.settings?.timerVisible)
 		return (timer.innerHTML = "Timer is hidden!");
 
@@ -128,7 +139,6 @@ function updateLockTimer(lock) {
 		return (timer.innerHTML = "Ready to unlock!");
 	}
 	if (lock.frozenAt) {
-		console.log(lock.frozenAt);
 		timestamp = lock.endsAt - lock.frozenAt;
 		timerString = `<i class="fa-solid fa-snowflake"></i> `;
 	}
@@ -143,23 +153,41 @@ function updateLockTimer(lock) {
 
 function showRelock(lock) {
 	if (!lock) return;
+	const timer = document.getElementById("timer");
 	const relockBtn = document.getElementById("relockBtn");
 	const comboBtn = document.getElementById("comboBtn");
+	const tempUnlockBtn = document.getElementById("tempUnlock");
 
 	if (lock.unlockedAt) {
 		relockBtn.className = "";
 		comboBtn.className = "";
+		tempUnlockBtn.className = "disabled";
+		timer.innerHTML = "Timer paused!";
+		clearInterval(timerInterval);
 	}
 
 	comboBtn.onclick = (e) => {
 		blurPage(true);
-		window.electronAPI.redirect("combo");
+		window.electronAPI.set("actionLockID", lockID);
+		redirect("combo");
 	};
 
 	relockBtn.onclick = (e) => {
 		blurPage(true);
-		window.electronAPI.redirect("relock");
+		window.electronAPI.set("actionLockID", lockID);
+		redirect("relock");
 	};
+}
+
+function hideRelock() {
+	const relockBtn = document.getElementById("relockBtn");
+	const comboBtn = document.getElementById("comboBtn");
+	const tempUnlockBtn = document.getElementById("tempUnlock");
+
+	relockBtn.className = "hidden";
+	comboBtn.className = "hidden";
+	tempUnlockBtn.className = "";
+	tempUnlockBtn.innerHTML = `<i class="fa-solid fa-clock"></i> Tem. unlock`;
 }
 
 function convertTimestamp(timestamp) {
@@ -202,7 +230,7 @@ function unlock() {
 	if (!unlockable) return;
 	blurPage(true);
 	redirected = true;
-	window.electronAPI.redirect("unlock");
+	redirect("unlock");
 }
 
 function unlockState(newState) {
@@ -324,4 +352,15 @@ function addTime() {
 	blurPage(true);
 	window.electronAPI.set("actionLockID", lockID);
 	window.electronAPI.redirect("addtime");
+}
+
+async function tempUnlock() {
+	const tempUnlockBtn = document.getElementById("tempUnlock");
+	if (tempUnlockBtn.className == "disabled") return;
+	tempUnlockBtn.className = "disabled";
+	tempUnlockBtn.innerHTML = `<i class="fa-solid fa-clock"></i> Unlocking...`;
+	lock = await window.electronAPI.lock(lockID, "tempUnlock");
+	showRelock(lock);
+	newLock = lock;
+	tempUnlockBtn.innerHTML = `<i class="fa-solid fa-clock"></i> Tem. unlock`;
 }

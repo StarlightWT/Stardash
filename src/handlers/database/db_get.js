@@ -34,8 +34,8 @@ function clearCache() {
 	historyCache = null;
 	khLocksCache = {};
 	cleared = true;
+
 	console.log(`[GET] Cleared cache!`);
-	console.log(userCache + lockCache + historyCache + khLocksCache);
 }
 
 /**
