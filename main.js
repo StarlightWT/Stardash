@@ -60,10 +60,10 @@ app.whenReady().then(async () => {
 	await updater.check();
 	win = createWindow();
 	require("./src/handlers/ipc_handler.js")(ipcMain, temp, win);
-	if (app.isPackaged) {
-		win.removeMenu;
-		win.menuBarVisible = false;
-	}
+	// if (app.isPackaged) {
+	win.removeMenu;
+	win.menuBarVisible = false;
+	// }
 	if ((await checkToken(temp)) == 0) redirects.redirect(win, "home");
 	else redirects.redirect(win, "login");
 	//Create initial window
