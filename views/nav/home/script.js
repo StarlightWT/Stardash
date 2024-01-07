@@ -2,7 +2,10 @@ let lockID,
 	userID,
 	unlockable,
 	redirected = false,
-	newLock;
+	newLock,
+	viewdMore = false;
+
+let viewdMoreClear;
 
 async function initialize() {
 	let activities = await window.electronAPI.get("activities", {
@@ -23,7 +26,7 @@ async function initialize() {
 			amount: 10,
 			reset: true,
 		});
-		appendActivities(activities);
+		if (!viewdMore) appendActivities(activities, !viewdMore);
 		setProfileInfo(profile, lock);
 		profile = await window.electronAPI.get("user");
 		lock = await window.electronAPI.get("lock", profile.id);
@@ -41,8 +44,9 @@ function redirect(where) {
 	window.electronAPI.redirect(where);
 }
 
-function appendActivities(activities) {
+function appendActivities(activities, reset) {
 	const activityFeed = document.getElementById("activity");
+	if (reset) activityFeed.innerHTML = "";
 	activities.forEach((activity) => {
 		const activityLi = document.createElement("li");
 
@@ -84,6 +88,11 @@ function appendActivities(activities) {
 		});
 		loadMoreButton.remove();
 		appendActivities(activitiesSearch);
+		viewdMore = true;
+		if (viewdMoreClear) clearTimeout(viewdMoreClear);
+		viewdMoreClear = setTimeout(() => {
+			viewdMore = false;
+		}, 60 * 1000 * 10);
 	};
 	if (activities.length == 10) activityFeed.append(loadMoreButton);
 }

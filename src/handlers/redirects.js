@@ -55,7 +55,7 @@ async function redirect(win, location, modal) {
 			break;
 		case "khview":
 			modal = true;
-			// frame = false;
+			frame = false;
 			break;
 		case "relock":
 			modal = true;
