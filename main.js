@@ -14,6 +14,22 @@ if (app.isPackaged)
 		openAsHidden: true, // Optional: Hide the app window on startup
 	});
 
+//Limit to only 1 instance
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+	console.log("[MAIN] Prevented new instance!");
+	app.quit();
+} else {
+	app.on("second-instance", (event, commandLine, workingDirectory) => {
+		// Someone tried to start a second instance, focus our window.
+		if (win) {
+			if (win.isMinimized()) win.restore();
+			win.focus();
+		}
+	});
+}
+
 //Create window for everything to be inside of
 function createWindow() {
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
