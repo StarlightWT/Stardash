@@ -111,6 +111,7 @@ function setProfileInfo(profile, lock) {
 		timerInterval = setInterval(() => {
 			updateLockTimer(lock);
 		}, 1000);
+		if (lock.unlockedAt) showRelock(lock);
 		loadLockModules(lock);
 	}
 }
@@ -138,6 +139,27 @@ function updateLockTimer(lock) {
 
 	timerString += convertTimestamp(timestamp);
 	timer.innerHTML = timerString;
+}
+
+function showRelock(lock) {
+	if (!lock) return;
+	const relockBtn = document.getElementById("relockBtn");
+	const comboBtn = document.getElementById("comboBtn");
+
+	if (lock.unlockedAt) {
+		relockBtn.className = "";
+		comboBtn.className = "";
+	}
+
+	comboBtn.onclick = (e) => {
+		blurPage(true);
+		window.electronAPI.redirect("combo");
+	};
+
+	relockBtn.onclick = (e) => {
+		blurPage(true);
+		window.electronAPI.redirect("relock");
+	};
 }
 
 function convertTimestamp(timestamp) {
@@ -180,7 +202,7 @@ function unlock() {
 	if (!unlockable) return;
 	blurPage(true);
 	redirected = true;
-	window.electronAPI.redirect("combo");
+	window.electronAPI.redirect("unlock");
 }
 
 function unlockState(newState) {

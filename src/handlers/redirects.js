@@ -33,6 +33,7 @@ async function redirect(win, location, modal) {
 
 	console.log(`[Redirects] Trying to redirect to ${location}...`);
 	switch (location) {
+		case "unlock":
 		case "combo":
 			modal = true;
 			frame = false;

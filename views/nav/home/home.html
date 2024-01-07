@@ -23,6 +23,14 @@
 					<h1 id="userUsername"></h1>
 					<div id="userBadges"></div>
 					<h2 id="timer" class="lockInfo"></h2>
+					<div class="important lockInfo">
+						<div class="hidden" id="comboBtn">
+							<i class="fa-solid fa-clock"></i> Combination
+						</div>
+						<div class="hidden" id="relockBtn">
+							<i class="fa-solid fa-lock"></i> Relock
+						</div>
+					</div>
 					<div class="buttons lockInfo">
 						<div class="disabled" id="unlockBtn" onclick="unlock()">
 							<i class="fa-solid fa-unlock"></i> Unlock
@@ -33,9 +41,7 @@
 						<div class="disabled" id="khReq" onclick="request()">
 							<i class="fa-solid fa-key"></i> Request
 						</div>
-						<div class="transparent">
-							<i class="fa-solid fa-key"></i> KH token
-						</div>
+						<div class="transparent"><i class="fa-solid fa-key"></i> Combo</div>
 					</div>
 					<i
 						class="fa-solid fa-gear settings"

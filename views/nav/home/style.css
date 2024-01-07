@@ -170,6 +170,26 @@ main {
 	width: var(--sidebar-width);
 }
 
+.important {
+	display: flex;
+	flex-direction: column;
+}
+
+.important > div {
+	width: 95%;
+	margin-inline: auto;
+	text-align: center;
+	border-radius: 0.5rem;
+	background-color: var(--background-colour);
+	padding-block: 0.5rem;
+	font-weight: bold;
+	transition-duration: 250ms;
+}
+
+.important > div:not(:first-child) {
+	margin-top: 0.5rem;
+}
+
 .buttons {
 	display: flex;
 	flex-wrap: wrap;
@@ -188,7 +208,8 @@ main {
 	transition-duration: 250ms;
 }
 
-.buttons > div:hover:not(.disabled):not(.transparent) {
+.buttons > div:hover:not(.disabled):not(.transparent),
+.important > div:hover:not(.disabled):not(.hidden) {
 	cursor: pointer;
 	background-color: var(--accent-colour);
 }

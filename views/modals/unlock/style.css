@@ -16,15 +16,13 @@ h3 {
 	width: fit-content;
 	text-align: center;
 	margin-inline: auto;
-	background-color: var(--secondary-bg-colour);
+	background-color: #ff4a4a;
 	padding: 0.5rem;
 	border-radius: 0.5rem;
-	transition-duration: 250ms;
 }
 
 h3:hover {
 	cursor: pointer;
-	background-color: var(--accent-colour);
 }
 
 p {
