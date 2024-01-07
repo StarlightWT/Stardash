@@ -47,7 +47,9 @@ function showNew() {
 }
 
 async function showKHOverview(user) {
-	const list = document.getElementById("KHoverview");
+	const overview = document.getElementById("KHoverview");
+	const list = overview.children[1];
+	console.log(list);
 	const locks = await window.electronAPI.get("locks", user.id);
 
 	locks.forEach((lock) => {
@@ -57,7 +59,6 @@ async function showKHOverview(user) {
 		lockDIV.innerHTML = `<h2>${lock?.user?.username ?? "error"}</h2>`;
 
 		lockDIV.onclick = (e) => {
-			console.log(lockDIV.id);
 			blurPage(true);
 			window.electronAPI.set("actionLockID", lock.id);
 			window.electronAPI.redirect("khview");
@@ -74,7 +75,7 @@ async function showKHOverview(user) {
 	};
 
 	list.append(addLock);
-	list.className = "visible";
+	overview.className = "visible";
 }
 
 function increase(counter) {

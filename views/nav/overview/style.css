@@ -265,17 +265,41 @@ h1 {
 }
 
 #KHoverview.visible {
+	background-color: var(--secondary-bg-colour);
+	padding: 1rem;
+	border-radius: 0.5rem;
 	display: flex;
-	flex-wrap: wrap;
+	flex-direction: column;
+	max-width: 1000px;
+	justify-content: center;
+	gap: 1rem;
 	margin: 0;
 	margin-top: 5rem;
-	width: 95%;
+	max-width: 850px;
 	margin-inline: auto;
 }
 
-#KHoverview > div {
-	width: 30vw;
-	height: 20vh;
+#KHoverview.visible > #list {
+	display: grid;
+	grid-template-columns: repeat(4, 200px);
+	gap: 1rem;
+	width: max-content;
+	margin-inline: auto;
+}
+
+@media screen and (max-width: 900px) {
+	#KHoverview.visible {
+		max-width: 650px;
+	}
+
+	#KHoverview.visible > #list {
+		grid-template-columns: repeat(3, 200px);
+	}
+}
+
+#KHoverview > #list > div {
+	width: 200px;
+	height: 100px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -284,16 +308,15 @@ h1 {
 	font-weight: bold;
 	border-radius: 0.5rem;
 	transition-duration: 250ms;
-	margin-right: 1rem;
-	background-color: var(--secondary-bg-colour);
+	background-color: var(--background-colour);
 }
 
-#KHoverview > div:hover {
+#KHoverview > #list > div:hover {
 	cursor: pointer;
 	scale: 1.1;
 }
 #addLock > i {
-	background-color: var(--background-colour);
+	background-color: var(--secondary-bg-colour);
 	padding: 1rem;
 	border-radius: 100%;
 	margin-top: 0.25rem;
@@ -311,9 +334,10 @@ h1 {
 	font-size: 30px;
 	font-weight: bold;
 	background-color: var(--secondary-bg-colour);
-	width: 50%;
+	width: max-content;
 	margin-inline: auto;
 	padding-block: 1rem;
+	padding-inline: 1rem;
 	border-radius: 0.5rem;
 }
 
