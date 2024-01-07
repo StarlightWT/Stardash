@@ -10,27 +10,38 @@ body {
 #back:not(.hidden) {
 	color: white;
 	position: absolute;
+	font-size: 18px;
 	left: 2rem;
 	top: -0.4rem;
 	padding: 1rem;
 	border-radius: 50%;
+	transition-duration: 250ms;
 }
 
 #back:hover:not(.hidden) {
 	cursor: pointer;
+	color: var(--accent-colour);
 }
 
 #title {
 	text-align: center;
-	width: 100%;
+	max-width: 1000px;
 	background-color: var(--secondary-bg-colour);
 	margin: 0;
+	margin-inline: auto;
+	position: relative;
 }
 
 #max_bet {
 	position: absolute;
 	left: 5%;
 	top: 10%;
+}
+
+.titlebg {
+	width: 100vw;
+	justify-content: center;
+	background-color: var(--secondary-bg-colour);
 }
 
 .totals {
@@ -56,7 +67,7 @@ body {
 }
 
 #setup {
-	width: 100%;
+	max-width: 1000px;
 }
 
 #setup input {
