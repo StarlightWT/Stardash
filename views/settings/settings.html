@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>StarDash</title>
@@ -7,71 +8,83 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 	</head>
 	<body id="body">
-		<i class="fa-solid fa-arrow-left" onclick="saveAndExitSettings();"></i>
-		<ul class="main_ul">
-			<li>
-				<h1>Token</h1>
-				<input
-					class="text secret"
-					type="text"
-					name=""
-					id="tokenInput"
-					readonly
-					onclick="copy(value)" />
-			</li>
-			<li>
-				<h1>Role</h1>
-				<select name="" id="role" onchange="select(event.srcElement.value)">
-					<option value="switch">Switch</option>
-					<option value="keyholder">Keyholder</option>
-					<option value="lockee">Lockee</option>
-				</select>
-			</li>
-			<li>
-				<h1>Version</h1>
-				<input
-					class="text"
-					type="text"
-					name=""
-					id="versionInput"
-					readonly
-					onclick="copy(value)" />
-			</li>
-			<li>
-				<h1>Start on boot</h1>
-				<input type="checkbox" id="startOnBoot" />
-			</li>
-			<li>
-				<h1>Logout</h1>
-				<input id="logout" type="button" value="logout" />
-			</li>
-			<li id="dev_mode_trigger" style="display: none">
-				<h1>Dev mode</h1>
-				<input id="devModeTrigger" type="button" value="activate" />
-			</li>
-		</ul>
-		<div id="dev_tools" class="dev_tools" style="display: none">
-			<ul>
+		<div class="titlebg">
+			<h1 id="title" class="title">
+				Settings
+				<i
+					class="fa-solid fa-arrow-left"
+					id="back"
+					onclick="saveAndExitSettings();"></i>
+			</h1>
+		</div>
+		<div class="container">
+			<ul class="main_ul">
 				<li>
-					<h1>Update status:</h1>
-					<textarea
+					<h1>Token</h1>
+					<input
+						class="text secret"
+						type="text"
 						name=""
-						class="text"
-						id="UpdateStatus"
-						cols="30"
-						rows="10"
-						readonly></textarea>
+						id="tokenInput"
+						readonly
+						onclick="copy(value)" />
 				</li>
 				<li>
-					<button id="checkUpdate" onclick="checkUpdate()">Check update</button>
+					<h1>Role</h1>
+					<select name="" id="role" onchange="select(event.srcElement.value)">
+						<option value="switch">Switch</option>
+						<option value="keyholder">Keyholder</option>
+						<option value="lockee">Lockee</option>
+					</select>
+				</li>
+				<li>
+					<h1>Version</h1>
+					<input
+						class="text"
+						type="text"
+						name=""
+						id="versionInput"
+						readonly
+						onclick="copy(value)" />
+				</li>
+				<li>
+					<h1>Start on boot</h1>
+					<input type="checkbox" id="startOnBoot" />
+				</li>
+				<li>
+					<h1>Logout</h1>
+					<input id="logout" type="button" value="logout" />
+				</li>
+				<li id="dev_mode_trigger" style="display: none">
+					<h1>Dev mode</h1>
+					<input id="devModeTrigger" type="button" value="activate" />
 				</li>
 			</ul>
-		</div>
-		<div class="updatingInfoElement" id="updatingInfo">
-			<h1>Saving...</h1>
-		</div>
-		<div class="copiedInfoElement" id="copiedInfo">
-			<h1>Copied</h1>
+			<div id="dev_tools" class="dev_tools" style="display: none">
+				<ul>
+					<li>
+						<h1>Update status:</h1>
+						<textarea
+							name=""
+							class="text"
+							id="UpdateStatus"
+							cols="30"
+							rows="10"
+							readonly></textarea>
+					</li>
+					<li>
+						<button id="checkUpdate" onclick="checkUpdate()">
+							Check update
+						</button>
+					</li>
+				</ul>
+			</div>
+			<div class="updatingInfoElement" id="updatingInfo">
+				<h1>Saving...</h1>
+			</div>
+			<div class="copiedInfoElement" id="copiedInfo">
+				<h1>Copied</h1>
+			</div>
 		</div>
 	</body>
 	<script src="script.js"></script>

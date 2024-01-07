@@ -25,15 +25,17 @@ li h1 {
 }
 
 li input {
-	width: 50%;
+	width: 392px; /* Must be 8 px smaller than select, Why? IDFK */
 	height: 30px;
 	margin-block: auto;
 	cursor: pointer;
+	font-size: 12px;
 }
 
 li select {
-	width: 50%;
+	width: 400px;
 	height: 30px;
+	font-size: 12px;
 	margin-block: auto;
 }
 
@@ -72,7 +74,6 @@ li select {
 	width: 15rem;
 	text-align: center;
 	margin-inline: auto;
-	/* bottom: 0; */
 	left: 0;
 	right: 0;
 	background-color: rgba(60, 255, 0, 0.473);
@@ -94,13 +95,38 @@ i {
 	top: 0.5rem;
 }
 
-i {
-	padding: 1rem;
-	border-radius: 50%;
-	background-color: var(--secondary-bg-colour);
-	cursor: pointer;
+.container {
+	max-width: 800px;
+	margin-inline: auto;
 }
 
-.main_ul {
-	padding-top: 4rem;
+#back:not(.hidden) {
+	color: white;
+	position: absolute;
+	font-size: 18px;
+	left: 2rem;
+	top: -0.4rem;
+	padding: 1rem;
+	border-radius: 50%;
+	transition-duration: 250ms;
+}
+
+#back:hover:not(.hidden) {
+	cursor: pointer;
+	color: var(--accent-colour);
+}
+
+#title {
+	text-align: center;
+	max-width: 800px;
+	background-color: var(--secondary-bg-colour);
+	margin: 0;
+	margin-inline: auto;
+	position: relative;
+}
+
+.titlebg {
+	width: 100vw;
+	justify-content: center;
+	background-color: var(--secondary-bg-colour);
 }
