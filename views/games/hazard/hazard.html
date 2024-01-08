@@ -10,9 +10,73 @@
 		<h1 id="title">Hazard</h1>
 		<i class="fa-solid fa-arrow-left" id="back" onclick="back();"></i>
 		<div class="setup" id="setup">
-			<h1>Bet time</h1>
-			<input type="time" name="bet" id="bet" value="00:00" />
-			<h1>Main</h1>
+			<div class="counter" id="bet">
+				<div class="single_counter">
+					<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+					<div
+						class="single_counter_output"
+						ondblclick="edit(this)"
+						onkeypress="validate(event)">
+						00
+					</div>
+					<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+					<h6>weeks</h6>
+				</div>
+				<div class="single_counter">
+					<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+					<div
+						class="single_counter_output"
+						ondblclick="edit(this)"
+						onkeypress="validate(event)">
+						00
+					</div>
+					<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+					<h6>days</h6>
+				</div>
+				<div class="single_counter">
+					<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+					<div
+						class="single_counter_output"
+						ondblclick="edit(this)"
+						onkeypress="validate(event)">
+						00
+					</div>
+					<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+					<h6>hours</h6>
+				</div>
+				<div class="single_counter">
+					<i class="fa-solid fa-chevron-up" onclick="increase(this)"></i>
+					<div
+						class="single_counter_output"
+						ondblclick="edit(this)"
+						onkeypress="validate(event)">
+						00
+					</div>
+					<i class="fa-solid fa-chevron-down" onclick="decrease(this)"></i>
+					<h6>mins</h6>
+				</div>
+			</div>
+			<button id="start_button" disabled>Start</button>
+			<div class="howToPlay">
+				<h2>How to play</h2>
+				<p>
+					The goal of the game is to get as close to the number 21 without going
+					over, while getting a higher total than the dealer.
+					<br />
+					<br />
+					You can either "stand" or "hit", if you "stand" your total is locked
+					in and it's the dealer's turn. The dealer draws a card if their total
+					is &lt;17. If the dealer's total is higher than yours, without the
+					dealer going over 21. You lose. If your total is higher than the
+					Dealer's without going past 21 you win.
+					<br />
+					<br />
+					If you get 21 in your first 2 cards it's called a "BlackJack" which
+					means you win 1.5x your bet. Otherwise winning results in winning
+					double your bet.
+				</p>
+			</div>
+		</div><h1>Main</h1>
 			<input type="text" name="main" id="main" placeholder="5-9" />
 		</div>
 		<div class="game hidden" id="game">

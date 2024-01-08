@@ -1,6 +1,6 @@
 @import url(../../general.css);
 
-i {
+#back {
 	color: white;
 	position: absolute;
 	left: 2rem;
@@ -9,7 +9,7 @@ i {
 	border-radius: 50%;
 }
 
-i:hover {
+#back:hover {
 	cursor: pointer;
 }
 
@@ -86,4 +86,38 @@ i:hover {
 p {
 	text-align: center;
 	margin: 0;
+}
+
+.counter {
+	display: flex;
+	justify-content: space-evenly;
+	width: 150px;
+	font-size: 22px;
+}
+
+.single_counter {
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.single_counter > i:hover,
+.single_counter > div:hover {
+	cursor: pointer;
+}
+
+.single_counter > h6 {
+	margin: 0;
+}
+
+.counter {
+	margin-block: 1rem;
+}
+
+#start_button {
+	width: 100px;
+	height: 50px;
+	border-radius: 0.5rem;
 }
