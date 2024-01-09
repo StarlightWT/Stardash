@@ -100,17 +100,20 @@ function appendActivities(activities, reset) {
 function showLockInfo(lock) {
 	const elements = Array.from(document.getElementsByClassName("lockInfo"));
 	elements.forEach((element) => {
-		element.classList.remove("lockInfo");
+		if (!element.id.includes("List")) element.classList.remove("lockInfo");
 	});
 
 	const modulesElm = document.getElementById("moduleList");
-	if (lock.modules.length == 0) modulesElm.classList.add("lockInfo");
+	if (lock.modules.length != 0) modulesElm.classList.remove("lockInfo");
+	// const rulesElm = document.getElementById("ruleList");
+	// if (lock.modules.includes("Rules")) rulesElm.classList.remove("lockInfo");
 
 	if (lock.khId == null)
 		document.getElementById("khReq").classList.remove("disabled");
 }
 
-let timerInterval;
+let timerInterval,
+	firstTime = true;
 function setProfileInfo(profile, lock, setLock) {
 	const userAvatar = document.getElementById("userPicture");
 	const userUsername = document.getElementById("userUsername");
@@ -131,7 +134,7 @@ function setProfileInfo(profile, lock, setLock) {
 			}, 1000);
 		}
 		if (lock.unlockedAt) showRelock(lock, null, setLock);
-		loadLockModules(lock);
+		if (firstTime) loadLockModules(lock);
 	}
 }
 
@@ -252,11 +255,16 @@ function unlockState(newState) {
 }
 
 function loadLockModules(lock) {
+	if (!firstTime) return;
+	firstTime = false;
 	const modules = lock.modules;
 	const list = document.getElementById("moduleList");
+
 	modules.forEach((module) => {
 		const moduleLi = document.createElement("li");
 		moduleLi.innerHTML = `${module.name}`;
+
+		if (module.name == "Rules") loadRuleList(lock);
 
 		moduleLi.className = "disabled";
 
@@ -264,6 +272,17 @@ function loadLockModules(lock) {
 			openModule(module.name);
 		};
 		list.append(moduleLi);
+	});
+}
+
+function loadRuleList(lock) {
+	const module = lock.modules.find((obj) => obj.name == "Rules");
+	const ruleList = document.getElementById("ruleList");
+	ruleList.className = "";
+	module.rules.forEach((rule) => {
+		const ruleLi = document.createElement("li");
+		ruleLi.innerHTML = `${rule.ruleID}. ${rule.rule}`;
+		ruleList.append(ruleLi);
 	});
 }
 

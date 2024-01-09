@@ -125,7 +125,8 @@ main {
 	scale: 0.9;
 }
 
-#moduleList {
+#moduleList:not(.lockInfo),
+#ruleList:not(.lockInfo) {
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -137,14 +138,16 @@ main {
 	transition-duration: 250ms;
 }
 
-#moduleList > li:first-child {
+#moduleList > li:first-child,
+#ruleList > li:first-child {
 	display: flex;
 	justify-content: space-between;
 	font-weight: bold;
 	border-bottom: 2px solid white;
 }
 
-#moduleList > li:first-child:hover {
+#moduleList > li:first-child:hover,
+#ruleList > li:first-child:hover {
 	cursor: pointer;
 }
 
@@ -155,6 +158,16 @@ main {
 	background-color: var(--background-colour);
 	margin-top: 0.5rem;
 	padding-block: 0.25rem;
+	border-radius: 0.5rem;
+}
+
+#ruleList > li:not(:first-child) {
+	width: 95%;
+	margin-inline: auto;
+	background-color: var(--background-colour);
+	margin-top: 0.25rem;
+	padding: 0.25rem;
+	padding-inline: 0.5rem;
 	border-radius: 0.5rem;
 }
 
