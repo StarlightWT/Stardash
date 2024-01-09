@@ -369,8 +369,11 @@ h1 {
 }
 
 .quickactions {
-	width: max-content;
-	display: flex;
+	width: min-content;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.5rem;
+	padding-inline: 0.5rem;
 	margin-top: 1rem;
 	margin-inline: auto;
 	background-color: var(--secondary-bg-colour);
@@ -380,27 +383,19 @@ h1 {
 	overflow-x: scroll;
 }
 
-.content {
-	display: flex;
-}
-
-.quickactions > .content > div {
+.quickactions > div {
 	width: 150px;
 	background-color: var(--background-colour);
-	padding-block: 0.25rem;
+	padding-block: 0.5rem;
 	border-radius: 0.5rem;
-	margin-left: 0.5rem;
 	transition-duration: 250ms;
 }
 
-.quickactions > .content > div:last-child {
-	margin-right: 0.5rem;
-}
-
-.quickactions > .content > div:hover:not(.disabled) {
+.quickactions > div:hover:not(.disabled) {
 	background-color: var(--accent-colour);
 	cursor: pointer;
 }
+
 .disabled {
 	opacity: 0.8;
 }

@@ -535,6 +535,10 @@ function updateTimer() {
 	const seconds = document.getElementById("seconds");
 
 	let timestamp = lock.endsAt - Date.now();
+	if (lock.frozenAt) timestamp = locak.endsAt - lock.frozenAt;
+	if (lock.unlockedAt) timestamp = lock.endsAt - lock.unlockedAt;
+
+	console.log(timestamp);
 
 	const SECOND = 1000;
 	const MINUTE = SECOND * 60;
@@ -650,4 +654,17 @@ function addTime() {
 	blurPage(true);
 	window.electronAPI.set("actionLockID", lock.id);
 	window.electronAPI.redirect("addtime");
+}
+
+async function tempUnlock() {
+	const tempUnlockBtn = document.getElementById("tempUnlock");
+	if (tempUnlockBtn.className == "disabled") return;
+	tempUnlockBtn.className = "disabled";
+	tempUnlockBtn.innerHTML = `<i class="fa-solid fa-clock"></i> Unlocking...`;
+	lock = await window.electronAPI.lock(lock.id, "tempUnlock");
+	tempUnlockBtn.innerHTML = `<i class="fa-solid fa-clock"></i> Unlocked!`;
+
+	setTimeout(() => {
+		tempUnlockBtn.innerHTML = `<i class="fa-solid fa-clock"></i> Tem. unlock`;
+	}, 1500);
 }
